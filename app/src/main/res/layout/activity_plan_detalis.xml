@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.tga.Activity.PlanDetalis"
+    android:background="@drawable/setplan">
+
+    <RelativeLayout
+        android:background="#fff"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:tag="sticky"
+        >
+
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_arrow_back_black_24dp"
+                android:id="@+id/imgBack"
+                android:layout_margin="10dp"/>
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Midtown"
+                android:layout_toRightOf="@+id/imgBack"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_mode_edit_black_24dp"
+                android:layout_alignParentRight="true"
+                android:layout_margin="10dp"
+                />
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

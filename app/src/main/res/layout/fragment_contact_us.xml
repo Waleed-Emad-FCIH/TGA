@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_contact"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="10dp">
+
+
+        <TextView
+            android:text="To: Customer service"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/receiverName"
+            android:textSize="18sp"/>
+
+        <View
+            android:layout_height="2dip"
+            android:background="#FF909090"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/subject"
+            android:textSize="18sp"
+            android:hint="subject"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/message"
+            android:hint="message"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/txtSend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Send"
+            android:textStyle="bold"
+            android:background="@drawable/round"
+            android:textColor="#CBD1DC"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textSize="20dp"
+            android:layout_marginTop="30dp"/>
+
+    </LinearLayout>
+
+
+
+</ScrollView>

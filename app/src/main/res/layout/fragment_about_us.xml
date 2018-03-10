@@ -1,0 +1,28 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.tga.fragment.AboutUs"
+    android:layout_margin="10dp">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Team member:
+
+    1- Abdulrahman Mohamed
+    2- Ahmed Elewa
+    3- Mohamed Ahmed
+    4- Waleed Emad-Eldin
+    5- Yaseer Shaaban
+
+Supervisor:
+
+    1- Dr.Mohamed Belal
+
+Helwan University, Ain Helwan
+    Cairo, Egypt."
+        android:textSize="18dp"/>
+
+</FrameLayout>

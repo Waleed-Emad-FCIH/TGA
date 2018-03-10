@@ -1,0 +1,47 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.tga.fragment.gettingAround.OnArrival"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <!-- TODO: Update blank fragment layout -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Emergencies"
+            android:layout_margin="20dp"
+            android:textColor="#000"
+            android:textSize="18dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dial 122 for police, ambulance or fire services."
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hospitals and urgent care centers"
+            android:layout_margin="20dp"
+            android:textColor="#000"
+            android:textSize="18dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="You can visit .... \nThere are 24-hours, walk-in Accident and emergency department at the following central hospitals: \n......\n......"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"/>
+
+
+
+    </LinearLayout>
+</ScrollView>
