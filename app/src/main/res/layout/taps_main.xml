@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="10dp">
+
+    <LinearLayout
+        android:elevation="5dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tools">
+
+        <include
+            layout="@layout/toolbar"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottombar"
+        android:layout_below="@+id/tools"
+        android:orientation="vertical">
+
+
+        <FrameLayout
+            android:id="@+id/framelayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
+
+
+
+    <com.roughike.bottombar.BottomBar
+        android:id="@+id/bottombar"
+        android:layout_width="match_parent"
+        android:layout_height="52.6dp"
+        android:layout_alignParentBottom="true"
+        android:background="#fff"
+        android:elevation="8dp"
+        android:gravity="bottom|end"
+        android:layout_gravity="bottom"
+        app:bb_activeTabColor="#ffffff"
+        app:bb_badgesHideWhenActive="true"
+        app:bb_inActiveTabColor="#a4ebfe"
+        app:bb_showShadow="true"
+        app:bb_tabXmlResource="@xml/tab"
+        app:bb_titleTextAppearance="@style/botoombar_textchange"
+        app:paddingStart="10dp" />
+
+</RelativeLayout>

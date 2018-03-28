@@ -1,0 +1,52 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.tga.fragment.Plans"
+    android:layout_margin="8dp"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Created by you"
+                android:layout_margin="8dp"
+                android:id="@+id/txtMyPlans"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/reMyplans"
+                android:layout_below="@+id/txtMyPlans"
+                />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Suggested"
+                android:layout_margin="8dp"
+                android:id="@+id/txtPlansSuggested"
+                android:layout_below="@+id/reMyplans"/>
+
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/rePlansSuggested"
+                android:layout_below="@+id/txtPlansSuggested"
+                />
+
+
+
+        </RelativeLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,0 +1,82 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.tga.fragment.gettingAround.OnArrival"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <!-- TODO: Update blank fragment layout -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cairo offers mix of bustling traditional markets, small neighborhood shops and suburban malls. Most stores are open from around 10 AM to midnight daily. Malls are generally open every day from 10 AM to midnight."
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"/>
+
+        <LinearLayout
+
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:id="@+id/discShoppingDist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Shopping districts"
+                android:textColor="#000"
+                android:textSize="16dp"
+                android:background="#fff"
+                android:padding="8dp"
+                android:drawableRight="@drawable/ic_keyboard_arrow_down_black_24dp"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:id="@+id/discMarkets"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Markets"
+                android:textColor="#000"
+                android:textSize="16dp"
+                android:background="#fff"
+                android:padding="8dp"
+                android:drawableRight="@drawable/ic_keyboard_arrow_down_black_24dp"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:id="@+id/discMalls"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Malls"
+                android:textColor="#000"
+                android:textSize="16dp"
+                android:background="#fff"
+                android:padding="8dp"
+                android:drawableRight="@drawable/ic_keyboard_arrow_down_black_24dp"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,40 @@
+<tabs>
+
+    <tab
+        id="@+id/plans"
+        icon="@drawable/ic_content_paste_black_24dp"
+        title="Plans"
+        activeColor="@color/tab_select_txt"
+        inActiveColor="@color/tab_unselect_txt"
+        />
+
+    <tab
+        id="@+id/home"
+        icon="@drawable/ic_home_black_24dp"
+        title="Home"
+        activeColor="@color/tab_select_txt"
+        inActiveColor="@color/tab_unselect_txt"
+
+        />
+    <tab
+        id="@+id/profile"
+        icon="@drawable/ic_perm_identity_black_24dp"
+        title="Profile"
+        activeColor="@color/tab_select_txt"
+        inActiveColor="@color/tab_unselect_txt"
+        />
+    <!--<tab-->
+        <!--id="@+id/favorite"-->
+        <!--icon="@drawable/ic_favorite"-->
+        <!--title="Favorite"-->
+        <!--activeColor="@color/tab_select_txt"-->
+        <!--inActiveColor="@color/tab_unselect_txt"-->
+        <!--/>-->
+    <!--<tab-->
+        <!--id="@+id/more"-->
+        <!--icon="@drawable/ic_more"-->
+        <!--title="More"-->
+        <!--activeColor="@color/tab_select_txt"-->
+        <!--inActiveColor="@color/tab_unselect_txt"-->
+        <!--/>-->
+</tabs>

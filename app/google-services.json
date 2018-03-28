@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "158711543767",
+    "firebase_url": "https://tgassistant-437b6.firebaseio.com",
+    "project_id": "tgassistant-437b6",
+    "storage_bucket": "tgassistant-437b6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:158711543767:android:213ee0629c4abb9f",
+        "android_client_info": {
+          "package_name": "com.tga"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "158711543767-r3u2lil5odimi04utagvm9vsakr2euvc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tga",
+            "certificate_hash": "f739c0663077a0690cec463b966b2994b4f12f99"
+          }
+        },
+        {
+          "client_id": "158711543767-94prihk6dmj338ee8sf2cs0i7bv0gi89.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5GGCpkR9MM1Mu-DDx0vvsd4EPzCHOOAk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "158711543767-94prihk6dmj338ee8sf2cs0i7bv0gi89.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
