@@ -34,7 +34,7 @@ public class Home extends Fragment {
     private ArrayList<Offers> ArrayList;
     private RecyclerView recyclerView;
     private RecycleAdapter_Offers mAdapter;
-    //hkhbkljjl
+
 
 
     @Override
