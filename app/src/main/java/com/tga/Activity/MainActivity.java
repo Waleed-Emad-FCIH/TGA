@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG_ABOUTUS = "about us";
     public static String CURRENT_TAG = TAG_HOME;
     public static int navItemIndex = 0;
-//Ahmed Elewa
     private ImageView imgMenu;
     private int selectedTabId;
     private TextView txtSearch;
