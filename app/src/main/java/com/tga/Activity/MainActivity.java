@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
 
 //                if (getIntent() != null && getIntent().hasExtra("check")) {
 //                    tabId = getIntent().getIntExtra("check", -1);
-//                }
+//                }//
                 switch (tabId) {
                     case R.id.home:
                         selectedTabId =R.id.home;
