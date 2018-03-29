@@ -10,6 +10,7 @@ public class FeedbackController {
     private FeedbackModel feedbackModel;
 
     public FeedbackController(String id, String subject, String content, String userId, boolean isComplain){
+        this.feedbackModel = new FeedbackModel();
         feedbackModel.id = id;
         feedbackModel.subject = subject;
         feedbackModel.content = content;

@@ -16,6 +16,7 @@ public class TouristController extends UserController {
                              String phoneNo, String adrs, String photo, String nationality,
                              ArrayList<String> historyPlans, ArrayList<String> historyPrograms) {
         super(id, email, pass, name, phoneNo, adrs);
+        this.touristModel = new TouristModel();
         touristModel.photo = photo;
         touristModel.nationality = nationality;
         touristModel.myPlansID = historyPlans;

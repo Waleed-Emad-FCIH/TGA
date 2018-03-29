@@ -12,6 +12,7 @@ public class SupervisorController extends UserController {
 
     public SupervisorController(String id, String email, String pass, String name, String phoneNo, String adrs) {
         super(id, email, pass, name, phoneNo, adrs);
+        this.supervisorModel = new SupervisorModel();
     }
 
     public void getFinancialReport(){ }

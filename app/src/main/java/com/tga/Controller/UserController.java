@@ -12,6 +12,7 @@ public class UserController {
 
     public UserController(String id, String email, String pass, String name,
                      String phoneNo, String adrs){
+        this.userModel = new UserModel();
         userModel.id =id;
         userModel.email = email;
         userModel.password = pass;

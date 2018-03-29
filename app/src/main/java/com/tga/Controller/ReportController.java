@@ -11,6 +11,7 @@ public class ReportController {
     private ReportModel reportModel;
 
     public ReportController(String id, String subject, String date, String userID){
+        this.reportModel = new ReportModel();
         reportModel.id = id;
         reportModel.subject = subject;
         reportModel.date = date;

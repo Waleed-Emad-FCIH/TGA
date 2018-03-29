@@ -15,6 +15,7 @@ public class PostController {
     
     public PostController(String id, String content, String date, String userId,
                           ArrayList<String> commentsID){
+        this.postModel = new PostModel();
         postModel.id = id;
         postModel.content = content;
         postModel.date = date;

@@ -13,6 +13,7 @@ public class PlanController {
 
     public PlanController(String id, ArrayList<String> placesID, String startDate, String endDate,
                      String location){
+        this.planModel = new PlanModel();
         planModel.id = id;
         planModel.placesID = placesID;
         planModel.startDate = startDate;

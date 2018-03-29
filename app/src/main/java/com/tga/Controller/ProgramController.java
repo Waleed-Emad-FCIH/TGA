@@ -17,6 +17,7 @@ public class ProgramController {
     public ProgramController(String id, String title, ArrayList<String> placesID, String description,
                         String startDate, String endDate, String hotelName, String discountID,
                              double rate, ArrayList<String> reviews, ArrayList<String> regisID){
+        this.programModel = new ProgramModel();
         programModel.id = id;
         programModel.title = title;
         programModel.placesID = placesID;

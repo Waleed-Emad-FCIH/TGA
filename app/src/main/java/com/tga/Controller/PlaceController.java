@@ -13,6 +13,7 @@ public class PlaceController {
 
     public PlaceController(String id, ArrayList<String> photos, String openTime, String closeTime,
                       String location, double rate, ArrayList<String> reviews){
+        this.placeModel = new PlaceModel();
         placeModel.id = id;
         placeModel.photos = photos;
         placeModel.openTime = openTime;
