@@ -26,4 +26,6 @@ public class AdminController extends UserController {
         PrivacyModel privacyModel = new PrivacyModel();
         privacyModel.content = cont;
     }
+
+    /*ياسر مر من هنا */
 }

@@ -36,6 +36,7 @@ public class Home extends Fragment {
     private RecycleAdapter_Offers mAdapter;
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
