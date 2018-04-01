@@ -3,10 +3,6 @@ package com.tga.models;
 import java.util.ArrayList;
 import java.util.Date;
 
-/**
- * Created by asus pc on 2/28/2018.
- */
-
 public class ProgramModel {
     public String id ;
     public String title ;

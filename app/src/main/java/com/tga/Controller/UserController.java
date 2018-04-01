@@ -2,11 +2,6 @@ package com.tga.Controller;
 
 import com.tga.models.UserModel;
 
-/**
- * Created by root on 3/9/18.
- * new test
- */
-
 public abstract class UserController {
 
     private UserModel userModel;
