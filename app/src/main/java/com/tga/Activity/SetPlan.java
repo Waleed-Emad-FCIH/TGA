@@ -8,7 +8,11 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.QuickContactBadge;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.tga.R;
 import com.tga.adapter.PlacesAdapter;
@@ -17,6 +21,7 @@ import com.tga.model.PlaceModel;
 import java.util.ArrayList;
 
 public class SetPlan extends AppCompatActivity {
+RadioButton rbOnlyOneDay,rbMakeYourProgram;
 
     String[] title = {"Tahreer square"   , "Qasr Elneil bridge" , "Cairo Tower" , "Egptian musuem "};
 //    String[] descreption = {"Tahrir Square also known as \"Martyr Square\", is a major public town square in Downtown Cairo, Egypt.",
@@ -25,7 +30,7 @@ public class SetPlan extends AppCompatActivity {
 //            "The Museum of Egyptian Antiquities, known commonly as the Egyptian Museum or Museum of Cairo, in Cairo, Egypt, is home to an extensive collection of ancient Egyptian antiquities"
 //    };
     Integer[] imgs = {R.drawable.img1, R.drawable.img2, R.drawable.img1, R.drawable.img3} ;
-    private ArrayList<PlaceModel> arrayList;
+    private ArrayList<PlaceModel> Places;
     private RecyclerView recyclerView;
     private PlacesAdapter mAdapter;
 
@@ -36,20 +41,40 @@ public class SetPlan extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Create Your Plan");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2C3646")));
+         //=====================  " imbo Code " ====================
+                rbOnlyOneDay = (RadioButton) findViewById(R.id.rbOnleOneDay);
+                rbMakeYourProgram = (RadioButton) findViewById(R.id.rbMakeYourProgram);
+        View.OnClickListener first_radio_listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        };
+        View.OnClickListener second_radio_listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        };
+        rbOnlyOneDay.setOnClickListener(first_radio_listener);
+        rbMakeYourProgram.setOnClickListener(second_radio_listener);
+
+
+       //===========================================================
 
         recyclerView = (RecyclerView) findViewById(R.id.set_plan_recyclerview);
-        arrayList = new ArrayList<>();
+        Places = new ArrayList<>();
 
 
 
         for (int i = 0; i < title.length; i++) {
             PlaceModel beanClassForRecyclerView_contacts = new PlaceModel(title[i],imgs[i]);
 
-            arrayList.add(beanClassForRecyclerView_contacts);
+            Places.add(beanClassForRecyclerView_contacts);
         }
 
 
-        mAdapter = new PlacesAdapter(getApplicationContext(),arrayList);
+        mAdapter = new PlacesAdapter(getApplicationContext(),Places);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
