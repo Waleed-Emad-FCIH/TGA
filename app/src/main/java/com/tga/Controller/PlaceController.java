@@ -1,5 +1,12 @@
 package com.tga.Controller;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.tga.model.Plan;
 import com.tga.models.PlaceModel;
 
 import java.util.ArrayList;
@@ -10,8 +17,8 @@ import java.util.ArrayList;
 
 public class PlaceController {
     private PlaceModel placeModel;
-
-    public PlaceController(String id, ArrayList<String> photos, String openTime, String closeTime,
+    private FirebaseDatabase mRef = FirebaseDatabase.getInstance();
+    public PlaceController(String id,String title, ArrayList<String> photos, String openTime, String closeTime,
                       String location, double rate, ArrayList<String> reviews){
         this.placeModel = new PlaceModel();
         placeModel.id = id;
@@ -64,6 +71,11 @@ public class PlaceController {
     public void editPlace() { }
 
     public void ratePlace(){ }
+    public com.tga.model.PlaceModel getPlace(String title){
+        DatabaseReference users = mRef.getReference("places");
+
+        return null;
+    }
 
     public double getRate(){
         return placeModel.rate;
@@ -77,4 +89,89 @@ public class PlaceController {
         return placeModel.reviews;
     }
 
+    //======================== " imbo code " ======================
+        private void saveNewPlace(PlaceModel Place) {
+            DatabaseReference Places = mRef.getReference("places");
+            Places.child(this.placeModel.id).setValue(Place);
+        }
+
+
+        private ArrayList<PlaceModel> getAllPlace() {
+        final ArrayList<PlaceModel> Places= new ArrayList<>();
+        mRef.getReference().child("places").addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot:dataSnapshot.getChildren())
+                {
+                    PlaceModel place = snapshot.getValue(PlaceModel.class);
+                Places.add(place);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    return  Places;
+    }
+
+
+    private ArrayList<PlaceModel> getSomePlace(String desiredPlace) {
+        final ArrayList<PlaceModel> Desired= new ArrayList<>();
+
+         DatabaseReference reference =mRef.getReference().child("places");
+        Query query = reference.orderByChild("location").equalTo(desiredPlace);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists())
+                {
+                    for(DataSnapshot snapshot :dataSnapshot.getChildren())
+                    {
+                            PlaceModel s =snapshot.getValue(PlaceModel.class);
+                            Desired.add(s);
+
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+return  Desired;
+    }
+    private ArrayList<PlaceModel> delPlace(String desiredPlace) {
+        final ArrayList<PlaceModel> Desired= new ArrayList<>();
+
+        DatabaseReference reference =mRef.getReference().child("places");
+        Query query = reference.orderByChild("title").equalTo(desiredPlace);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists())
+                {
+                    for(DataSnapshot snapshot :dataSnapshot.getChildren())
+                    {
+                       // for deleting some place
+                        snapshot.getRef().removeValue();
+
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return  Desired;
+    }
+
+    //==================================================================
 }

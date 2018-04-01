@@ -1,5 +1,14 @@
 package com.tga.Controller;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.tga.model.Plan;
+import com.tga.model.User;
+import com.tga.models.PlaceModel;
 import com.tga.models.PlanModel;
 
 import java.util.ArrayList;
@@ -10,6 +19,7 @@ import java.util.ArrayList;
 
 public class PlanController {
     private PlanModel planModel;
+    private FirebaseDatabase mRef = FirebaseDatabase.getInstance();
 
     public PlanController(String id, ArrayList<String> placesID, String startDate, String endDate,
                      String location){
@@ -64,5 +74,91 @@ public class PlanController {
     public void delPlan() { }
 
     public void editPlan(){ }
+
+    public void setPlan() {
+
+    }
+    //====================== " imbo code " ====================
+    private void setPlan(Plan plan) {
+        DatabaseReference plans = mRef.getReference("plans");
+        plans.child(this.planModel.id).setValue(plan);
+    }
+
+    private ArrayList<PlanModel> getAllPlans() {
+        final ArrayList<PlanModel> Plans= new ArrayList<>();
+        mRef.getReference().child("plans").addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot:dataSnapshot.getChildren())
+                {
+                    PlanModel plan = snapshot.getValue(PlanModel.class);
+                    Plans.add(plan);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return  Plans;
+    }
+
+
+    private ArrayList<PlanModel> getSomePlan(String desiredPlan) {
+        final ArrayList<PlanModel> Plans= new ArrayList<>();
+        mRef.getReference().child("plans");
+        DatabaseReference reference =mRef.getReference().child("plans");
+        Query query = reference.orderByChild("location").equalTo(desiredPlan);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot:dataSnapshot.getChildren())
+                {
+                    PlanModel plan = snapshot.getValue(PlanModel.class);
+                    Plans.add(plan);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return  Plans;
+    }
+
+    private void delPlan(String desiredplan) {
+        DatabaseReference reference =mRef.getReference().child("plans");
+        Query query = reference.orderByChild("location").equalTo(desiredplan);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            Boolean done = true;
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists())
+                {
+                    for(DataSnapshot snapshot :dataSnapshot.getChildren())
+                    {
+                        // for deleting some place
+                        snapshot.getRef().removeValue();
+
+                    }
+
+                }
+               }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    //=============================================================
 
 }
