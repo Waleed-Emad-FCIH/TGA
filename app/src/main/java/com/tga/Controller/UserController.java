@@ -68,7 +68,7 @@ public abstract class UserController {
 
     public abstract void login(String email, String pass);
 
-    public abstract void logout(); 
+    public abstract void logout();
 
     public abstract void editProfile ();
 
