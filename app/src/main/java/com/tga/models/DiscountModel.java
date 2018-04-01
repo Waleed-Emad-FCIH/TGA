@@ -8,7 +8,5 @@ public class DiscountModel {
     public String id ;
     public String endDate ;
     public double discountPercentage ;
-    public String programId ;
-
 }
 

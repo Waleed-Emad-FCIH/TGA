@@ -7,7 +7,7 @@ import com.tga.models.UserModel;
  * new test
  */
 
-public class UserController {
+public abstract class UserController {
 
     private UserModel userModel;
 
@@ -66,14 +66,12 @@ public class UserController {
         userModel.address = address;
     }
 
-    public void login(String email, String pass){
+    public abstract void login(String email, String pass);
 
-    }
+    public abstract void logout();
 
-    public void logout() { }
+    public abstract void editProfile ();
 
-    public void editProfile () { }
-
-    public void search() { }
+    public abstract void search();
 
 }

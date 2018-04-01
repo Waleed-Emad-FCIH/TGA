@@ -1,5 +1,7 @@
 package com.tga.Controller;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.tga.models.DiscountModel;
 import com.tga.models.ProgramModel;
 
@@ -13,10 +15,11 @@ public class ProgramController {
 
     private ProgramModel programModel;
     private Discount discount;
+    private DatabaseReference dbRef;
 
     public ProgramController(String id, String title, ArrayList<String> placesID, String description,
                         String startDate, String endDate, String hotelName, String discountID,
-                             double rate, ArrayList<String> reviews, ArrayList<String> regisID){
+                             int rate, int hitRate, ArrayList<String> reviews, ArrayList<String> regisID){
         this.programModel = new ProgramModel();
         programModel.id = id;
         programModel.title = title;
@@ -27,6 +30,7 @@ public class ProgramController {
         programModel.hotelName = hotelName;
         programModel.discountID = discountID;
         programModel.rate = rate;
+        programModel.hitRate = hitRate;
         programModel.reviews = reviews;
         programModel.registeredTouristsID = regisID;
     }
@@ -83,29 +87,10 @@ public class ProgramController {
         programModel.hotelName = hotelName;
     }
 
-    public void setDiscount(){
-        discount = new Discount();
-    }
-
-    public String getDiscountID() {
-        return programModel.discountID;
-    }
-
-    public void delDiscount() {
-        discount.del();
-        discount = null;
-    }
-
-    public void editDiscount() { discount.edit();}
-
-    public void editProgram() { }
-
-    public void delProgram() { }
-
-    public void rate() { }
-
     public double getRate(){
-        return programModel.rate;
+        if (programModel.hitRate == 0)
+            return 0;
+        return (double) programModel.rate / programModel.hitRate;
     }
 
     public void addReview(String review){
@@ -116,7 +101,7 @@ public class ProgramController {
         return programModel.reviews;
     }
 
-        public ArrayList<String> getRegisteredList(){
+    public ArrayList<String> getRegisteredList(){
         return programModel.registeredTouristsID;
     }
 
@@ -124,16 +109,73 @@ public class ProgramController {
         programModel.registeredTouristsID.add(touristID);
     }
 
+    public void saveToDB(){
+        dbRef = FirebaseDatabase.getInstance().getReference("Programs");
+        dbRef.child(this.programModel.id).setValue(this.programModel);
+    }
+
+    public void editProgram(String title, String description, String startDate,
+                            String endDate, String hotelName) {
+        this.setTitle(title);
+        this.setDescription(description);
+        this.setStartDate(startDate);
+        this.setEndDate(endDate);
+        this.setHotelName(hotelName);
+        this.saveToDB();
+    }
+
+    public void del() {
+        //data base delete prog and it's reviews and discount
+        if (this.programModel.reviews.size() > 0) {
+            dbRef = FirebaseDatabase.getInstance().getReference("Reviews");
+            for (String s : this.programModel.reviews ) {
+                dbRef.child(s).setValue(null);
+            }
+        }
+        if (this.discount != null){
+            delDiscount();
+        }
+        dbRef = FirebaseDatabase.getInstance().getReference("Programs");
+        dbRef.child(this.programModel.id).setValue(null);
+    }
+
+    public void rate(int n) {
+        if (n > 5) { // for any error reason made rate > 5
+            n %= 5;
+            if (n == 0) // n = 10, 15, 20 or more
+                n = 5;
+        }
+        this.programModel.hitRate++;
+        this.programModel.rate += n;
+    }
+
+    public void setDiscount(String id, String endDate, double discountPercentage){
+        discount = new Discount(id, endDate, discountPercentage);
+        this.programModel.discountID = id;
+    }
+
+    public String getDiscountID() {
+        return programModel.discountID;
+    }
+
+    public void delDiscount() {
+        discount.del();
+        discount = null;
+        programModel.discountID = "";
+    }
+
+    public void editDiscount(String endDate, double discountPercentage) {
+        discount.edit(endDate, discountPercentage);
+    }
+
     private class Discount {
 
         public DiscountModel discountModel;
 
-        public Discount(){}
-        public Discount(String id, String endDate, String programId, double discountPercentage){
+        public Discount(String id, String endDate, double discountPercentage){
             discountModel.id = id;
             discountModel.endDate = endDate;
             discountModel.discountPercentage = discountPercentage;
-            discountModel.programId = programId;
         }
 
         public String getId() {
@@ -152,24 +194,27 @@ public class ProgramController {
             discountModel.endDate = endDate;
         }
 
-        public double getDiscountPersentage() {
+        public double getDiscountPercentage() {
             return discountModel.discountPercentage;
         }
 
-        public void setDiscountPersentage(double discountPersentage) {
-            discountModel.discountPercentage = discountPersentage;
+        public void setDiscountPercentage(double discountPercentage) {
+            discountModel.discountPercentage = discountPercentage;
         }
 
-        public String getProgramId() {
-            return discountModel.programId;
+        public void edit(String endDate, double discountPercentage) {
+            this.discountModel.discountPercentage = discountPercentage;
+            this.discountModel.endDate = endDate;
         }
 
-        public void setProgramId(String programId) {
-            discountModel.programId = programId;
+        public void saveToDB(){
+            dbRef = FirebaseDatabase.getInstance().getReference("Discounts");
+            dbRef.child(this.discountModel.id).setValue(this.discountModel);
         }
 
-        public void edit() { }
-
-        public void del() { }
+        public void del() {
+            dbRef = FirebaseDatabase.getInstance().getReference("Discounts");
+            dbRef.child(this.discountModel.id).setValue(null);
+        }
     }
 }

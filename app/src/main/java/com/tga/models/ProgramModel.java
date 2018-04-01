@@ -16,7 +16,8 @@ public class ProgramModel {
     public String endDate ;
     public String hotelName ;
     public String discountID;
-    public double rate;
+    public int rate;
+    public int hitRate; // # of people rated this program
     public ArrayList<String> reviews;
     public ArrayList<String> registeredTouristsID;
 
