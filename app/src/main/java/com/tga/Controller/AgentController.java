@@ -1,6 +1,9 @@
 package com.tga.Controller;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.tga.models.AgentModel;
+import com.tga.models.FeedbackModel;
 
 import java.util.ArrayList;
 
@@ -11,7 +14,7 @@ import java.util.ArrayList;
 public class AgentController extends UserController {
     private AgentModel agentModel;
     
-    public AgentController(String id, String email, String pass, String name, String phoneNo, String adrs,
+   public AgentController(String id, String email, String pass, String name, String phoneNo, String adrs,
                            String photo, String registrationNumber, ArrayList<String> myProgsID) {
         super(id, email, pass, name, phoneNo, adrs);
         agentModel.photo = photo;
@@ -51,6 +54,12 @@ public class AgentController extends UserController {
 
     public void getProgramsReport(){ }
 
-    public void writeFeedback(){ }
+    public void writeFeedback(FeedbackModel objView){
+
+    FeedbackController obj=new FeedbackController(objView.id,objView.subject,objView.content,objView.userId,objView.isComplain);
+    obj.addFeedback();
+
+    /* no activity */
+    }
 
 }

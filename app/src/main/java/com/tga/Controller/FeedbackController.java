@@ -1,5 +1,7 @@
 package com.tga.Controller;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.tga.models.FeedbackModel;
 
 /**
@@ -37,4 +39,14 @@ public class FeedbackController {
     public String getUserId() {
         return feedbackModel.userId;
     }
+    public void addFeedback(){
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference feedBack = database.getReference("FeedBacks");
+        feedbackModel.id =feedBack.push().getKey();
+        feedBack.child(feedbackModel.id).setValue(feedbackModel);
+
+    /* no activity */
+    }
+
 }
