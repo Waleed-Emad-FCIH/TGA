@@ -115,6 +115,11 @@ public class ProgramController implements DB_Interface{
         saveToDB();
     }
 
+    @Override
+    public ArrayList<Object> listAll() {
+        return null;
+    }
+
     public void editProgram(String title, String description, String startDate,
                             String endDate, String hotelName) {
         this.setTitle(title);
@@ -122,11 +127,10 @@ public class ProgramController implements DB_Interface{
         this.setStartDate(startDate);
         this.setEndDate(endDate);
         this.setHotelName(hotelName);
-        this.updateToDB();
     }
 
     public void delFromDB() {
-        //data base delete prog and it's reviews and discount
+        //data base delete prog, it's reviews and discount
         if (this.programModel.reviews.size() > 0) {
             dbRef = FirebaseDatabase.getInstance().getReference("Reviews");
             for (String s : this.programModel.reviews ) {
@@ -217,6 +221,11 @@ public class ProgramController implements DB_Interface{
         @Override
         public void updateToDB() {
             saveToDB();
+        }
+
+        @Override
+        public ArrayList<Object> listAll() {
+            return null;
         }
 
         public void delFromDB() {
