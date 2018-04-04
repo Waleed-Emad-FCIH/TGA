@@ -7,7 +7,7 @@ import com.tga.models.ProgramModel;
 
 import java.util.ArrayList;
 
-public class ProgramController {
+public class ProgramController implements DB_Interface{
 
     private ProgramModel programModel;
     private Discount discount;
@@ -110,6 +110,11 @@ public class ProgramController {
         dbRef.child(this.programModel.id).setValue(this.programModel);
     }
 
+    @Override
+    public void updateToDB() {
+        saveToDB();
+    }
+
     public void editProgram(String title, String description, String startDate,
                             String endDate, String hotelName) {
         this.setTitle(title);
@@ -117,10 +122,10 @@ public class ProgramController {
         this.setStartDate(startDate);
         this.setEndDate(endDate);
         this.setHotelName(hotelName);
-        this.saveToDB();
+        this.updateToDB();
     }
 
-    public void del() {
+    public void delFromDB() {
         //data base delete prog and it's reviews and discount
         if (this.programModel.reviews.size() > 0) {
             dbRef = FirebaseDatabase.getInstance().getReference("Reviews");
@@ -155,7 +160,7 @@ public class ProgramController {
     }
 
     public void delDiscount() {
-        discount.del();
+        discount.delFromDB();
         discount = null;
         programModel.discountID = "";
     }
@@ -164,7 +169,7 @@ public class ProgramController {
         discount.edit(endDate, discountPercentage);
     }
 
-    private class Discount {
+    private class Discount implements DB_Interface{
 
         public DiscountModel discountModel;
 
@@ -201,6 +206,7 @@ public class ProgramController {
         public void edit(String endDate, double discountPercentage) {
             this.discountModel.discountPercentage = discountPercentage;
             this.discountModel.endDate = endDate;
+            updateToDB();
         }
 
         public void saveToDB(){
@@ -208,7 +214,12 @@ public class ProgramController {
             dbRef.child(this.discountModel.id).setValue(this.discountModel);
         }
 
-        public void del() {
+        @Override
+        public void updateToDB() {
+            saveToDB();
+        }
+
+        public void delFromDB() {
             dbRef = FirebaseDatabase.getInstance().getReference("Discounts");
             dbRef.child(this.discountModel.id).setValue(null);
         }
