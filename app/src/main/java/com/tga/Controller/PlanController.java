@@ -17,9 +17,10 @@ import java.util.ArrayList;
  * Created by root on 3/9/18.
  */
 
-public class PlanController {
+public class PlanController implements DB_Interface{
     private PlanModel planModel;
     private FirebaseDatabase mRef = FirebaseDatabase.getInstance();
+    DatabaseReference reference =mRef.getReference().child("plans");
 
     public PlanController(String id, ArrayList<String> placesID, String startDate, String endDate,
                      String location){
@@ -71,45 +72,13 @@ public class PlanController {
         planModel.location = location;
     }
 
-    public void delPlan() { }
 
-    public void editPlan(){ }
 
-    public void setPlan() {
-
-    }
     //====================== " imbo code " ====================
-    private void setPlan(Plan plan) {
-        DatabaseReference plans = mRef.getReference("plans");
-        plans.child(this.planModel.id).setValue(plan);
-    }
 
-    private ArrayList<PlanModel> getAllPlans() {
-        final ArrayList<PlanModel> Plans= new ArrayList<>();
-        mRef.getReference().child("plans").addListenerForSingleValueEvent(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot:dataSnapshot.getChildren())
-                {
-                    PlanModel plan = snapshot.getValue(PlanModel.class);
-                    Plans.add(plan);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        return  Plans;
-    }
-
-
+/*
     private ArrayList<PlanModel> getSomePlan(String desiredPlan) {
         final ArrayList<PlanModel> Plans= new ArrayList<>();
-        mRef.getReference().child("plans");
-        DatabaseReference reference =mRef.getReference().child("plans");
         Query query = reference.orderByChild("location").equalTo(desiredPlan);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -130,10 +99,17 @@ public class PlanController {
         });
         return  Plans;
     }
+*/
 
-    private void delPlan(String desiredplan) {
-        DatabaseReference reference =mRef.getReference().child("plans");
-        Query query = reference.orderByChild("location").equalTo(desiredplan);
+    @Override
+    public void saveToDB() {
+        reference.child(this.planModel.id).setValue(this.planModel);
+
+    }
+
+    @Override
+    public void delFromDB() {
+        Query query = reference.orderByChild("id").equalTo(this.planModel.id);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             Boolean done = true;
 
@@ -149,7 +125,7 @@ public class PlanController {
                     }
 
                 }
-               }
+            }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -157,6 +133,57 @@ public class PlanController {
             }
         });
 
+    }
+
+    @Override
+    public void updateToDB() {
+
+        mRef.getReference().child("plans");
+        Query query = reference.orderByChild("id").equalTo(this.planModel.id);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                   PlanController.this.planModel = dataSnapshot.getValue(PlanModel.class);
+                reference.child(PlanController.this.planModel.id).setValue(PlanController.this.planModel);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    @Override
+    public ArrayList<Object> listAll() {
+        final ArrayList<PlanModel> Plans= new ArrayList<>();
+        mRef.getReference().child("plans").addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot:dataSnapshot.getChildren())
+                {
+                    PlanModel plan = snapshot.getValue(PlanModel.class);
+                    Plans.add(plan);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        ArrayList<Object>plans= new ArrayList<>();
+        for(int i=0;i<Plans.size();i++){
+            Object s =(Object)Plans.get(i);
+        plans.add(s);
+        }
+        return plans ;
     }
 
     //=============================================================
