@@ -54,11 +54,9 @@ public class AgentController extends UserController {
 
     public void getProgramsReport(){ }
 
-    public void writeFeedback(FeedbackModel objView){
+    public void writeFeedback(FeedbackController objView){
 
-    FeedbackController obj=new FeedbackController(objView.id,objView.subject,objView.content,objView.userId,objView.isComplain);
-    obj.addFeedback();
-
+objView.addFeedback();
     /* no activity */
     }
 
