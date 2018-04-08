@@ -7,6 +7,7 @@ package com.tga.models;
 
 public class SupervisorModel extends UserModel {
 
-
+    public SupervisorModel() {
+    }
 }
 
