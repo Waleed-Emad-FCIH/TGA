@@ -1,7 +1,10 @@
 package com.tga.Controller;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.tga.models.CommentModel;
 import com.tga.models.PostModel;
 
@@ -11,7 +14,7 @@ import java.util.ArrayList;
  * Created by root on 3/9/18.
  */
 
-public class PostController {
+public class PostController  implements DB_Interface{
     
     private PostModel postModel; 
     
@@ -23,19 +26,19 @@ public class PostController {
         postModel.date = date;
         postModel.userId = userId;
         postModel.commentsID = commentsID;
-        this.create();
+
     }
 
-    public void create()
-    {
+    @Override
+    public void saveToDB() {
         FirebaseDatabase fd = FirebaseDatabase.getInstance();
         DatabaseReference dRef = fd.getReference("posts");
 
         postModel.id = dRef.push().getKey();
         dRef.child(postModel.id).setValue(postModel);
     }
-    public void update()
-    {
+    @Override
+    public void updateToDB() {
         FirebaseDatabase fd = FirebaseDatabase.getInstance();
         DatabaseReference dRef = fd.getReference("posts");
         dRef.child(postModel.id).setValue(postModel);
@@ -63,6 +66,7 @@ public class PostController {
     }
 
     public String getDate() {
+
         return postModel.date;
     }
 
@@ -94,10 +98,11 @@ public class PostController {
     //
     public void editComment(String comntID){ }
 
-    public void delPost(String postId) {
+    @Override
+    public void delFromDB() {
         FirebaseDatabase fd = FirebaseDatabase.getInstance();
         DatabaseReference dRef = fd.getReference("posts");
-        dRef.child(postId).removeValue();
+        dRef.child(getId()).removeValue();
     }
 
     public void editPost() {
@@ -105,7 +110,31 @@ public class PostController {
         DatabaseReference dRef = fd.getReference("posts");
         dRef.child(getId()).child("content").setValue(postModel.content);
     }
-    
+
+    public ArrayList<PostModel> listAll() {
+        FirebaseDatabase fd = FirebaseDatabase.getInstance();
+        final DatabaseReference tRef = fd.getReference("posts");
+        final ArrayList<PostModel> posts = new ArrayList<>();
+
+        tRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    PostModel post = snapshot.getValue(PostModel.class);
+                    posts.add(post);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return posts;
+    }
+
+
+
     private class Comment {
         private CommentModel commentModel;
 
