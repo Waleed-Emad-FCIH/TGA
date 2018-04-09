@@ -111,7 +111,7 @@ objView.addFeedback();
 
 
     @Override
-    public void login(String email, String pass) {
+    public void login(String Email, String Password) {
 
     }
     @Override

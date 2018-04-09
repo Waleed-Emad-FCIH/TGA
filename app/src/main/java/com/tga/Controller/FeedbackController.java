@@ -90,7 +90,7 @@ public class FeedbackController implements DB_Interface {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(DatabaseError DatabaseError) {
 
             }
         });
