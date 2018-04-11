@@ -15,9 +15,11 @@ import java.util.ArrayList;
  * Created by root on 3/9/18.
  */
 
-public class PlaceController {
-    private PlaceModel placeModel;
-    private FirebaseDatabase mRef = FirebaseDatabase.getInstance();
+public class PlaceController  {
+    private  PlaceModel placeModel;
+    private  static FirebaseDatabase mRef = FirebaseDatabase.getInstance();
+    static DatabaseReference  reference =mRef.getReference().child("places");
+
     public PlaceController(String id,String title, ArrayList<String> photos, String openTime, String closeTime,
                       String location, double rate, ArrayList<String> reviews){
         this.placeModel = new PlaceModel();
@@ -78,6 +80,7 @@ public class PlaceController {
     }
 
     public double getRate(){
+
         return placeModel.rate;
     }
 
@@ -90,62 +93,56 @@ public class PlaceController {
     }
 
     //======================== " imbo code " ======================
-        private void saveNewPlace(PlaceModel Place) {
-            DatabaseReference Places = mRef.getReference("places");
-            Places.child(this.placeModel.id).setValue(Place);
+    private void saveToDB(PlaceModel Place) {
+            reference.child(this.placeModel.id).setValue(Place);
         }
+    private static ArrayList<Object> listAll() {
+            final ArrayList<PlaceModel> Places= new ArrayList<>();
+            mRef.getReference().child("plans").addListenerForSingleValueEvent(new ValueEventListener() {
 
-
-        private ArrayList<PlaceModel> getAllPlace() {
-        final ArrayList<PlaceModel> Places= new ArrayList<>();
-        mRef.getReference().child("places").addListenerForSingleValueEvent(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot:dataSnapshot.getChildren())
-                {
-                    PlaceModel place = snapshot.getValue(PlaceModel.class);
-                Places.add(place);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    return  Places;
-    }
-
-
-    private ArrayList<PlaceModel> getSomePlace(String desiredPlace) {
-        final ArrayList<PlaceModel> Desired= new ArrayList<>();
-
-         DatabaseReference reference =mRef.getReference().child("places");
-        Query query = reference.orderByChild("location").equalTo(desiredPlace);
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists())
-                {
-                    for(DataSnapshot snapshot :dataSnapshot.getChildren())
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot snapshot:dataSnapshot.getChildren())
                     {
-                            PlaceModel s =snapshot.getValue(PlaceModel.class);
-                            Desired.add(s);
-
+                        PlaceModel place = snapshot.getValue(PlaceModel.class);
+                        Places.add(place);
                     }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
                 }
+            });
+
+            ArrayList<Object>OPlaces= new ArrayList<>();
+            for(int i=0;i<Places.size();i++){
+                Object s =(Object)Places.get(i);
+                OPlaces.add(s);
             }
+            return OPlaces ;
+    }
+    static  PlaceModel St= new PlaceModel();
+    public static Object getByID(String id) {
+        Query query = reference.orderByChild("id").equalTo(id);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                 St= dataSnapshot.getValue(com.tga.models.PlaceModel.class);
+
+            }
+
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
-return  Desired;
+        return  (Object)St;
     }
-    private ArrayList<PlaceModel> delPlace(String desiredPlace) {
+    private ArrayList<PlaceModel> delFromDB(String desiredPlace) {
         final ArrayList<PlaceModel> Desired= new ArrayList<>();
 
         DatabaseReference reference =mRef.getReference().child("places");
@@ -172,6 +169,25 @@ return  Desired;
         });
         return  Desired;
     }
+    public void updateToDB() {
 
+        Query query = reference.orderByChild("id").equalTo(this.placeModel.id);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                PlaceController.this.placeModel = dataSnapshot.getValue(PlaceModel.class);
+                reference.child(PlaceController.this.placeModel.id).setValue(PlaceController.this.placeModel);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
     //==================================================================
 }

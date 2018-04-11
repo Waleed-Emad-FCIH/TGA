@@ -19,8 +19,8 @@ import java.util.ArrayList;
 
 public class PlanController implements DB_Interface{
     private PlanModel planModel;
-    private FirebaseDatabase mRef = FirebaseDatabase.getInstance();
-    DatabaseReference reference =mRef.getReference().child("plans");
+    private  static FirebaseDatabase mRef = FirebaseDatabase.getInstance();
+    static DatabaseReference  reference =mRef.getReference().child("plans");
 
     public PlanController(String id, ArrayList<String> placesID, String startDate, String endDate,
                      String location){
@@ -76,30 +76,28 @@ public class PlanController implements DB_Interface{
 
     //====================== " imbo code " ====================
 
-/*
-    private ArrayList<PlanModel> getSomePlan(String desiredPlan) {
-        final ArrayList<PlanModel> Plans= new ArrayList<>();
-        Query query = reference.orderByChild("location").equalTo(desiredPlan);
+static     PlanModel St= new PlanModel();
+
+    public static Object getByID(String id) {
+        Query query = reference.orderByChild("id").equalTo(id);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
 
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot:dataSnapshot.getChildren())
-                {
-                    PlanModel plan = snapshot.getValue(PlanModel.class);
-                    Plans.add(plan);
+                    St = dataSnapshot.getValue(PlanModel.class);
+
                 }
-            }
+
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
-        return  Plans;
+        return  (Object)St;
     }
-*/
+
 
     @Override
     public void saveToDB() {
@@ -158,8 +156,8 @@ public class PlanController implements DB_Interface{
 
     }
 
-    @Override
-    public ArrayList<Object> listAll() {
+
+    public static ArrayList<Object> listAll() {
         final ArrayList<PlanModel> Plans= new ArrayList<>();
         mRef.getReference().child("plans").addListenerForSingleValueEvent(new ValueEventListener() {
 
