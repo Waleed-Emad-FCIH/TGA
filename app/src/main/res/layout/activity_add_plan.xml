@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#fff"
+    >
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="16dp">
+
+        <!--//main-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="11dp"
+            android:paddingBottom="11dp"
+            >
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:padding="16dp"
+
+                >
+
+
+
+                <TextView
+                    android:layout_weight="1"
+                    android:id="@+id/name1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Add places"
+                    android:textSize="12dp"
+                    android:textColor="@color/bb_inActiveBottomBarItemColor" />
+
+
+                <LinearLayout
+                    android:layout_weight="0.6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_mode_edit_black_24dp"
+                        android:id="@+id/imgAddPlaces"
+                        android:layout_column="2"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#dad8d8" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:padding="16dp"
+
+                >
+
+
+
+                <TextView
+                    android:layout_weight="1"
+                    android:id="@+id/secondname1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Title"
+                    android:textSize="12dp"
+                    android:textColor="@color/bb_inActiveBottomBarItemColor" />
+
+                <LinearLayout
+                    android:layout_weight="0.6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <EditText
+
+                        android:id="@+id/etxtPlanTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#333333"
+                        android:background="#00000000"
+                        android:maxLines="1"
+                        android:maxLength="15"
+                        />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#dad8d8" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:padding="16dp"
+
+                >
+
+
+                <TextView
+                    android:layout_weight="1"
+                    android:id="@+id/phoneno1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Description"
+                    android:textSize="12dp"
+                    android:textColor="@color/bb_inActiveBottomBarItemColor" />
+
+                <LinearLayout
+                    android:layout_weight="0.6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <EditText
+
+                        android:id="@+id/etxtPlanDesc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#333333"
+                        android:background="#00000000"
+                        android:maxLines="1"
+                        android:maxLength="15"
+                        />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#dad8d8" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <Button
+                android:text="Add"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:id="@+id/btnAddProgram"
+                android:background="@color/colorPrimaryDark"
+                android:padding="16dp"
+                android:textSize="18sp"
+                android:layout_gravity="center"
+                android:textColor="#fff"
+                android:layout_margin="16dp"/>
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</RelativeLayout>

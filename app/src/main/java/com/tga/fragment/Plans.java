@@ -12,11 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.tga.Activity.SetPlan;
 import com.tga.R;
 import com.tga.adapter.PlanAdapter;
-import com.tga.adapter.RecycleAdapter_Offers;
-import com.tga.model.Offers;
 import com.tga.model.Plan;
 
 import java.util.ArrayList;
@@ -60,7 +57,7 @@ public class Plans extends Fragment {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), SetPlan.class);
+                Intent intent = new Intent(getContext(), com.tga.Activity.Plans.class);
                 startActivity(intent);
             }
         });

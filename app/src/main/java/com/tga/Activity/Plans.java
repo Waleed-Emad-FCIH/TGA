@@ -9,10 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
-import android.widget.QuickContactBadge;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 import com.tga.R;
 import com.tga.adapter.PlacesAdapter;
@@ -20,7 +17,7 @@ import com.tga.model.PlaceModel;
 
 import java.util.ArrayList;
 
-public class SetPlan extends AppCompatActivity {
+public class Plans extends AppCompatActivity {
 RadioButton rbOnlyOneDay,rbMakeYourProgram;
 
     String[] title = {"Tahreer square"   , "Qasr Elneil bridge" , "Cairo Tower" , "Egptian musuem "};
@@ -37,7 +34,7 @@ RadioButton rbOnlyOneDay,rbMakeYourProgram;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_set_plan);
+        setContentView(R.layout.activity_plans);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Create Your Plan");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2C3646")));

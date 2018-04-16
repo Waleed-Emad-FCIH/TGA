@@ -84,7 +84,7 @@
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activity.SetPlan"
+            android:name=".Activity.Plans"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
         <activity android:name=".Activity.MyPrograms" />
@@ -92,7 +92,9 @@
         <activity android:name=".Activity.Places" />
         <activity android:name=".Activity.EditProgram" />
         <activity android:name=".Activity.AddPlace" />
-        <activity android:name=".Activity.EditPlace"></activity>
+        <activity android:name=".Activity.EditPlace" />
+        <activity android:name=".Activity.AddPlan" />
+        <activity android:name=".Activity.EditPlan"></activity>
     </application>
 
 </manifest>
