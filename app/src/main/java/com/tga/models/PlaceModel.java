@@ -13,6 +13,7 @@ public class PlaceModel {
     public String openTime ;
     public String closeTime ;
     public String location ;
+    public String title;
 
     public double rate;
     public ArrayList<String> reviews;

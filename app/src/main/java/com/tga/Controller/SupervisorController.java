@@ -15,6 +15,26 @@ public class SupervisorController extends UserController {
         this.supervisorModel = new SupervisorModel();
     }
 
+    @Override
+    public void login(String email, String pass) {
+
+    }
+
+    @Override
+    public void logout() {
+
+    }
+
+    @Override
+    public void editProfile() {
+
+    }
+
+    @Override
+    public void search() {
+
+    }
+
     public void getFinancialReport(){ }
 
     public void getPlacesReport(){ }

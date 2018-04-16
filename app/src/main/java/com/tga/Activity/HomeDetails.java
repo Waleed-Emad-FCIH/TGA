@@ -18,6 +18,7 @@ public class HomeDetails extends AppCompatActivity  {
     private TextView price, title;
     private ImageView imgBack;
     private String strprice, strtitle, strimage;
+    private ImageView imgProgramEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,7 @@ public class HomeDetails extends AppCompatActivity  {
         price = (TextView) findViewById(R.id.txtPrice);
         title = (TextView) findViewById(R.id.txtTitle);
         imgBack = (ImageView)findViewById(R.id.imgBack);
+        imgProgramEdit = (ImageView)findViewById(R.id.imgProgramEdit);
 
         price.setText(strprice);
         title.setText(strtitle);
@@ -42,6 +44,14 @@ public class HomeDetails extends AppCompatActivity  {
             @Override
             public void onClick(View view) {
                 onBackPressed();
+            }
+        });
+
+        imgProgramEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),EditProgram.class);
+                startActivity(intent);
             }
         });
 

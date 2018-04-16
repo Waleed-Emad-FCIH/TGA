@@ -124,6 +124,11 @@
                     android:textSize="14dp"
                     android:layout_marginTop="10dp"/>
 
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Add"/>
+
             </LinearLayout>
 
             <LinearLayout

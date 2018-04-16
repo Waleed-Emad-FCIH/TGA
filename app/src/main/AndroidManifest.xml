@@ -54,47 +54,45 @@
         <activity
             android:name=".Activity.GettingAround"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-             />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.NeedToKnow"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-             />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.ThingsToDo"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-             />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.FoodAndDrinks"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-             />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.Reservations"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-             />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.ReservationsFilter"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.Discounts"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-             />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.ForgotPassword"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-             />
-        <activity android:name=".Activity.SetPlan"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.SetPlan"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-            ></activity>
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activity.MyPrograms" />
+        <activity android:name=".Activity.AddProgram" />
+        <activity android:name=".Activity.Places" />
+        <activity android:name=".Activity.EditProgram" />
+        <activity android:name=".Activity.AddPlace" />
+        <activity android:name=".Activity.EditPlace"></activity>
     </application>
 
 </manifest>

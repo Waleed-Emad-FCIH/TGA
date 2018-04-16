@@ -42,12 +42,37 @@
                         android:paddingRight="10dp"
                         android:elevation="3dp">
 
+
+
+                            <ImageView
+                                android:layout_marginTop="5dp"
+                                android:layout_width="20dp"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_arrow_back_black_24dp"
+                                android:id="@+id/imgBack"/>
+
                         <ImageView
-                            android:layout_marginTop="5dp"
-                            android:layout_width="20dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_arrow_back_black_24dp"
-                            android:id="@+id/imgBack"/>
+                            android:src="@drawable/ic_delete_black_24dp"
+                            android:layout_gravity="right"
+                            android:id="@+id/imgProgramDelete"
+                            />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_mode_edit_black_24dp"
+                                android:layout_gravity="right"
+                                android:layout_marginRight="10dp"
+                                android:id="@+id/imgProgramEdit"
+                                />
+
+
+
+
+
+
                     </android.support.v7.widget.Toolbar>
                 </LinearLayout>
 
@@ -196,30 +221,30 @@
 
 
 
-                <LinearLayout
-                    android:id="@+id/llAddPhotos"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                <!--<LinearLayout-->
+                    <!--android:id="@+id/llAddPhotos"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:orientation="vertical">-->
 
-                    <ImageView
-                        android:padding="15dp"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/ic_menu_black_24dp"
-                        android:elevation="2dp" />
+                    <!--<ImageView-->
+                        <!--android:padding="15dp"-->
+                        <!--android:layout_width="45dp"-->
+                        <!--android:layout_height="45dp"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:background="@drawable/ic_menu_black_24dp"-->
+                        <!--android:elevation="2dp" />-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="10dp"
-                        android:text="More"
-                        android:textColor="#adb3c0"
-                        android:textSize="11.1dp" />
-                </LinearLayout>
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:text="More"-->
+                        <!--android:textColor="#adb3c0"-->
+                        <!--android:textSize="11.1dp" />-->
+                <!--</LinearLayout>-->
 
 
             </LinearLayout>
@@ -252,32 +277,36 @@
                     android:textColor="#606674"
                     android:textSize="12dp" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp"
-                    android:letterSpacing="0.025"
-                    android:text="Google Maps is a web mapping service developed by Google. It offers satellite imagery, street maps, 360° panoramic views of streets, real-time traffic conditions, and route planning for traveling by foot, car, bicycle, or public transportation.\nGoogle Maps is a web mapping service developed by Google. It offers satellite imagery, street maps, 360° panoramic views of streets, real-time traffic conditions, and route planning for traveling by foot, car, bicycle, or public transportation."
-                    android:textColor="#606674"
-                    android:textSize="12dp" />
-
-                <TextView
-                    android:letterSpacing="0.025"
-                    android:layout_marginTop="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:text="Google Maps is a web mapping service developed by Google. It offers satellite imagery, street maps, 360° panoramic views of streets, real-time traffic conditions, and route planning for traveling by foot, car, bicycle, or public transportation.\nGoogle Maps is a web mapping service developed by Google. It offers satellite imagery, street maps, 360° panoramic views of streets, real-time traffic conditions, and route planning for traveling by foot, car, bicycle, or public transportation."
-                    android:textColor="#606674"
-                    android:textSize="12dp" />
-
-
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorPrimaryDark"
+                android:padding="16dp"
+                android:layout_margin="10dp"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:id="@+id/txtReviews"
+                android:layout_margin="5dp"
+                android:text="Reviews"/>
+
+
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/StorePreview_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"/>
+
+
         </LinearLayout>
     </ScrollView>
 

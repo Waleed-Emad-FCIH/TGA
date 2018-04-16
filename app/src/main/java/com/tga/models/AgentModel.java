@@ -12,6 +12,4 @@ public class AgentModel extends UserModel {
     public String registrationNumber;
     public ArrayList<String> myProgramsID;
 
-    public AgentModel() {
-    }
 }

@@ -1,5 +1,6 @@
 package com.tga.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,7 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.tga.Activity.MyPrograms;
 import com.tga.R;
 import com.tga.adapter.RecycleAdapter_Offers;
 import com.tga.model.Offers;
@@ -34,6 +37,7 @@ public class Home extends Fragment {
     private ArrayList<Offers> ArrayList;
     private RecyclerView recyclerView;
     private RecycleAdapter_Offers mAdapter;
+    private TextView txtMyPrograms;
 
 
 
@@ -61,6 +65,16 @@ public class Home extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
+
+        txtMyPrograms = view.findViewById(R.id.txtMyPrograms);
+
+        txtMyPrograms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), MyPrograms.class);
+                startActivity(intent);
+            }
+        });
 
 
         return view;

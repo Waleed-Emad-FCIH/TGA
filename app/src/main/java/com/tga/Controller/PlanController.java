@@ -19,8 +19,8 @@ import java.util.ArrayList;
 
 public class PlanController implements DB_Interface{
     private PlanModel planModel;
-    private  static FirebaseDatabase mRef = FirebaseDatabase.getInstance();
-    static DatabaseReference  reference =mRef.getReference().child("plans");
+    private FirebaseDatabase mRef = FirebaseDatabase.getInstance();
+    DatabaseReference reference =mRef.getReference().child("plans");
 
     public PlanController(String id, ArrayList<String> placesID, String startDate, String endDate,
                      String location){
@@ -76,28 +76,30 @@ public class PlanController implements DB_Interface{
 
     //====================== " imbo code " ====================
 
-static     PlanModel St= new PlanModel();
-
-    public static Object getByID(String id) {
-        Query query = reference.orderByChild("id").equalTo(id);
+/*
+    private ArrayList<PlanModel> getSomePlan(String desiredPlan) {
+        final ArrayList<PlanModel> Plans= new ArrayList<>();
+        Query query = reference.orderByChild("location").equalTo(desiredPlan);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
 
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                    St = dataSnapshot.getValue(PlanModel.class);
-
+                for (DataSnapshot snapshot:dataSnapshot.getChildren())
+                {
+                    PlanModel plan = snapshot.getValue(PlanModel.class);
+                    Plans.add(plan);
                 }
-
+            }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
-        return  (Object)St;
+        return  Plans;
     }
-
+*/
 
     @Override
     public void saveToDB() {
@@ -157,7 +159,7 @@ static     PlanModel St= new PlanModel();
     }
 
 
-    public static ArrayList<Object> listAll() {
+    public ArrayList<Object> listAll() {
         final ArrayList<PlanModel> Plans= new ArrayList<>();
         mRef.getReference().child("plans").addListenerForSingleValueEvent(new ValueEventListener() {
 
