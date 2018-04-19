@@ -101,7 +101,20 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activity.AddDiscounts" />
-        <activity android:name=".Activity.EditDiscount"></activity>
+        <activity android:name=".Activity.EditDiscount" />
+        <activity
+            android:name=".Activity.ReservationsDetails"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activity.FoodType" />
+        <activity
+            android:name=".Activity.FoodDetails"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activity.EditProfiel" />
+        <activity android:name=".Activity.History"></activity>
     </application>
 
 </manifest>

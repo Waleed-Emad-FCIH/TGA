@@ -17,7 +17,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Places"
+                android:text="Plans"
                 android:layout_margin="8dp"
                 android:id="@+id/txtMyPlans"/>
 
@@ -43,21 +43,6 @@
                 android:layout_height="match_parent"
                 android:id="@+id/rePlansSuggested"
                 android:layout_below="@+id/txtPlansSuggested"
-                />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Plans"
-                android:layout_margin="8dp"
-                android:id="@+id/ttt"
-                android:layout_below="@+id/rePlansSuggested"/>
-
-
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/ttt"
                 />
 
 

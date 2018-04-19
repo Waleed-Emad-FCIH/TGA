@@ -1,34 +1,28 @@
 package com.tga.Activity;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MenuItem;
 
 import com.tga.R;
-import com.tga.adapter.ThingsToDoAdapterPager;
+import com.tga.adapter.ReservationDetailsAdapter;
 
-public class ThingsToDo extends AppCompatActivity {
+public class ReservationsDetails extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_things_to_do);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Things To Do");
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2C3646")));
+        setContentView(R.layout.activity_reservations_details);
+
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText("TOP SPOTS"));
-        tabLayout.addTab(tabLayout.newTab().setText("INDOORS"));
-        tabLayout.addTab(tabLayout.newTab().setText("OUTDOOR"));
-        tabLayout.addTab(tabLayout.newTab().setText("PLACES A-Z"));
+        tabLayout.addTab(tabLayout.newTab().setText("All Prices"));
+        tabLayout.addTab(tabLayout.newTab().setText("Details"));
+        tabLayout.addTab(tabLayout.newTab().setText("Reviews"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-        final ThingsToDoAdapterPager adapter = new ThingsToDoAdapterPager
+        final ReservationDetailsAdapter adapter = new ReservationDetailsAdapter
                 (getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -49,20 +43,5 @@ public class ThingsToDo extends AppCompatActivity {
             }
         });
 
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == android.R.id.home) {
-            // finish the activity
-            onBackPressed();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

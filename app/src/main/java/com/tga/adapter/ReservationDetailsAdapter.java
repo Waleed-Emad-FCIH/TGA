@@ -4,19 +4,22 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.tga.fragment.ReservaionDetails.AllPrices;
+import com.tga.fragment.ReservaionDetails.Details;
+import com.tga.fragment.ReservaionDetails.Reviews;
 import com.tga.fragment.thingsToDo.InDoors;
 import com.tga.fragment.thingsToDo.OutDoors;
 import com.tga.fragment.thingsToDo.PlacesAZ;
 import com.tga.fragment.thingsToDo.TopSpots;
 
 /**
- * Created by Mada on 2/28/2018.
+ * Created by Mada on 4/19/2018.
  */
 
-public class ThingsToDoAdapter extends FragmentStatePagerAdapter {
+public class ReservationDetailsAdapter extends FragmentStatePagerAdapter {
     int mNumOfTabs;
 
-    public ThingsToDoAdapter(FragmentManager fm, int NumOfTabs) {
+    public ReservationDetailsAdapter(FragmentManager fm, int NumOfTabs) {
         super(fm);
         this.mNumOfTabs = NumOfTabs;
     }
@@ -26,20 +29,16 @@ public class ThingsToDoAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                TopSpots tab1 = new TopSpots();
+                AllPrices tab1 = new AllPrices();
                 return tab1;
             case 1:
-                InDoors tab2 = new InDoors();
+                Details tab2 = new Details();
                 return tab2;
             case 2:
-                OutDoors tab3 = new OutDoors();
+                Reviews tab3 = new Reviews();
                 return tab3;
-            case 3:
-                PlacesAZ tab4 = new PlacesAZ();
-                return tab4;
-
             default:
-                TopSpots tab = new TopSpots();
+                AllPrices tab = new AllPrices();
                 return tab;
         }
     }

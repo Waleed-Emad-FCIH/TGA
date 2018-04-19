@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#fff"
+    >
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="16dp">
+
+        <!--//main-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="11dp"
+            android:paddingBottom="11dp"
+            >
+
+
+
+            <TextView
+                android:layout_weight="1"
+                android:id="@+id/name1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Top Amenities"
+                android:textSize="18dp"
+                android:padding="8dp"
+                android:textColor="@color/colorPrimaryDark" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginLeft="8dp"
+                >
+
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Free WiFi"
+                    android:textSize="16dp"
+                    android:textColor="@color/bb_inActiveBottomBarItemColor" />
+
+
+                    <TextView
+                        android:layout_weight=".6"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:id="@+id/imgAddDiscount"
+                        android:textSize="16dp"
+                        android:text="Pool"
+                        android:layout_gravity="center"
+                        android:gravity="center"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginLeft="8dp"
+                >
+
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Spa"
+                    android:textSize="16dp"
+                    android:textColor="@color/bb_inActiveBottomBarItemColor" />
+
+
+                <TextView
+                    android:layout_weight=".6"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:textSize="16dp"
+                    android:text="Pets"
+                    android:layout_gravity="center"
+                    android:gravity="center"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginLeft="8dp"
+                >
+
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Parking"
+                    android:textSize="16dp"
+                    android:textColor="@color/bb_inActiveBottomBarItemColor" />
+
+
+                <TextView
+                    android:layout_weight=".6"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:textSize="16dp"
+                    android:text="Restaurant"
+                    android:layout_gravity="center"
+                    android:gravity="center"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginLeft="8dp"
+
+                >
+
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Gym"
+                    android:textSize="16dp"
+                    android:textColor="@color/bb_inActiveBottomBarItemColor" />
+
+
+                <TextView
+                    android:layout_weight=".6"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:textSize="16dp"
+                    android:text="A/C"
+                    android:layout_gravity="center"
+                    android:gravity="center"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#dad8d8" />
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Accepted Payment Methods"
+                android:textSize="18dp"
+                android:padding="8dp"
+                android:textColor="@color/colorPrimaryDark" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginLeft="8dp"
+
+                >
+
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Visa"
+                    android:textSize="16dp"
+                    android:textColor="@color/bb_inActiveBottomBarItemColor" />
+
+
+                <TextView
+                    android:layout_weight=".6"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:textSize="16dp"
+                    android:text="MasterCard"
+                    android:layout_gravity="center"
+                    android:gravity="center"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginLeft="8dp"
+
+                >
+
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cash"
+                    android:textSize="16dp"
+                    android:textColor="@color/bb_inActiveBottomBarItemColor" />
+
+
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#dad8d8"
+                android:layout_marginTop="5dp"/>
+
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Contact"
+                android:textSize="18dp"
+                android:padding="8dp"
+                android:textColor="@color/colorPrimaryDark" />
+
+
+
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="  Website"
+                android:drawableLeft="@drawable/ic_email_black_24dp"
+                android:textSize="16dp"
+                android:padding="8dp"
+                 />
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="  +900123594"
+                android:drawableLeft="@drawable/ic_smartphone_black_24dp"
+                android:textSize="16dp"
+                android:padding="8dp"
+                 />
+
+
+
+
+
+
+
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#dad8d8" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</RelativeLayout>

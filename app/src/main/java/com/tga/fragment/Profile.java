@@ -1,6 +1,7 @@
 package com.tga.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -10,11 +11,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.tga.Activity.EditProfiel;
+import com.tga.Activity.History;
 import com.tga.R;
 
 
 public class Profile extends Fragment {
+
+    private TextView txtEditProfile,txtHistory;
 
     public Profile() {
         // Required empty public constructor
@@ -33,7 +39,29 @@ public class Profile extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        View v =inflater.inflate(R.layout.fragment_profile, container, false);
+
+        txtEditProfile = (TextView)v.findViewById(R.id.txtEditProfile);
+        txtHistory = (TextView)v.findViewById(R.id.txtHistory);
+
+        txtEditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), EditProfiel.class);
+                startActivity(intent);
+            }
+        });
+
+        txtHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), History.class);
+                startActivity(intent);
+            }
+        });
+
+
+        return v;
     }
 
 

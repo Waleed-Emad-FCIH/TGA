@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.tga.Activity.FoodType;
+import com.tga.Activity.FoodDetails;
 import com.tga.Activity.HomeDetails;
 import com.tga.R;
 import com.tga.model.PlaceModel;
@@ -19,10 +19,10 @@ import com.tga.model.PlaceModel;
 import java.util.List;
 
 /**
- * Created by Mada on 2/28/2018.
+ * Created by Mada on 4/19/2018.
  */
 
-public class FoodAndDrinksAdapter extends RecyclerView.Adapter<FoodAndDrinksAdapter.MyViewHolder> {
+public class foodTypeAdapter extends RecyclerView.Adapter<foodTypeAdapter.MyViewHolder> {
 
     Context context;
     List<PlaceModel> placeModels;
@@ -33,22 +33,22 @@ public class FoodAndDrinksAdapter extends RecyclerView.Adapter<FoodAndDrinksAdap
 
 
         ImageView image;
-        TextView title;
+        TextView title, price;
 
 
         public MyViewHolder(View view) {
             super(view);
 
-            image = (ImageView) view.findViewById(R.id.imgFood);
+            image = (ImageView) view.findViewById(R.id.PlImage);
 //            price = (TextView) view.findViewById(R.id.price);
-            title = (TextView) view.findViewById(R.id.txtfoodType);
+            title = (TextView) view.findViewById(R.id.address);
 
         }
 
     }
 
 
-    public FoodAndDrinksAdapter(Context mainActivityContacts, List<PlaceModel> placeModels) {
+    public foodTypeAdapter(Context mainActivityContacts, List<PlaceModel> placeModels) {
         this.placeModels = placeModels;
         this.context = mainActivityContacts;
     }
@@ -56,12 +56,12 @@ public class FoodAndDrinksAdapter extends RecyclerView.Adapter<FoodAndDrinksAdap
 
 
     @Override
-    public FoodAndDrinksAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public foodTypeAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_food, parent, false);
+                .inflate(R.layout.item_things_todo, parent, false);
 
 
-        return new FoodAndDrinksAdapter.MyViewHolder(itemView);
+        return new foodTypeAdapter.MyViewHolder(itemView);
 
 
     }
@@ -69,7 +69,7 @@ public class FoodAndDrinksAdapter extends RecyclerView.Adapter<FoodAndDrinksAdap
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
-    public void onBindViewHolder(final FoodAndDrinksAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(final foodTypeAdapter.MyViewHolder holder, int position) {
         final PlaceModel placeModel = placeModels.get(position);
 
         holder.title.setText(placeModel.getTitle());
@@ -80,7 +80,7 @@ public class FoodAndDrinksAdapter extends RecyclerView.Adapter<FoodAndDrinksAdap
             @Override
             public void onClick(View view) {
 
-                Intent i = new Intent(context, FoodType.class);
+                Intent i = new Intent(context, FoodDetails.class);
                 i.putExtra("price","");
                 i.putExtra("title","");
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -88,8 +88,6 @@ public class FoodAndDrinksAdapter extends RecyclerView.Adapter<FoodAndDrinksAdap
 
             }
         });
-
-
 
 
     }

@@ -1,0 +1,21 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.tga.fragment.ReservaionDetails.AllPrices">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/allPrices_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:divider="#fff"
+        android:dividerHeight="0dp"
+        android:nestedScrollingEnabled="false"
+        android:paddingTop="10dp"
+        android:paddingBottom="30dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:scrollbars="none" />
+
+</FrameLayout>
