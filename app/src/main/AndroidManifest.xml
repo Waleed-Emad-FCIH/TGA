@@ -94,7 +94,14 @@
         <activity android:name=".Activity.AddPlace" />
         <activity android:name=".Activity.EditPlace" />
         <activity android:name=".Activity.AddPlan" />
-        <activity android:name=".Activity.EditPlan"></activity>
+        <activity android:name=".Activity.EditPlan" />
+        <activity
+            android:name=".Activity.DiscountsDetails"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activity.AddDiscounts" />
+        <activity android:name=".Activity.EditDiscount"></activity>
     </application>
 
 </manifest>

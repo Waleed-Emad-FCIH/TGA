@@ -1,6 +1,7 @@
 package com.tga.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.tga.Activity.DiscountsDetails;
 import com.tga.R;
 import com.tga.model.DiscountsModel;
 
@@ -72,6 +74,15 @@ public class DiscountsAdapter extends RecyclerView.Adapter<DiscountsAdapter.MyVi
         holder.companyName.setText(discountsModel.getCompanyName());
         holder.offer.setText(discountsModel.getOffer());
         holder.title.setText(discountsModel.getTitle());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, DiscountsDetails.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        });
 
     }
 

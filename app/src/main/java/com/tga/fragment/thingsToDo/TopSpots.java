@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.tga.R;
 import com.tga.adapter.PlacesAdapter;
+import com.tga.adapter.ThingsToDoAdpater;
 import com.tga.model.PlaceModel;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class TopSpots extends Fragment {
 
     private ArrayList<PlaceModel> ArrayList;
     private RecyclerView recyclerView;
-    private PlacesAdapter mAdapter;
+    private ThingsToDoAdpater mAdapter;
 
     public TopSpots() {
         // Required empty public constructor
@@ -52,7 +53,7 @@ public class TopSpots extends Fragment {
         }
 
 
-        mAdapter = new PlacesAdapter(getActivity(),ArrayList);
+        mAdapter = new ThingsToDoAdpater(getActivity(),ArrayList);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
