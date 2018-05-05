@@ -26,7 +26,7 @@
         android:src="@drawable/ic_menu_black_24dp"
         android:id="@+id/imgMenu"/>
 
-    <EditText
+    <TextView
         android:layout_marginTop="5dp"
         android:id="@+id/etxtSearch"
         android:layout_width="0dp"

@@ -4,6 +4,12 @@
     <string name="closeDrawer">close_drawer</string>
 
     <string name="country_prompt">Choose a country</string>
+    <!--AIzaSyB_7KprS66Hcih9Rfnu05ssVPRdvOdVVy4-->
+    <!--Main=AIzaSyAngLhRf_i9ZoagGX0DllBZHlPkaKfAEzY-->
+    <!--AIzaSyBtkj7v5ZoRr8iX013LBBj5wt58i_gydM0-->
+    <!--NewMain=AIzaSyA02qeaptiL2YJ2P9CjHRrLhkkzO3cL7NM-->
+    <string name="GooglePlacesApi">AIzaSyA02qeaptiL2YJ2P9CjHRrLhkkzO3cL7NM</string>
+    <string name="places">https://maps.googleapis.com/maps/api/place/textsearch/xml?query=airport+or+food+in+Cairo&amp;key=AIzaSyAngLhRf_i9ZoagGX0DllBZHlPkaKfAEzY</string>
 
     <string-array name="country_arrays">
         <item>Egypt</item>

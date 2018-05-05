@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,6 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/GooglePlacesApi" />
+
         <activity
             android:name=".Activity.MainActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -89,7 +95,7 @@
             android:screenOrientation="portrait" />
         <activity android:name=".Activity.MyPrograms" />
         <activity android:name=".Activity.AddProgram" />
-        <activity android:name=".Activity.Places" />
+        <activity android:name=".Activity.AllPlaces" />
         <activity android:name=".Activity.EditProgram" />
         <activity android:name=".Activity.AddPlace" />
         <activity android:name=".Activity.EditPlace" />
@@ -114,7 +120,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activity.EditProfiel" />
-        <activity android:name=".Activity.History"></activity>
+        <activity android:name=".Activity.History" />
+        <activity android:name=".Activity.PlaceDetails"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

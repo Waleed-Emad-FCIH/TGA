@@ -81,8 +81,7 @@ public class FoodAndDrinksAdapter extends RecyclerView.Adapter<FoodAndDrinksAdap
             public void onClick(View view) {
 
                 Intent i = new Intent(context, FoodType.class);
-                i.putExtra("price","");
-                i.putExtra("title","");
+                i.putExtra("type",holder.title.getText());
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
 

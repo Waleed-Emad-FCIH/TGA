@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
         navigationView = (NavigationView)findViewById(R.id.nav_view);
-        myFirebaseRef = new Firebase("https://tgassistant-437b6.firebaseio.com/users/");
+        myFirebaseRef = new Firebase("https://tguidea-86215.firebaseio.com/users/");
 
 
         // Navigation view header

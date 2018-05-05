@@ -21,7 +21,7 @@ public class AddPlan extends AppCompatActivity {
         imgAddPlaces.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AddPlan.this,Places.class);
+                Intent intent = new Intent(AddPlan.this,AllPlaces.class);
                 startActivity(intent);
             }
         });
