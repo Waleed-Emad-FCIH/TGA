@@ -1,13 +1,15 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.tga.fragment.Privacy">
+    tools:context="com.tga.fragment.Privacy"
+    android:layout_margin="8dp">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:text="We understand that providing information online involves a great deal of trust on your part. We take this trust very seriously, and make it a high priority to ensure the security and confidentiality of the personal information you provide to us when you visit our Website or use our services. Before submitting your personal information to us, please read this Policy carefully to learn about our privacy practices. By visiting TGA application,on a mobile phone, tablet, or similar device (a “Device”) or in connection with other sites or services, you are accepting the practices described herein.\nWhat information we collect from you:\nIn General, We receive and store any information you enter on our Website or give us in any other way. This includes information that can identify you (personal information), including your first and last name, telephone number, postal and email addresses, user name and password.
+We may also request information about your travel plans, style, and preferences, including meal requests, frequent flyer/hotel/program information,luggage, and ticketing options. You can choose not to provide information to us, but in general some information about you is required in order for you to receive relevant offerings from TGA and its partners and enjoy other benefits of being a registered member" />
 
-</FrameLayout>
+</ScrollView>
