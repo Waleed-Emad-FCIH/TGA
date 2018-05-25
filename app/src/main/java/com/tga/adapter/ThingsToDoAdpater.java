@@ -83,16 +83,24 @@ public class ThingsToDoAdpater extends RecyclerView.Adapter<ThingsToDoAdpater.My
         holder.title.setText(placeModel.getName());
         List<photos> photos = placeModel.getPhotos();
 
+        if (photos==null && placeModel.getImgLink()!=null) {
+            Picasso.with(holder.itemView.getContext())
+                    .load(placeModel.getImgLink())
+                    .into(holder.image);
 
-        try {
-            Picasso.with(holder.itemView.getContext())
-                    .load("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="+photos.get(0).getPhoto_reference()+"&key=AIzaSyA02qeaptiL2YJ2P9CjHRrLhkkzO3cL7NM")
-                    .into(holder.image);
-        }catch (Exception e){
-            Picasso.with(holder.itemView.getContext())
-                    .load("https://d2o57arp16h0eu.cloudfront.net/echo/img/no_image_available.png")
-                    .into(holder.image);
+        }else {
+            try {
+                Picasso.with(holder.itemView.getContext())
+                        .load("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="+photos.get(0).getPhoto_reference()+"&key=AIzaSyA02qeaptiL2YJ2P9CjHRrLhkkzO3cL7NM")
+                        .into(holder.image);
+
+            }catch (Exception e){
+                Picasso.with(holder.itemView.getContext())
+                        .load("https://d2o57arp16h0eu.cloudfront.net/echo/img/no_image_available.png")
+                        .into(holder.image);
+            }
         }
+
 
 //        Glide.with(holder.itemView.getContext())
 //                .load(placeModel.getPhoto_reference())

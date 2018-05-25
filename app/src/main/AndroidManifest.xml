@@ -119,7 +119,7 @@
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activity.EditProfiel" />
+        <activity android:name=".Activity.EditProfile" />
         <activity android:name=".Activity.History" />
         <activity android:name=".Activity.PlaceDetails"
             android:configChanges="keyboardHidden|orientation"

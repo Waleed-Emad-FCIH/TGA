@@ -175,13 +175,28 @@
                     android:layout_weight="1"
                     android:orientation="vertical">
 
-                    <ImageView
-                        android:padding="15dp"
+                    <RelativeLayout
                         android:layout_width="45dp"
                         android:layout_height="45dp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/ic_favorite_black_24dp"
-                        android:elevation="2dp" />
+                        android:layout_gravity="center">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/ic_favorite_black_24dp"
+                            android:elevation="2dp"
+                            android:id="@+id/imgUnFav"/>
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/heart"
+                            android:elevation="2dp"
+                            android:id="@+id/imgFav"/>
+
+                    </RelativeLayout>
+
+
 
                     <TextView
                         android:layout_width="wrap_content"

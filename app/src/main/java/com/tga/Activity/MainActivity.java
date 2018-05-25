@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 //    private Toolbar toolbar;
 //    private String[] activityTitles;
 
-    private FirebaseAuth mAuth;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 //        toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
-        mAuth = FirebaseAuth.getInstance();
+
         drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
         navigationView = (NavigationView)findViewById(R.id.nav_view);
         myFirebaseRef = new Firebase("https://tguidea-86215.firebaseio.com/users/");
