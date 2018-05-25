@@ -10,6 +10,7 @@ import com.tga.R;
 
 public class DiscountsDetails extends AppCompatActivity {
 
+
     private ImageView imgBack;
     private ImageView imgDiscountsEdit;
 

@@ -14,7 +14,6 @@ import java.util.ArrayList;
 
 public class HomeDetails extends AppCompatActivity  {
 
-
     private TextView price, title;
     private ImageView imgBack;
     private String strprice, strtitle, strimage;

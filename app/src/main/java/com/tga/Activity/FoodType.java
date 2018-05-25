@@ -29,9 +29,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FoodType extends AppCompatActivity {
 
-
-
-
     private java.util.ArrayList<place> ArrayList;
     private RecyclerView recyclerView;
     private ThingsToDoAdpater mAdapter;

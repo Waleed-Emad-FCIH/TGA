@@ -69,6 +69,7 @@ public class EditProfile extends AppCompatActivity {
     private final static int ALL_PERMISSIONS_RESULT = 107;
     private FirebaseDatabase mRef = FirebaseDatabase.getInstance();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -18,3 +18,4 @@ public class History extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2C3646")));
     }
 }
+

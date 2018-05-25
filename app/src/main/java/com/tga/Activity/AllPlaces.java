@@ -32,6 +32,7 @@ import java.util.ArrayList;
 
 public class AllPlaces extends AppCompatActivity {
 
+
     private String title[]= {"loxour","pyramids","sharm"};
 
     private String price[]= {"$1,00,000","$1,00,000","$1,00,000","$1,00,000"};

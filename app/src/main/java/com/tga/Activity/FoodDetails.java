@@ -13,3 +13,4 @@ public class FoodDetails extends AppCompatActivity {
         setContentView(R.layout.activity_food_details);
     }
 }
+

@@ -19,6 +19,7 @@ public class ForgotPassword extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2C3646")));
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 

@@ -155,6 +155,7 @@ public class PlaceDetails extends AppCompatActivity implements BaseSliderView.On
 
 
 
+
         DatabaseReference db_node = FirebaseDatabase.getInstance().getReference().getRoot();
         Query applesQuery = db_node.child("favourites").orderByChild("uid").equalTo(uid);
         applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {

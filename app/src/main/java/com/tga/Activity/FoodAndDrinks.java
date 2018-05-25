@@ -22,7 +22,6 @@ public class FoodAndDrinks extends AppCompatActivity {
 
     private int image[]= {R.drawable.restaurants,R.drawable.cafes,R.drawable.bars};
 
-
     private ArrayList<PlaceModel> arrayList;
     private RecyclerView recyclerView;
     private FoodAndDrinksAdapter mAdapter;
