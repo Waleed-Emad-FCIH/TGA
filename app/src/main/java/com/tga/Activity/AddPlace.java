@@ -17,6 +17,7 @@ import java.util.Locale;
 
 public class AddPlace extends AppCompatActivity {
 
+
     private EditText imgPlaceOpen,imgPlaceClose;
     private int mHour,mMinute,mSeconds;
 

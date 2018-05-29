@@ -7,6 +7,7 @@ import com.tga.R;
 
 public class EditPlace extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,20 +9,13 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Team member:
-
-    1- Abdulrahman Mohamed
-    2- Ahmed Elewa
-    3- Mohamed Ahmed
-    4- Waleed Emad-Eldin
-    5- Yaseer Shaaban
-
-Supervisor:
-
-    1- Dr.Mohamed Belal
-
-Helwan University, Ain Helwan
-    Cairo, Egypt."
+        android:text="TGA is an online service that provides recommendations for hotels, resorts, inns, vacations, travel packages, travel guides and lots more.\nTGA provide you with the wisdom of the crowds to help them decide where to stay, how to fly, what to do and where to eat.\nOur Team:\n
+1- Abdulrahman Mohamed\n
+2- Ahmed Elewa\n
+3- Mohamed Ahmed\n
+4- Waleed Emad-Eldin\n
+5- Yaseer Shaaban\nSupervisor: Dr.Mohamed Belal\n
+Helwan University."
         android:textSize="18dp"/>
 
-</FrameLayout>
+</ScrollView>

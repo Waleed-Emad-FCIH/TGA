@@ -13,3 +13,4 @@ public class AddDiscounts extends AppCompatActivity {
         setContentView(R.layout.activity_add_discounts);
     }
 }
+

@@ -9,6 +9,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -19,9 +21,18 @@ import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.firebase.client.Firebase;
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.Places;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.tga.R;
 import com.tga.Response.PlaceDetailsResponse;
 
@@ -30,6 +41,7 @@ import com.tga.adapter.ReviewsAdapter;
 import com.tga.adapter.ThingsToDoAdpater;
 import com.tga.model.geometry;
 import com.tga.model.photos;
+import com.tga.model.place;
 import com.tga.model.placeDetailsModel;
 import com.tga.model.reviews;
 import com.tga.util.SliderLayout;
@@ -45,6 +57,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 public class PlaceDetails extends AppCompatActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener{
 
@@ -66,13 +81,22 @@ public class PlaceDetails extends AppCompatActivity implements BaseSliderView.On
     private ImageView imgMap;
     private TextView txtWebsite;
     private TextView txtPlacePhone;
+    private ImageView imgFav , imgUnFav;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private String uid = mAuth.getCurrentUser().getUid();
+    private DatabaseReference mDatabase;
+    private String imgLink="";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_details);
 
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
         id = getIntent().getStringExtra("id");
+
 //        id = "ChIJzbs54n1PWBQRizZuWjV0dMo";
         imgBack = (ImageView)findViewById(R.id.imgBack);
         imgBack.setOnClickListener(new View.OnClickListener() {
@@ -89,6 +113,84 @@ public class PlaceDetails extends AppCompatActivity implements BaseSliderView.On
         imgMap = findViewById(R.id.imgMap);
         txtWebsite = findViewById(R.id.txtWebsite);
         txtPlacePhone = findViewById(R.id.txtPlacePhone);
+        imgFav = findViewById(R.id.imgFav);
+        imgUnFav = findViewById(R.id.imgUnFav);
+
+        imgUnFav.setVisibility(VISIBLE);
+        imgFav.setVisibility(GONE);
+        imgUnFav.invalidate();
+        imgFav.invalidate();
+        final ScaleAnimation animation = new ScaleAnimation(0f, 1f, 0f, 1f,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f);
+        animation.setDuration(165);
+
+        imgFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imgFav.setVisibility(GONE);
+                imgUnFav.startAnimation(animation);
+                imgUnFav.setVisibility(VISIBLE);
+                Firebase firebase=new Firebase("https://tguidea-86215.firebaseio.com/favourites/"+uid+id);
+                firebase.removeValue();
+
+            }
+        });
+
+        imgUnFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imgUnFav.setVisibility(GONE);
+                imgFav.startAnimation(animation);
+                imgFav.setVisibility(VISIBLE);
+                place place = new place();
+                place.setName(txtPlaceName.getText().toString());
+                place.setRating(Float.parseFloat(txtRate.getText().toString()));
+                place.setPlace_id(id);
+                place.setUid(uid);
+                place.setImgLink(imgLink);
+                mDatabase.child("favourites").child(uid+id).setValue(place);
+            }
+        });
+
+
+
+
+        DatabaseReference db_node = FirebaseDatabase.getInstance().getReference().getRoot();
+        Query applesQuery = db_node.child("favourites").orderByChild("uid").equalTo(uid);
+        applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                try {
+                    HashMap<String, place> results = dataSnapshot.getValue(new GenericTypeIndicator<HashMap<String, place>>() {});
+                    List<place> posts = new ArrayList<>(results.values());
+                    for (place post : posts) {
+                        if (post.getPlace_id().equals(id)) {
+                            imgFav.setVisibility(VISIBLE);
+                            imgUnFav.setVisibility(GONE);
+                            break;
+                        } else {
+                            imgFav.setVisibility(GONE);
+                            imgUnFav.setVisibility(VISIBLE);
+                        }
+//                                    unfav.setVisibility(VISIBLE);
+//                                    fav.setVisibility(GONE);
+                    }
+                } catch (Exception e) {
+                    imgFav.setVisibility(GONE);
+                    imgUnFav.setVisibility(VISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
 
         // Construct a GeoDataClient.
         mGeoDataClient = Places.getGeoDataClient(this, null);
@@ -179,6 +281,7 @@ public class PlaceDetails extends AppCompatActivity implements BaseSliderView.On
         geometry locations =placeDetailsModels.get(0).getGeometry();
         String name =placeDetailsModels.get(0).getName();
         List<photos> photos =placeDetailsModels.get(0).getPhotos();
+        imgLink = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="+photos.get(0).getPhoto_reference()+"&key=AIzaSyA02qeaptiL2YJ2P9CjHRrLhkkzO3cL7NM";
         float rate = placeDetailsModels.get(0).getRating();
         List<reviews> reviews= placeDetailsModels.get(0).getReviews();
         placeDetailsModel.opening_hours opening_hours = placeDetailsModels.get(0).getOpening_hours();

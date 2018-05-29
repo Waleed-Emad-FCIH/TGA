@@ -21,6 +21,7 @@ public class GettingAround extends AppCompatActivity {
         getSupportActionBar().setTitle("Getting Around");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2C3646")));
 
+
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("ON ARRIVAL"));
         tabLayout.addTab(tabLayout.newTab().setText("PUBLIC TRANSPORTATION"));

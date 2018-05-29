@@ -10,18 +10,37 @@ public class place {
     private String name,place_id;
     private float rating;
     private List<photos> photos;
+    private String uid;
+    private String imgLink;
+    private String next_page_token;
 
 
 
     public place() {
     }
 
-    public place(String name, String place_id, float rating, List<com.tga.model.photos> photos) {
-        this.name = name;
-        this.place_id = place_id;
-        this.rating = rating;
-        this.photos = photos;
+    public String getNext_page_token() {
+        return next_page_token;
+    }
 
+    public void setNext_page_token(String next_page_token) {
+        this.next_page_token = next_page_token;
+    }
+
+    public String getImgLink() {
+        return imgLink;
+    }
+
+    public void setImgLink(String imgLink) {
+        this.imgLink = imgLink;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getName() {

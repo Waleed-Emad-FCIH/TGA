@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.tga.Activity.AddPlan;
 import com.tga.R;
 import com.tga.adapter.PlanAdapter;
 import com.tga.model.Plan;
@@ -57,7 +58,7 @@ public class Plans extends Fragment {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), com.tga.Activity.Plans.class);
+                Intent intent = new Intent(getContext(), AddPlan.class);
                 startActivity(intent);
             }
         });
