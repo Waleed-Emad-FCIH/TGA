@@ -1,9 +1,14 @@
 package com.tga.Activity;
 
 import android.content.Intent;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -18,11 +23,13 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.google.android.gms.location.places.Places;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -30,6 +37,9 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
+import com.tga.Controller.AgentController;
+import com.tga.Controller.PlaceController;
+import com.tga.Controller.TouristController;
 import com.tga.R;
 import com.tga.fragment.AboutUs;
 import com.tga.fragment.ContactUs;
@@ -39,6 +49,7 @@ import com.tga.fragment.Plans;
 import com.tga.fragment.Privacy;
 import com.tga.fragment.Profile;
 import com.tga.fragment.Settings;
+import com.tga.model.PlaceModel;
 import com.tga.model.User;
 
 import java.util.ArrayList;
@@ -46,7 +57,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnConnectionFailedListener {
 
     BottomBar bottomBar;
     FrameLayout frameLayout;
@@ -73,15 +84,50 @@ public class MainActivity extends AppCompatActivity {
 //    private Toolbar toolbar;
 //    private String[] activityTitles;
 
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private GoogleApiClient mGoogleApiClient;
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+//        ArrayList<String> g = new ArrayList<>();
+//        g.add("d");
+//        g.add("ddd");
+//        ArrayList<String> gh = new ArrayList<>();
+//        gh.add("d");
+//        gh.add("ddd");
+//        TouristController tc = new TouristController("ss" , "abdo@awad.com" , "123" , "abdulrahman"
+//        ,"12345" , "233" , "11" , "egypt"  ,g , gh);
+////        tc.saveToDB();
+////        tc.addPlan("3dd");
+//       // tc.delProgram("d");
+//
+//       // tc.addProgram("newProgram");
+//        tc.delFromDB();
 
+//        PlaceController pc = new PlaceController("1" , "a" , g , "4" , "2" , "23" , 3.3 , gh);
+//
+//       ArrayList<String> hp =  tc.getHistoryPlans();
+//       for(String id : hp)
+//       {
+//           Toast.makeText(this , id ,Toast.LENGTH_LONG);
+//
+//       }
+//        toolbar = (Toolbar) findViewById(R.id.toolbar);
+//     setSupportActionBar(toolbar);
+
+
+
+        mGoogleApiClient = new GoogleApiClient
+                .Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .enableAutoManage(this,  this)
+                .build();
+
+        mAuth = FirebaseAuth.getInstance();
         drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
         navigationView = (NavigationView)findViewById(R.id.nav_view);
         myFirebaseRef = new Firebase("https://tguidea-86215.firebaseio.com/users/");
@@ -409,6 +455,10 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
 
 
     //////////////////////////////////////////////////////////

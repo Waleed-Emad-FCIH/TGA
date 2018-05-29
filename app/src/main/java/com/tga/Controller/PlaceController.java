@@ -8,6 +8,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.tga.model.Plan;
 import com.tga.models.PlaceModel;
+import com.tga.models.PostModel;
 
 import java.util.ArrayList;
 
@@ -15,7 +16,7 @@ import java.util.ArrayList;
  * Created by root on 3/9/18.
  */
 
-public class PlaceController {
+public class    PlaceController {
     private PlaceModel placeModel;
     private FirebaseDatabase mRef = FirebaseDatabase.getInstance();
     public PlaceController(String id,String title, ArrayList<String> photos, String openTime, String closeTime,
@@ -90,15 +91,15 @@ public class PlaceController {
     }
 
     //======================== " imbo code " ======================
-        private void saveNewPlace(PlaceModel Place) {
+    private void saveNewPlace(PlaceModel Place) {
             DatabaseReference Places = mRef.getReference("places");
             Places.child(this.placeModel.id).setValue(Place);
-        }
+    }
 
 
-        private ArrayList<PlaceModel> getAllPlace() {
+    public ArrayList<PlaceModel> getAllPlace() {
         final ArrayList<PlaceModel> Places= new ArrayList<>();
-        mRef.getReference().child("places").addListenerForSingleValueEvent(new ValueEventListener() {
+            mRef.getReference().child("places").addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -114,8 +115,9 @@ public class PlaceController {
 
             }
         });
-    return  Places;
+      return  Places;
     }
+
 
 
     private ArrayList<PlaceModel> getSomePlace(String desiredPlace) {

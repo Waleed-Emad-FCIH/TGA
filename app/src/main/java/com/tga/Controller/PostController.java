@@ -124,8 +124,7 @@ public class PostController  implements DB_Interface{
                     posts.add(post);
                 }
             }
-
-            @Override
+                @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }

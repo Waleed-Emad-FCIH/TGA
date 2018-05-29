@@ -9,5 +9,6 @@ public class CommentModel {
     public String content ;
     public String date ;
     public String userId ;
+    public String postId;
 
 }

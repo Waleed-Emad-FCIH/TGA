@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RadioButton;
 
+import com.tga.Controller.TouristController;
 import com.tga.R;
 import com.tga.adapter.PlacesAdapter;
 import com.tga.model.PlaceModel;
@@ -21,15 +22,16 @@ public class Plans extends AppCompatActivity {
 RadioButton rbOnlyOneDay,rbMakeYourProgram;
 
     String[] title = {"Tahreer square"   , "Qasr Elneil bridge" , "Cairo Tower" , "Egptian musuem "};
-//    String[] descreption = {"Tahrir Square also known as \"Martyr Square\", is a major public town square in Downtown Cairo, Egypt.",
-//            "The Qasr El Nil Bridge also commonly spelled Kasr El Nil Bridge, is a historic structure dating to 1931 and replaced the first bridge to span the Nile River in central Cairo, Egypt",
-//            "The Cairo Tower is a free-standing concrete tower located in Cairo, Egypt. At 187 m (614 ft), it has been the tallest structure in Egypt and North Africa for about 50 years",
-//            "The Museum of Egyptian Antiquities, known commonly as the Egyptian Museum or Museum of Cairo, in Cairo, Egypt, is home to an extensive collection of ancient Egyptian antiquities"
-//    };
+    String[] descreption = {"Tahrir Square also known as \"Martyr Square\", is a major public town square in Downtown Cairo, Egypt.",
+            "The Qasr El Nil Bridge also commonly spelled Kasr El Nil Bridge, is a historic structure dating to 1931 and replaced the first bridge to span the Nile River in central Cairo, Egypt",
+            "The Cairo Tower is a free-standing concrete tower located in Cairo, Egypt. At 187 m (614 ft), it has been the tallest structure in Egypt and North Africa for about 50 years",
+            "The Museum of Egyptian Antiquities, known commonly as the Egyptian Museum or Museum of Cairo, in Cairo, Egypt, is home to an extensive collection of ancient Egyptian antiquities"
+    };
     Integer[] imgs = {R.drawable.img1, R.drawable.img2, R.drawable.img1, R.drawable.img3} ;
     private ArrayList<PlaceModel> Places;
     private RecyclerView recyclerView;
     private PlacesAdapter mAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +67,7 @@ RadioButton rbOnlyOneDay,rbMakeYourProgram;
 
 
         for (int i = 0; i < title.length; i++) {
-            PlaceModel beanClassForRecyclerView_contacts = new PlaceModel(title[i],imgs[i]);
+            PlaceModel beanClassForRecyclerView_contacts = new PlaceModel(title[1],imgs[1]);
 
             Places.add(beanClassForRecyclerView_contacts);
         }
