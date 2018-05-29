@@ -8,7 +8,13 @@ import com.tga.model.place;
 
 public class PlaceResponse {
 
+    private String next_page_token;
+
     private place[] results;
+
+    public String getNext_page_token() {
+        return next_page_token;
+    }
 
     public place[] getResults() {
         return results;

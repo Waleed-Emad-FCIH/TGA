@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
+
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBufferResponse;
@@ -23,29 +25,36 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.tga.R;
+import com.tga.Response.PlaceResponse;
+import com.tga.Response.RequestInterface;
 import com.tga.adapter.PlacesAdapter;
 import com.tga.adapter.RecycleAdapter_Offers;
+import com.tga.adapter.ThingsToDoLoad;
 import com.tga.model.Offers;
 import com.tga.model.PlaceModel;
+import com.tga.model.place;
+import com.tga.util.EndlessRecyclerViewScrollListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class AllPlaces extends AppCompatActivity {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+public class AllPlaces extends AppCompatActivity implements ThingsToDoLoad.ItemClickListener, ThingsToDoLoad.RetryLoadMoreListener{
 
 
-    private String title[]= {"loxour","pyramids","sharm"};
-
-    private String price[]= {"$1,00,000","$1,00,000","$1,00,000","$1,00,000"};
-    private int image[]= {R.drawable.loxour,R.drawable.pyramids,R.drawable.sharm};
-
-
-    private java.util.ArrayList<PlaceModel> ArrayList;
+    private java.util.ArrayList<place> ArrayList;
     private RecyclerView recyclerView;
-    private PlacesAdapter mAdapter;
-    private ImageView imgAddPlaces;
+    private ThingsToDoLoad mAdapter;
+    RequestInterface request;
+    private String next_page_token="";
+    private int currentPage;
+    LinearLayoutManager mLayoutManager;
 
-    protected GeoDataClient mGeoDataClient;
-    protected PlaceDetectionClient mPlaceDetectionClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,55 +65,89 @@ public class AllPlaces extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2C3646")));
 
         recyclerView = (RecyclerView)findViewById(R.id.all_places_recyclerview);
-        imgAddPlaces = (ImageView)findViewById(R.id.imgAddPlaces);
-        ArrayList = new ArrayList<>();
 
-        mGeoDataClient = Places.getGeoDataClient(this, null);
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://maps.googleapis.com/maps/api/place/textsearch/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        request = retrofit.create(RequestInterface.class);
+        loadJSON(request,request.getPlacesA_Z());
 
-        // Construct a PlaceDetectionClient.
-        mPlaceDetectionClient = Places.getPlaceDetectionClient(this, null);
-
-
-        mGeoDataClient.getPlaceById("ChIJz6gXkZ0QWBQRuaJt4gI9myY").addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
-            @Override
-            public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
-                if (task.isSuccessful()) {
-                    PlaceBufferResponse places = task.getResult();
-                    Place myPlace = places.get(0);
-                    CharSequence  x1 = myPlace.getName();
-                    final LatLng location = myPlace.getLatLng();
-                    Log.i("", "Place found: " + myPlace.getName());
-                    places.release();
-                } else {
-                    Log.e("", "Place not found.");
-                }
-            }
-        });
-
-        for (int i = 0; i < title.length; i++) {
-            PlaceModel beanClassForRecyclerView_contacts = new PlaceModel(title[i],image[i]);
-
-            ArrayList.add(beanClassForRecyclerView_contacts);
-        }
-
-
-
-
-        mAdapter = new PlacesAdapter(getApplicationContext(),ArrayList);
-
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        mAdapter = new ThingsToDoLoad(this,this,this);
         recyclerView.setAdapter(mAdapter);
 
-        imgAddPlaces.setOnClickListener(new View.OnClickListener() {
+        recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(mLayoutManager) {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),AddPlace.class);
-                startActivity(intent);
+            public void onLoadMore(int page) {
+                currentPage = page;
+                loadMore(page);
+
             }
         });
 
+
+    }
+
+
+    @Override
+    public void onItemClick(View view, int position) {
+
+    }
+
+    @Override
+    public void onRetryLoadMore() {
+        loadMore(currentPage);
+    }
+
+    private void loadMore(final int page){
+        mAdapter.startLoadMore();
+
+        // example read end
+        if(page == 3){
+            mAdapter.onReachEnd();
+            return;
+        }
+
+        if (next_page_token!=null && !next_page_token.equals("") ) {
+            loadJSON(request,request.getNextPlacePage(next_page_token,"AIzaSyA02qeaptiL2YJ2P9CjHRrLhkkzO3cL7NM"));
+            next_page_token = "";
+
+        }else {
+            Log.v("...", "Last Item Wow !");
+        }
+
+        // start load more
+    }
+
+
+    private void loadJSON(RequestInterface request, Call<PlaceResponse> getJSON) {
+        Call<PlaceResponse> call = getJSON;
+//        ArrayList = new ArrayList<>();
+        call.enqueue(new Callback<PlaceResponse>() {
+            @Override
+            public void onResponse(Call<PlaceResponse> call, Response<PlaceResponse> response) {
+
+                PlaceResponse jsonResponse = response.body();
+                if (ArrayList==null){
+                    ArrayList = new ArrayList<>(Arrays.asList(jsonResponse.getResults()));
+                }else
+                {
+                    ArrayList.addAll(Arrays.asList(jsonResponse.getResults()));
+                }
+
+                next_page_token = jsonResponse.getNext_page_token();
+                mAdapter.add(ArrayList);
+                recyclerView.setAdapter(mAdapter);
+            }
+
+            @Override
+            public void onFailure(Call<PlaceResponse> call, Throwable t) {
+                Toast.makeText(getApplicationContext().getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override
