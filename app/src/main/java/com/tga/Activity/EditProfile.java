@@ -60,7 +60,7 @@ public class EditProfile extends AppCompatActivity {
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private EditText etxtFullName,etxtPhone,etxtEmail;
     private ImageView imgProfile;
-    private TextView txtSaveProfile;
+    private TextView txtSaveProfile,txtChangePassword;
     Bitmap myBitmap;
     Uri picUri;
     private ArrayList<String> permissionsToRequest;
@@ -84,6 +84,7 @@ public class EditProfile extends AppCompatActivity {
         imgProfile = findViewById(R.id.imgProfile);
         spCountry = findViewById(R.id.spCountry);
         txtSaveProfile = findViewById(R.id.txtSaveProfile);
+        txtChangePassword = findViewById(R.id.txtChangePassword);
 
         etxtFullName.setText(getIntent().getStringExtra("fullName"));
         etxtPhone.setText(getIntent().getStringExtra("phone"));
@@ -123,6 +124,14 @@ public class EditProfile extends AppCompatActivity {
             if (permissionsToRequest.size() > 0)
                 requestPermissions(permissionsToRequest.toArray(new String[permissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);
         }
+
+        txtChangePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),ChangePassword.class);
+                startActivity(intent);
+            }
+        });
 
 
         txtSaveProfile.setOnClickListener(new View.OnClickListener() {

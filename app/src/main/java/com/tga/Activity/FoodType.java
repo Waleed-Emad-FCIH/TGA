@@ -7,16 +7,18 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.tga.R;
 import com.tga.Response.PlaceResponse;
 import com.tga.Response.RequestInterface;
 import com.tga.adapter.ThingsToDoAdpater;
-import com.tga.adapter.foodTypeAdapter;
-import com.tga.model.PlaceModel;
+import com.tga.adapter.ThingsToDoLoad;
 import com.tga.model.place;
+import com.tga.util.EndlessRecyclerViewScrollListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,13 +29,17 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class FoodType extends AppCompatActivity {
+public class FoodType extends AppCompatActivity implements ThingsToDoLoad.ItemClickListener, ThingsToDoLoad.RetryLoadMoreListener{
 
     private java.util.ArrayList<place> ArrayList;
     private RecyclerView recyclerView;
-    private ThingsToDoAdpater mAdapter;
+    private ThingsToDoLoad mAdapter;
     private String type;
     RequestInterface request;
+    private String next_page_token="";
+    private int currentPage;
+
+    LinearLayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,13 +70,87 @@ public class FoodType extends AppCompatActivity {
             Toast.makeText(getApplicationContext().getApplicationContext(), "Something wrong, please try again", Toast.LENGTH_LONG).show();
         }
 
+// next
+        //https://maps.googleapis.com/maps/api/place/textsearch/json?pagetoken=CpQCBAEAACccnH-i6SEI5bLib8jCUkn8BjngoqMg60LZaVlIAF6C_6zBJKDy9pTeE1towTnpXQ4xisLCys8jfw4iVHmwIUGBLNMF9DSzLKdXF5N02wPN_XSamI5r7H1Yu3kmCgcAQKyX07UItTWANIJCBjRI642KQakOCoZopWpbhTubzrahKeZrXzdiyTxi0IL1E0gVp2G1eYDGsh6g1-Tl7psTGS4EYP5tJ3so71ADZNhBRrcUlhqRP6BlpQUTbQPV-n2WaB2DHX1hnVkxj15oFiTAVAhCuE5V04RiLFEmcQ-bwvn64qx0OBd001PgWXF8luvs1F-P1WK4EMSTWxw-xvqYoUbQtKsK_ZH8UllB8E7iXkRaEhBXuycqhdu7GvvpajXhrm_QGhTxVMvpdk-BhJYDjjUMVOYaGW1FGQ&key=AIzaSyB_7KprS66Hcih9Rfnu05ssVPRdvOdVVy4
 
-
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        mAdapter = new ThingsToDoLoad(this,this,this);
+        recyclerView.setAdapter(mAdapter);
+
+        recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(mLayoutManager) {
+            @Override
+            public void onLoadMore(int page) {
+                currentPage = page;
+                loadMore(page);
+
+            }
+        });
 
 
+
+//        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//
+//                visibleItemCount = mLayoutManager.getChildCount();
+//                totalItemCount = mLayoutManager.getItemCount();
+//                pastVisiblesItems = mLayoutManager.findFirstVisibleItemPosition();
+//
+//                if (next_page_token!=null && !next_page_token.equals("") ) {
+//                    loadJSON(request,request.getNextPlacePage(next_page_token,"AIzaSyA02qeaptiL2YJ2P9CjHRrLhkkzO3cL7NM"));
+//                    next_page_token = "";
+//
+//                }else {
+//                    Log.v("...", "Last Item Wow !");
+//                }
+//
+//            }
+//        });
+
+//        recyclerView.setOnScrollListener(new EndlessScrollListener(mLayoutManager) {
+//            @Override
+//            public void onLoadMore(int current_page) {
+//
+//                if (!next_page_token.equals("")){
+//                    loadJSON(request,request.getBar());
+//                }
+//            }
+//        });
+
+
+
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+
+    }
+
+    @Override
+    public void onRetryLoadMore() {
+        loadMore(currentPage);
+    }
+
+    private void loadMore(final int page){
+        mAdapter.startLoadMore();
+
+        // example read end
+        if(page == 3){
+            mAdapter.onReachEnd();
+            return;
+        }
+
+        if (next_page_token!=null && !next_page_token.equals("") ) {
+                    loadJSON(request,request.getNextPlacePage(next_page_token,"AIzaSyA02qeaptiL2YJ2P9CjHRrLhkkzO3cL7NM"));
+                    next_page_token = "";
+
+                }else {
+                    Log.v("...", "Last Item Wow !");
+                }
+
+        // start load more
     }
 
 
@@ -82,8 +162,15 @@ public class FoodType extends AppCompatActivity {
             public void onResponse(Call<PlaceResponse> call, Response<PlaceResponse> response) {
 
                 PlaceResponse jsonResponse = response.body();
-                ArrayList = new ArrayList<>(Arrays.asList(jsonResponse.getResults()));
-                mAdapter = new ThingsToDoAdpater(getApplicationContext(),ArrayList);
+                if (ArrayList==null){
+                    ArrayList = new ArrayList<>(Arrays.asList(jsonResponse.getResults()));
+                }else
+                {
+                    ArrayList.addAll(Arrays.asList(jsonResponse.getResults()));
+                }
+
+                next_page_token = jsonResponse.getNext_page_token();
+                mAdapter.add(ArrayList);
                 recyclerView.setAdapter(mAdapter);
             }
 

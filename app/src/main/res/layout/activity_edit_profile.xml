@@ -271,9 +271,27 @@
                     android:layout_marginLeft="45dp"
                     android:background="#ACACAC" />
 
+
+
             </LinearLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round"
+                android:text="Change Password"
+                android:gravity="center"
+                android:textColor="#fff"
+                android:padding="8dp"
+                android:layout_gravity="right"
+                android:layout_margin="10dp"
+                android:id="@+id/txtChangePassword"
+                />
+
+
+
         </LinearLayout>
+
     </ScrollView>
 
 

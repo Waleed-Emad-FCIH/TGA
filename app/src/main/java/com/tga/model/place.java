@@ -12,12 +12,20 @@ public class place {
     private List<photos> photos;
     private String uid;
     private String imgLink;
+    private String next_page_token;
 
 
 
     public place() {
     }
 
+    public String getNext_page_token() {
+        return next_page_token;
+    }
+
+    public void setNext_page_token(String next_page_token) {
+        this.next_page_token = next_page_token;
+    }
 
     public String getImgLink() {
         return imgLink;
