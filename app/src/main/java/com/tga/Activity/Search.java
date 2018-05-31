@@ -74,6 +74,7 @@ public class Search extends AppCompatActivity {
                 // TODO: Get info about the selected place.
 //                Toast.makeText(getApplicationContext(),"Place: " + place.getPriceLevel(),Toast.LENGTH_SHORT).show();
 //                Log.i("", "Place: " + place.getPriceLevel());
+
                 id = place.getId();
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl("https://maps.googleapis.com/maps/api/place/details/")
