@@ -1,22 +1,15 @@
 package com.tga.Activity;
 
-import android.content.Context;
+
 import android.content.Intent;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -31,17 +24,10 @@ import com.squareup.picasso.Picasso;
 import com.tga.R;
 import com.tga.Response.PlaceDetailsResponse;
 import com.tga.Response.RequestInterface;
-import com.tga.adapter.Category;
-import com.tga.adapter.RecycleAdapter_Offers;
 import com.tga.adapter.SearchAdapter;
-import com.tga.model.Offers;
 import com.tga.model.placeDetailsModel;
-import com.tga.util.CircleTransform;
-
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -49,22 +35,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Search extends AppCompatActivity {
-
-//    private RecyclerView recyclerView;
-//    private RecyclerView.Adapter adapter;
-//    private RecyclerView.LayoutManager layoutManager;
-//    private ArrayList<String> categoryList;
-    private EditText search_query;
-    private ImageView searchicon;
-//
-//    private RecyclerView recyclerView2;
-//    private RecycleAdapter_Offers adapter2;
-//    private GridLayoutManager gridLayoutManager;
-//    private String category;
-//    private String prName;
-//    private TextView noSearch;
-//    private TextView categortyTitle;
-
 
     private int image[]= {R.drawable.reservation,R.drawable.things_to_do,R.drawable.food,R.drawable.discounts,R.drawable.get_around,R.drawable.need_to_know};
     private ArrayList<com.tga.model.Search> ArrayList;
