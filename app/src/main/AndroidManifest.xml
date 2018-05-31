@@ -44,7 +44,8 @@
         <activity
             android:name=".Activity.Search"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".Activity.SearchResults"
             android:configChanges="keyboardHidden|orientation"
