@@ -1,25 +1,38 @@
 package com.tga.Activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.squareup.picasso.Picasso;
 import com.tga.R;
+import com.tga.Response.PlaceDetailsResponse;
 import com.tga.Response.PlaceResponse;
 import com.tga.Response.RequestInterface;
 import com.tga.adapter.PlacesAdapter;
 import com.tga.adapter.ThingsToDoLoad;
 import com.tga.model.PlaceModel;
 import com.tga.model.place;
+import com.tga.model.placeDetailsModel;
 import com.tga.util.EndlessRecyclerViewScrollListener;
 
 import java.util.ArrayList;
@@ -38,10 +51,16 @@ public class Plans extends AppCompatActivity implements ThingsToDoLoad.ItemClick
     private java.util.ArrayList<place> ArrayList;
     private RecyclerView recyclerView;
     private PlacesAdapter mAdapter;
-    RequestInterface request;
+    RequestInterface request,request2;
     private String next_page_token="";
     private int currentPage;
     private LinearLayoutManager mLayoutManager;
+    private ImageView PlImage;
+    private TextView txtName,txtRating;
+    private RatingBar rtPlace;
+    private CardView item_search;
+    private String id = "";
+    private java.util.ArrayList<placeDetailsModel> arrayPlaceDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +91,51 @@ public class Plans extends AppCompatActivity implements ThingsToDoLoad.ItemClick
        //===========================================================
 
         recyclerView = (RecyclerView) findViewById(R.id.set_plan_recyclerview);
+        PlImage = findViewById(R.id.PlImage);
+        txtName = findViewById(R.id.txtName);
+        txtRating = findViewById(R.id.txtRating);
+        rtPlace = findViewById(R.id.rtPlace);
+        item_search = findViewById(R.id.item_search);
+
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        AutocompleteFilter autocompleteFilter = new AutocompleteFilter.Builder().setCountry("EG").build();
+        autocompleteFragment.setFilter(autocompleteFilter);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO: Get info about the selected place.
+//                Toast.makeText(getApplicationContext(),"Place: " + place.getPriceLevel(),Toast.LENGTH_SHORT).show();
+//                Log.i("", "Place: " + place.getPriceLevel());
+
+                id = place.getId();
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl("https://maps.googleapis.com/maps/api/place/details/")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+                request2 = retrofit.create(RequestInterface.class);
+                loadJSON2(request2,request2.getPlaceDetails(id,"AIzaSyA02qeaptiL2YJ2P9CjHRrLhkkzO3cL7NM"));
+                item_search.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getApplicationContext(),PlaceDetails.class);
+                        intent.putExtra("id",id);
+                        startActivity(intent);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                Toast.makeText(getApplicationContext(),status.toString(),Toast.LENGTH_SHORT).show();
+                Log.i("", "An error occurred: " + status);
+            }
+        });
+
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://maps.googleapis.com/maps/api/place/textsearch/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -151,6 +215,41 @@ public class Plans extends AppCompatActivity implements ThingsToDoLoad.ItemClick
 
             @Override
             public void onFailure(Call<PlaceResponse> call, Throwable t) {
+                Toast.makeText(getApplicationContext().getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void loadJSON2(RequestInterface request, Call<PlaceDetailsResponse> getJSON) {
+        Call<PlaceDetailsResponse> call = getJSON;
+//        ArrayList = new ArrayList<>();
+        call.enqueue(new Callback<PlaceDetailsResponse>() {
+            @Override
+            public void onResponse(Call<PlaceDetailsResponse> call, Response<PlaceDetailsResponse> response) {
+
+                PlaceDetailsResponse jsonResponse = response.body();
+                arrayPlaceDetails = new ArrayList<>(Arrays.asList(jsonResponse.getResult()));
+                txtName.setText(arrayPlaceDetails.get(0).getName());
+                txtRating.setText(String.valueOf(arrayPlaceDetails.get(0).getRating()));
+                rtPlace.setRating(arrayPlaceDetails.get(0).getRating());
+                try {
+                    Picasso.with(getApplicationContext())
+                            .load("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="+arrayPlaceDetails.get(0).getPhotos().get(0).getPhoto_reference()+"&key=AIzaSyA02qeaptiL2YJ2P9CjHRrLhkkzO3cL7NM")
+                            .into(PlImage);
+                    item_search.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                }catch (Exception e){
+                    Picasso.with(getApplicationContext())
+                            .load("https://d2o57arp16h0eu.cloudfront.net/echo/img/no_image_available.png")
+                            .into(PlImage);
+                    item_search.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<PlaceDetailsResponse> call, Throwable t) {
                 Toast.makeText(getApplicationContext().getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG).show();
             }
         });
