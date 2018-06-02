@@ -4,6 +4,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.tga.models.CommentModel;
 import com.tga.models.PostModel;
@@ -26,6 +27,7 @@ public class PostController  implements DB_Interface{
         postModel.date = date;
         postModel.userId = userId;
         postModel.commentsID = commentsID;
+
 
     }
 
@@ -74,10 +76,30 @@ public class PostController  implements DB_Interface{
         return postModel.userId;
     }
 
-    public ArrayList<String> getComments()
+    public ArrayList<CommentModel> getComments()
     {
 
-        return postModel.commentsID;
+        FirebaseDatabase fd = FirebaseDatabase.getInstance();
+        final DatabaseReference tRef = fd.getReference("comments");
+        Query query = tRef.orderByChild("postId").equalTo(this.getId());
+        ArrayList<CommentModel> comments = new ArrayList<>();
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        CommentModel commentModel = snapshot.getValue(CommentModel.class);
+                        comments.add(commentModel);
+                    }
+                }
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return comments;
     }
 
     public void addComment(String commentID) {
@@ -155,8 +177,11 @@ public class PostController  implements DB_Interface{
 
         }
 
+
         public String getId() {
-            return commentModel.id;
+
+            return
+                    commentModel.id;
         }
 
         public String getContent() {
