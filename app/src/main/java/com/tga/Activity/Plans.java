@@ -5,34 +5,23 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.RadioButton;
-import android.widget.RatingBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.AutocompleteFilter;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-import com.squareup.picasso.Picasso;
 import com.tga.R;
-import com.tga.Response.PlaceDetailsResponse;
 import com.tga.Response.PlaceResponse;
 import com.tga.Response.RequestInterface;
 import com.tga.adapter.PlacesAdapter;
 import com.tga.adapter.ThingsToDoLoad;
 import com.tga.model.PlaceModel;
 import com.tga.model.place;
-import com.tga.model.placeDetailsModel;
 import com.tga.util.EndlessRecyclerViewScrollListener;
 
 import java.util.ArrayList;
@@ -48,22 +37,18 @@ public class Plans extends AppCompatActivity implements ThingsToDoLoad.ItemClick
 
 
     private RadioButton rbOnlyOneDay,rbMakeYourProgram;
+    private Button submit ;
     private java.util.ArrayList<place> ArrayList;
     private RecyclerView recyclerView;
     private PlacesAdapter mAdapter;
-    RequestInterface request,request2;
+    RequestInterface request;
     private String next_page_token="";
     private int currentPage;
     private LinearLayoutManager mLayoutManager;
-    private ImageView PlImage;
-    private TextView txtName,txtRating;
-    private RatingBar rtPlace;
-    private CardView item_search;
-    private String id = "";
-    private java.util.ArrayList<placeDetailsModel> arrayPlaceDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plans);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -72,6 +57,7 @@ public class Plans extends AppCompatActivity implements ThingsToDoLoad.ItemClick
          //=====================  " imbo Code " ====================
                 rbOnlyOneDay = (RadioButton) findViewById(R.id.rbOnleOneDay);
                 rbMakeYourProgram = (RadioButton) findViewById(R.id.rbMakeYourProgram);
+
         View.OnClickListener first_radio_listener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,58 +70,13 @@ public class Plans extends AppCompatActivity implements ThingsToDoLoad.ItemClick
 
             }
         };
-        rbOnlyOneDay.setOnClickListener(first_radio_listener);
-        rbMakeYourProgram.setOnClickListener(second_radio_listener);
+        rbOnlyOneDay.setOnClickListener(second_radio_listener);
+        rbMakeYourProgram.setOnClickListener(first_radio_listener);
 
 
        //===========================================================
 
         recyclerView = (RecyclerView) findViewById(R.id.set_plan_recyclerview);
-        PlImage = findViewById(R.id.PlImage);
-        txtName = findViewById(R.id.txtName);
-        txtRating = findViewById(R.id.txtRating);
-        rtPlace = findViewById(R.id.rtPlace);
-        item_search = findViewById(R.id.item_search);
-
-        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
-                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-
-        AutocompleteFilter autocompleteFilter = new AutocompleteFilter.Builder().setCountry("EG").build();
-        autocompleteFragment.setFilter(autocompleteFilter);
-
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(Place place) {
-                // TODO: Get info about the selected place.
-//                Toast.makeText(getApplicationContext(),"Place: " + place.getPriceLevel(),Toast.LENGTH_SHORT).show();
-//                Log.i("", "Place: " + place.getPriceLevel());
-
-                id = place.getId();
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("https://maps.googleapis.com/maps/api/place/details/")
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-                request2 = retrofit.create(RequestInterface.class);
-                loadJSON2(request2,request2.getPlaceDetails(id,"AIzaSyA02qeaptiL2YJ2P9CjHRrLhkkzO3cL7NM"));
-                item_search.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(getApplicationContext(),PlaceDetails.class);
-                        intent.putExtra("id",id);
-                        startActivity(intent);
-                    }
-                });
-            }
-
-            @Override
-            public void onError(Status status) {
-                // TODO: Handle the error.
-                Toast.makeText(getApplicationContext(),status.toString(),Toast.LENGTH_SHORT).show();
-                Log.i("", "An error occurred: " + status);
-            }
-        });
-
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://maps.googleapis.com/maps/api/place/textsearch/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -146,7 +87,7 @@ public class Plans extends AppCompatActivity implements ThingsToDoLoad.ItemClick
         mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new PlacesAdapter(this,this,this);
+            mAdapter = new PlacesAdapter(this,this,this);
         recyclerView.setAdapter(mAdapter);
 
         recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(mLayoutManager) {
@@ -157,7 +98,24 @@ public class Plans extends AppCompatActivity implements ThingsToDoLoad.ItemClick
 
             }
         });
-
+        submit = (Button) findViewById(R.id.submit);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(rbOnlyOneDay.isChecked())
+                {
+                    Intent intent  = new Intent(getApplicationContext(), AddPlan.class);
+                    startActivity(intent);
+                }
+                else if(rbMakeYourProgram.isChecked()){
+                    Intent intent  = new Intent(getApplicationContext(), AddProgram.class);
+                    startActivity(intent);
+                }
+                else {
+                    Toast.makeText(getApplicationContext() , "Please choase the type of plan " , Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
     }
 
@@ -207,7 +165,6 @@ public class Plans extends AppCompatActivity implements ThingsToDoLoad.ItemClick
                 {
                     ArrayList.addAll(Arrays.asList(jsonResponse.getResults()));
                 }
-
                 next_page_token = jsonResponse.getNext_page_token();
                 mAdapter.add(ArrayList);
                 recyclerView.setAdapter(mAdapter);
@@ -215,41 +172,6 @@ public class Plans extends AppCompatActivity implements ThingsToDoLoad.ItemClick
 
             @Override
             public void onFailure(Call<PlaceResponse> call, Throwable t) {
-                Toast.makeText(getApplicationContext().getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    private void loadJSON2(RequestInterface request, Call<PlaceDetailsResponse> getJSON) {
-        Call<PlaceDetailsResponse> call = getJSON;
-//        ArrayList = new ArrayList<>();
-        call.enqueue(new Callback<PlaceDetailsResponse>() {
-            @Override
-            public void onResponse(Call<PlaceDetailsResponse> call, Response<PlaceDetailsResponse> response) {
-
-                PlaceDetailsResponse jsonResponse = response.body();
-                arrayPlaceDetails = new ArrayList<>(Arrays.asList(jsonResponse.getResult()));
-                txtName.setText(arrayPlaceDetails.get(0).getName());
-                txtRating.setText(String.valueOf(arrayPlaceDetails.get(0).getRating()));
-                rtPlace.setRating(arrayPlaceDetails.get(0).getRating());
-                try {
-                    Picasso.with(getApplicationContext())
-                            .load("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="+arrayPlaceDetails.get(0).getPhotos().get(0).getPhoto_reference()+"&key=AIzaSyA02qeaptiL2YJ2P9CjHRrLhkkzO3cL7NM")
-                            .into(PlImage);
-                    item_search.setVisibility(View.VISIBLE);
-                    recyclerView.setVisibility(View.GONE);
-                }catch (Exception e){
-                    Picasso.with(getApplicationContext())
-                            .load("https://d2o57arp16h0eu.cloudfront.net/echo/img/no_image_available.png")
-                            .into(PlImage);
-                    item_search.setVisibility(View.VISIBLE);
-                    recyclerView.setVisibility(View.GONE);
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<PlaceDetailsResponse> call, Throwable t) {
                 Toast.makeText(getApplicationContext().getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG).show();
             }
         });
@@ -266,7 +188,7 @@ public class Plans extends AppCompatActivity implements ThingsToDoLoad.ItemClick
             onBackPressed();
             return true;
         }
-
+        Toast.makeText(this ,id+"" , Toast.LENGTH_LONG);
         return super.onOptionsItemSelected(item);
     }
 }

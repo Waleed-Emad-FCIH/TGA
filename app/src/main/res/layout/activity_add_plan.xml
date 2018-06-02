@@ -35,7 +35,7 @@
 
 
 
-                <TextView
+                TextView
                     android:layout_weight="1"
                     android:id="@+id/name1"
                     android:layout_width="match_parent"
@@ -52,14 +52,8 @@
                     android:orientation="vertical">
 
 
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:src="@drawable/ic_mode_edit_black_24dp"
-                        android:id="@+id/imgAddPlaces"
-                        android:layout_column="2"/>
 
-                    <View
+                    View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="#dad8d8" />
@@ -131,7 +125,7 @@
                     android:id="@+id/phoneno1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Description"
+                    android:text="Location"
                     android:textSize="12dp"
                     android:textColor="@color/bb_inActiveBottomBarItemColor" />
 

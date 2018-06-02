@@ -5,13 +5,16 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.tga.Activity.HomeDetails;
@@ -20,6 +23,7 @@ import com.tga.R;
 import com.tga.model.PlaceModel;
 import com.tga.model.photos;
 import com.tga.model.place;
+import com.tga.util.StaticVarible;
 
 import java.util.List;
 
@@ -27,11 +31,11 @@ import java.util.List;
  * Created by Mada on 2/28/2018.
  */
 
-public class PlacesAdapter  extends LoadMoreRecyclerViewAdapter<place> {
+public class PlacesAdapter  extends LoadMoreRecyclerViewAdapter<com.tga.models.PlaceModel> {
     private static final int TYPE_ITEM = 1;
 
     Context context;
-
+    String cuurentPlaceItemId ;
 
     public PlacesAdapter(Context context, ItemClickListener itemClickListener,
                           RetryLoadMoreListener retryLoadMoreListener) {
@@ -54,6 +58,7 @@ public class PlacesAdapter  extends LoadMoreRecyclerViewAdapter<place> {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof PlacesAdapter.ItemViewHolder) {
             final place placeModel = mDataList.get(position);
+            cuurentPlaceItemId = mDataList.get(position).getPlace_id();
             ((PlacesAdapter.ItemViewHolder) holder).title.setText(placeModel.getName());
             List<photos> photos = placeModel.getPhotos();
 
@@ -97,13 +102,25 @@ public class PlacesAdapter  extends LoadMoreRecyclerViewAdapter<place> {
         return TYPE_ITEM;
     }
 
+
+
+
+
+
+
+
+
     private class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView image;
         TextView title, txtRating;
         RatingBar rtPlace;
         CheckBox checkAdd;
 
-        ItemViewHolder(View itemView) {
+
+
+
+        ItemViewHolder(final View itemView) {
+
             super(itemView);
             image = (ImageView) itemView.findViewById(R.id.PlImage);
             txtRating = (TextView) itemView.findViewById(R.id.txtRating);
@@ -111,13 +128,33 @@ public class PlacesAdapter  extends LoadMoreRecyclerViewAdapter<place> {
             rtPlace = (RatingBar)itemView.findViewById(R.id.rtPlace);
             checkAdd = (CheckBox)itemView.findViewById(R.id.checkAdd);
             itemView.setOnClickListener(this);
+            checkAdd.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if(b)
+                    {
+                        Log.v("this id " , cuurentPlaceItemId);
+                        Log.v("this id " , mDataList.get(getAdapterPosition()).getPlace_id()+"");
+                        StaticVarible.placesIds.add(mDataList.get(getAdapterPosition()).getPlace_id());
+                    }
+                    else {
+                        Log.v("hello" , "hello");
+                      StaticVarible.placesIds.indexOf(cuurentPlaceItemId);
+                    }
+                }
+            });
+
         }
 
         @Override
         public void onClick(View view) {
             if (mItemClickListener != null) {
-                mItemClickListener.onItemClick(view, getAdapterPosition());
+
+                Log.v("this id " , getAdapterPosition()+"");
+//                mItemClic kListener.onItemClick(view, getAdapterPosition());
             }
         }
+
     }
+
 }

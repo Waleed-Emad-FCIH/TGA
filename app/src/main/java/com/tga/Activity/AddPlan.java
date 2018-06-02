@@ -6,14 +6,20 @@ import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.tga.Controller.PlanController;
 import com.tga.R;
+import com.tga.util.StaticVarible;
 
 public class AddPlan extends AppCompatActivity {
 
 
     private ImageView imgAddPlaces;
+    private EditText edtTitle;
+    private EditText edtDes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,13 +29,12 @@ public class AddPlan extends AppCompatActivity {
         getSupportActionBar().setTitle("Create your plan");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2C3646")));
 
-        imgAddPlaces =(ImageView)findViewById(R.id.imgAddPlaces);
-        imgAddPlaces.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), com.tga.Activity.Plans.class);
-                startActivity(intent);
-            }
-        });
+        edtTitle = (EditText)findViewById(R.id.etxtPlanTitle);
+        edtDes  = findViewById(R.id.etxtPlanDesc);
+        PlanController pc = new PlanController(null , StaticVarible.placesIds ,"0" , "0 " , edtDes.getText().toString());
+        pc.saveToDB();
+
+
+
     }
 }
