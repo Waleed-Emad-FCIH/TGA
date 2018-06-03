@@ -156,18 +156,21 @@ public class PostController  implements DB_Interface{
 
 
 
-    private class Comment {
-        private CommentModel commentModel;
+    public class Comment {
 
-        public Comment( String id , String content, String date, String userId ){
-            commentModel.id = id;
-            commentModel.content = content;
-            commentModel.date = date;
-            commentModel.userId = userId;
+        private CommentModel commentModel;
+        public Comment(String id, String content, String date, String userId){
+            this.commentModel = new CommentModel();
+
+            this.commentModel.id = id;
+            this.commentModel.content = content;
+            this.commentModel.date = date;
+            this.commentModel.userId = userId;
 
         }
         public void createComment()
         {
+
             FirebaseDatabase fd = FirebaseDatabase.getInstance();
             DatabaseReference dRef = fd.getReference("comments");
             commentModel.id = dRef.push().getKey();
