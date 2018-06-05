@@ -8,15 +8,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.tga.callback;
-import com.tga.model.Plan;
-import com.tga.model.User;
-import com.tga.models.PlaceModel;
 import com.tga.models.PlanModel;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Semaphore;
 
 /**
  * Created by root on 3/9/18.
@@ -28,13 +22,15 @@ public class PlanController implements DB_Interface{
     DatabaseReference reference =mRef.getReference().child("plans");
 public  ArrayList<PlanModel> planModels =new ArrayList<>();
     public PlanController(String id, ArrayList<String> placesID, String startDate, String endDate,
-                     String location){
+                          String location, String description, String title){
         this.planModel = new PlanModel();
         planModel.id = id;
         planModel.placesID = placesID;
         planModel.startDate = startDate;
         planModel.endDate = endDate;
         planModel.location = location;
+        planModel.description = description;
+        planModel.title = title ;
     }
 
     public String getId() {
@@ -175,8 +171,8 @@ public  ArrayList<PlanModel> planModels =new ArrayList<>();
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     ArrayList<PlanModel> snP = new ArrayList<>();
-
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
                         PlanModel plan = snapshot.getValue(PlanModel.class);
                         Log.v("data??>>>", "here + " + plan.getTitle() + snP.size());
                         snP.add(plan);

@@ -84,10 +84,21 @@ public class Plans extends AppCompatActivity implements ThingsToDoLoad.ItemClick
         request = retrofit.create(RequestInterface.class);
         loadJSON(request,request.getPlacesA_Z());
 
+
         mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-            mAdapter = new PlacesAdapter(this,this,this);
+
+        try {
+
+
+
+            mAdapter = new PlacesAdapter(this,this,this  , (java.util.ArrayList<String>) getIntent().getExtras().get("placesIds"));
+        }
+        catch (Exception e){
+            mAdapter = new PlacesAdapter(this,this,this  , new ArrayList<>());
+        }
+
         recyclerView.setAdapter(mAdapter);
 
         recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(mLayoutManager) {
@@ -105,10 +116,12 @@ public class Plans extends AppCompatActivity implements ThingsToDoLoad.ItemClick
                 if(rbOnlyOneDay.isChecked())
                 {
                     Intent intent  = new Intent(getApplicationContext(), AddPlan.class);
+                    intent.putExtra("placesId", mAdapter.checkedPlacesIds);
                     startActivity(intent);
                 }
                 else if(rbMakeYourProgram.isChecked()){
                     Intent intent  = new Intent(getApplicationContext(), AddProgram.class);
+                    intent.putExtra("placesId", mAdapter.checkedPlacesIds);
                     startActivity(intent);
                 }
                 else {

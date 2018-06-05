@@ -36,19 +36,6 @@ public class Plans extends Fragment {
 
     View view;
     private FloatingActionButton floatingActionButton;
-
-    private String title[]= {"Midtown","Explore Cairo","Giza Highlights"};
-    private String sites[]= {"8 sights","3 sights","5 sights"};
-    private String shortInfo[]= {"Typically these sights open every day.","some sights may not be open on Sat & Sun. Check openinig hours",
-            "Typically these sights open every day."};
-    private int imaMap[]= {R.drawable.map,R.drawable.map,R.drawable.map};
-    private int imaSite1[]= {R.drawable.sharm,R.drawable.loxour,R.drawable.pyramids};
-    private int imaSite2[]= {R.drawable.pyramids,R.drawable.loxour,R.drawable.sharm};
-    private int imaSite3[]= {R.drawable.loxour,R.drawable.pyramids,R.drawable.sharm};
-
-
-
-
     private RecyclerView recyclerView;
     private PlanAdapter mAdapter;
 
@@ -63,7 +50,8 @@ public class Plans extends Fragment {
         // Inflate the layout for this fragment
         View v=inflater.inflate(R.layout.fragment_plans, container, false);
 
-        recyclerView = (RecyclerView) v.findViewById(R.id.rePlansSuggested);
+        recyclerView = (RecyclerView) v.findViewById(R.id.reMyplans);
+
         floatingActionButton = (FloatingActionButton)v.findViewById(R.id.fab);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override

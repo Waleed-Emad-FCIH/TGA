@@ -14,8 +14,16 @@ public class PlanModel {
     public ArrayList<String> placesID ;
     public String startDate ;
     public String endDate ;
+    public  String description;
     public String location ;
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public String getTitle() {
         return title;

@@ -2,11 +2,8 @@ package com.tga.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -14,17 +11,14 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
-import com.tga.Activity.HomeDetails;
 import com.tga.Activity.PlaceDetails;
 import com.tga.R;
-import com.tga.model.PlaceModel;
 import com.tga.model.photos;
 import com.tga.model.place;
-import com.tga.util.StaticVarible;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,14 +27,16 @@ import java.util.List;
 
 public class PlacesAdapter  extends LoadMoreRecyclerViewAdapter<com.tga.models.PlaceModel> {
     private static final int TYPE_ITEM = 1;
-
+    public   ArrayList<String> checkedPlacesIds = new ArrayList<>();
     Context context;
     String cuurentPlaceItemId ;
 
     public PlacesAdapter(Context context, ItemClickListener itemClickListener,
-                          RetryLoadMoreListener retryLoadMoreListener) {
+                         RetryLoadMoreListener retryLoadMoreListener , ArrayList<String> checkedPlacesIds) {
         super(context, itemClickListener, retryLoadMoreListener);
+        this.checkedPlacesIds = checkedPlacesIds;
         this.context=context;
+
     }
 
 
@@ -57,10 +53,24 @@ public class PlacesAdapter  extends LoadMoreRecyclerViewAdapter<com.tga.models.P
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof PlacesAdapter.ItemViewHolder) {
+
             final place placeModel = mDataList.get(position);
             cuurentPlaceItemId = mDataList.get(position).getPlace_id();
+            try {
+
+                if(checkedPlacesIds.contains(cuurentPlaceItemId))
+                {
+                    ((ItemViewHolder) holder).checkAdd.setChecked(true);
+
+                }
+            }catch (Exception e)
+            {
+
+            }
+
             ((PlacesAdapter.ItemViewHolder) holder).title.setText(placeModel.getName());
             List<photos> photos = placeModel.getPhotos();
+
 
             if (photos==null && placeModel.getImgLink()!=null) {
                 Picasso.with(holder.itemView.getContext())
@@ -86,10 +96,11 @@ public class PlacesAdapter  extends LoadMoreRecyclerViewAdapter<com.tga.models.P
                 @Override
                 public void onClick(View view) {
 
-                    Intent i = new Intent(context, PlaceDetails.class);
-                    i.putExtra("id",placeModel.getPlace_id());
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(i);
+                        Intent i = new Intent(context, PlaceDetails.class);
+                        i.putExtra("id",placeModel.getPlace_id());
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(i);
+
 
                 }
             });
@@ -135,11 +146,19 @@ public class PlacesAdapter  extends LoadMoreRecyclerViewAdapter<com.tga.models.P
                     {
                         Log.v("this id " , cuurentPlaceItemId);
                         Log.v("this id " , mDataList.get(getAdapterPosition()).getPlace_id()+"");
-                        StaticVarible.placesIds.add(mDataList.get(getAdapterPosition()).getPlace_id());
+                        try {
+                            if(!checkedPlacesIds.contains(mDataList.get(getAdapterPosition()).getPlace_id()))
+                                checkedPlacesIds.add(mDataList.get(getAdapterPosition()).getPlace_id());
+                        }
+                        catch (Exception e)
+                        {
+                            checkedPlacesIds.add(mDataList.get(getAdapterPosition()).getPlace_id());
+
+                        }
+
                     }
                     else {
                         Log.v("hello" , "hello");
-                      StaticVarible.placesIds.indexOf(cuurentPlaceItemId);
                     }
                 }
             });

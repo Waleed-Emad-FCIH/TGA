@@ -89,10 +89,9 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.MyViewHolder> 
         public void onBindViewHolder(final PlanAdapter.MyViewHolder holder, int position) {
         final PlanModel plan = planList.get(position);
         // Request photos and metadata for the specified place.
-
-         List<PlacePhotoMetadata> photosDataList = new ArrayList<>();
+        List<PlacePhotoMetadata> photosDataList = new ArrayList<>();
         holder.title.setText(plan.getTitle());
-        holder.shortInfo.setText("sds");
+        holder.shortInfo.setText("Location : " + plan.getLocation()+" " + plan.getDescription());
 
 
 
@@ -115,31 +114,35 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.MyViewHolder> 
                                         for (PlacePhotoMetadata photoMetadata : photoMetadataBuffer) {
                                             photosDataList.add(photoMetadataBuffer.get(0).freeze());
                                         }
+                                        photoMetadataBuffer.release();
                                     } catch (Exception e) {
 
                                     }
 
-                                    Task<PlacePhotoResponse> photoResponse = geoDataClient.getPhoto(photosDataList.get(0));
-                                    photoResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoResponse>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<PlacePhotoResponse> task) {
-                                            PlacePhotoResponse photo = task.getResult();
-                                            switch (finalI) {
-                                                case 1:
-                                                    holder.imgSite1.setImageBitmap(photo.getBitmap());
-                                                    break;
-                                                case 2:
-                                                    holder.imgSite2.setImageBitmap(photo.getBitmap());
-                                                    break;
-                                            }
+                                    if(photosDataList.size()>0) {
+                                        Task<PlacePhotoResponse> photoResponse = geoDataClient.getPhoto(photosDataList.get(0));
+                                        photoResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoResponse>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<PlacePhotoResponse> task) {
+                                                PlacePhotoResponse photo = task.getResult();
+                                                switch (finalI) {
+                                                    case 1:
+                                                        holder.imgSite1.setImageBitmap(photo.getBitmap());
+                                                        break;
+                                                    case 2:
+                                                        holder.imgSite2.setImageBitmap(photo.getBitmap());
+                                                        break;
+                                                }
 
 
-                                        }// on opmplete
-                                    });//photoresponse addoncomplete
+                                            }// on opmplete
+                                        });//photoresponse addoncomplete
+                                    }
 
 
                                 }//on complete
                             });//onComplete listener close
+
                 }catch (Exception c)
                 {
 
@@ -175,6 +178,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.MyViewHolder> 
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(context, PlanDetalis.class);
+                i.putExtra("placesIds" , plan.getPlacesID());
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
             }
