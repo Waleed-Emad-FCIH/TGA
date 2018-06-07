@@ -8,11 +8,13 @@ package com.tga.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tga.Activity.Comments;
@@ -34,7 +36,7 @@ public class commentAdapter  extends RecyclerView.Adapter<commentAdapter.MyViewH
     @Override
     public commentAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.activity_comment_view, parent, false);
+                .inflate(R.layout.item_comment, parent, false);
 
         return new MyViewHolder(itemView);
 
@@ -42,10 +44,12 @@ public class commentAdapter  extends RecyclerView.Adapter<commentAdapter.MyViewH
     @Override
     public void onBindViewHolder(commentAdapter.MyViewHolder holder, int position) {
        final CommentModel comment = commentList.get(position);
-       holder.content.setText(comment.content);
+
+        holder.content.setText(comment.content);
         holder.postTime.setText(String.valueOf(comment.date));
 
 
+        Log.v("num" , commentList.size()+"")    ;
 
     }
 
@@ -55,14 +59,18 @@ public class commentAdapter  extends RecyclerView.Adapter<commentAdapter.MyViewH
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public EditText uid, content, cID;
-        public TextView postTime;
-        public Button writePost;
-        public MyViewHolder(View itemView) {
-            super(itemView);
+        public TextView txtname, content, edittxt,deltxt,reporttxt,postTime;
+        public ImageView ppimg;
+        public MyViewHolder(View view) {
+            super(view);
 
-            content = (EditText) itemView.findViewById(R.id.txtPostContent);
-            postTime = (TextView) itemView.findViewById(R.id.txtvPostTime);
+            txtname = (TextView) view.findViewById(R.id.txtName);
+            edittxt = (TextView) view.findViewById(R.id.txtEditPost);
+            content = (TextView) view.findViewById(R.id.txtPostContent);
+            deltxt = (TextView) view.findViewById(R.id.txtDeletePost);
+            reporttxt = (TextView) view.findViewById(R.id.txtReportPost);
+            postTime = (TextView) view.findViewById(R.id.txtvPostTime);
+            ppimg = (ImageView)view.findViewById(R.id.imgPP);
 
 
         }

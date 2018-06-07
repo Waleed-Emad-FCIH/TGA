@@ -39,17 +39,13 @@ public class Community2 extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_posts);
         layoutPost = (LinearLayout) findViewById(R.id.layoutPost);
-
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         user = FirebaseAuth.getInstance().getCurrentUser();
-
-        posts= new PostController(null,null,
-                System.currentTimeMillis(),user.getUid(),null,0,null);
+        posts= new PostController(null,null, System.currentTimeMillis()
+                ,user.getUid(),null,0,null);
         pAdapter = new PostAdapter(getApplicationContext(),posts.listAll());
-
-
         recyclerView.setAdapter(pAdapter);
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

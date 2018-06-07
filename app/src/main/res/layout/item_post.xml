@@ -187,9 +187,11 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/baseline_comment_black_24"
                         android:layout_margin="8dp"
-                        />
+                        android:src="@drawable/baseline_comment_black_24"
+                        android:id="@+id/comment"
+
+                    />
 
                     <TextView
                         android:id="@+id/txtvPostTime"
