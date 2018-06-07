@@ -102,8 +102,6 @@
         <activity android:name=".Activity.EditPlan" />
         <activity android:name=".Activity.Community" />
         <activity android:name=".Activity.Comments" />
-
-
         <activity
             android:name=".Activity.DiscountsDetails"
             android:configChanges="keyboardHidden|orientation"
@@ -136,7 +134,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activity.Community2" />
         <activity android:name=".Activity.AddPost2" />
-        <activity android:name=".Activity.PostDetails"></activity>
+        <activity android:name=".Activity.PostDetails" />
+        <activity android:name=".Activity.EditComment"></activity>
     </application>
 
 </manifest>

@@ -18,7 +18,6 @@ import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 import com.tga.Activity.Community;
 import com.tga.Activity.Community2;
-import com.tga.Activity.Communityy;
 import com.tga.Activity.EditProfile;
 import com.tga.Activity.History;
 import com.tga.R;
