@@ -17,6 +17,7 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 import com.tga.Activity.Community;
+import com.tga.Activity.Community2;
 import com.tga.Activity.Communityy;
 import com.tga.Activity.EditProfile;
 import com.tga.Activity.History;
@@ -61,7 +62,7 @@ public class Profile extends Fragment {
         com.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(new Intent(getContext(),Communityy.class));
+                Intent intent = new Intent(new Intent(getContext(),Community2.class));
                 startActivity(intent);
             }
         });
