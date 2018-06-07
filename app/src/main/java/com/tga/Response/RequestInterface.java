@@ -26,7 +26,7 @@ public interface RequestInterface {
     @GET("json?query=museum+and+mall+in+Cairo&key=AIzaSyB_7KprS66Hcih9Rfnu05ssVPRdvOdVVy4")
     Call<PlaceResponse> getInDoors();
 
-    @GET("json?query=restaurants+in+Cairo&key=AIzaSyB_7KprS66Hcih9Rfnu05ssVPRdvOdVVy4")
+    @GET("json?query=مساجد+في+القاهرهo&key=AIzaSyB_7KprS66Hcih9Rfnu05ssVPRdvOdVVy4")
     Call<PlaceResponse> getResturants();
 
     @GET("json?query=cafe+in+Cairo&key=AIzaSyB_7KprS66Hcih9Rfnu05ssVPRdvOdVVy4")

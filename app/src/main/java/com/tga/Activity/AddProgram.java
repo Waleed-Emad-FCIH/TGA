@@ -37,13 +37,7 @@ public class AddProgram extends AppCompatActivity {
         imgProgramStart = (EditText)findViewById(R.id.imgProgramStart);
         imgProgramEnd =(EditText)findViewById(R.id.imgProgramEnd);
 
-        imgAddPlaces.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),AllPlaces.class);
-                startActivity(intent);
-            }
-        });
+
 
         imgProgramStart.setOnClickListener(new View.OnClickListener() {
             @Override

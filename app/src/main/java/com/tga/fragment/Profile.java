@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
+import com.tga.Activity.Community;
 import com.tga.Activity.EditProfile;
 import com.tga.Activity.History;
 import com.tga.R;
@@ -30,7 +32,7 @@ public class Profile extends Fragment {
 
     private TextView txtEditProfile,txtHistory;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    private TextView txtFullName,txtNationality,txtPhone,txtEmail;
+    private TextView txtFullName,txtNationality,txtPhone,txtEmail,com;
     private ImageView imgProfile;
     private String picProfile="";
 
@@ -43,6 +45,7 @@ public class Profile extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -53,6 +56,14 @@ public class Profile extends Fragment {
 
         txtEditProfile = (TextView)v.findViewById(R.id.txtEditProfile);
         txtHistory = (TextView)v.findViewById(R.id.txtHistory);
+        com = (TextView) v.findViewById(R.id.com);
+        com.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(new Intent(getContext(),Community.class));
+                startActivity(intent);
+            }
+        });
 
         txtEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override

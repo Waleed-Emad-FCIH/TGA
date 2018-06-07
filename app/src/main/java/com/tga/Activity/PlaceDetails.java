@@ -195,6 +195,7 @@ public class PlaceDetails extends AppCompatActivity implements BaseSliderView.On
         // Construct a GeoDataClient.
         mGeoDataClient = Places.getGeoDataClient(this, null);
 
+
         // Construct a PlaceDetectionClient.
         mPlaceDetectionClient = Places.getPlaceDetectionClient(this, null);
 
@@ -230,6 +231,7 @@ public class PlaceDetails extends AppCompatActivity implements BaseSliderView.On
 
     @Override
     public void onPageSelected(int position) {
+
         Log.d("Slider Demo", "Page Changed: " + position);
     }
 

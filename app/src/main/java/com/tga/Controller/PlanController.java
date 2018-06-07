@@ -1,14 +1,13 @@
 package com.tga.Controller;
 
+import android.util.Log;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.tga.model.Plan;
-import com.tga.model.User;
-import com.tga.models.PlaceModel;
 import com.tga.models.PlanModel;
 
 import java.util.ArrayList;
@@ -21,15 +20,17 @@ public class PlanController implements DB_Interface{
     private PlanModel planModel;
     private FirebaseDatabase mRef = FirebaseDatabase.getInstance();
     DatabaseReference reference =mRef.getReference().child("plans");
-
+public  ArrayList<PlanModel> planModels =new ArrayList<>();
     public PlanController(String id, ArrayList<String> placesID, String startDate, String endDate,
-                     String location){
+                          String location, String description, String title){
         this.planModel = new PlanModel();
         planModel.id = id;
         planModel.placesID = placesID;
         planModel.startDate = startDate;
         planModel.endDate = endDate;
         planModel.location = location;
+        planModel.description = description;
+        planModel.title = title ;
     }
 
     public String getId() {
@@ -37,6 +38,7 @@ public class PlanController implements DB_Interface{
     }
 
     public ArrayList<String> getPlaces() {
+
         return planModel.placesID;
     }
 
@@ -103,7 +105,8 @@ public class PlanController implements DB_Interface{
 
     @Override
     public void saveToDB() {
-        reference.child(this.planModel.id).setValue(this.planModel);
+       planModel.setId(reference.push().getKey());
+        reference.child(getId()).setValue(this.planModel);
 
     }
 
@@ -138,9 +141,9 @@ public class PlanController implements DB_Interface{
     @Override
     public void updateToDB() {
 
-        mRef.getReference().child("plans");
-        Query query = reference.orderByChild("id").equalTo(this.planModel.id);
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+       ;
+        //Query query = reference.orderByChild("id").equalTo(this.planModel.id);
+   reference.addListenerForSingleValueEvent(new ValueEventListener() {
 
 
             @Override
@@ -159,33 +162,36 @@ public class PlanController implements DB_Interface{
     }
 
 
-    public ArrayList<Object> listAll() {
-        final ArrayList<PlanModel> Plans= new ArrayList<>();
-        mRef.getReference().child("plans").addListenerForSingleValueEvent(new ValueEventListener() {
+    public ArrayList<PlanModel> listAll (){
+         ArrayList<PlanModel> Plans = new ArrayList();
 
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot:dataSnapshot.getChildren())
-                {
-                    PlanModel plan = snapshot.getValue(PlanModel.class);
-                    Plans.add(plan);
+
+            reference.addValueEventListener(new ValueEventListener() {
+
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    ArrayList<PlanModel> snP = new ArrayList<>();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                        PlanModel plan = snapshot.getValue(PlanModel.class);
+                        Log.v("data??>>>", "here + " + plan.getTitle() + snP.size());
+                        snP.add(plan);
+                        Plans.add(plan);
+                        planModels.add(plan);
+                    }
+
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
 
-        ArrayList<Object>plans= new ArrayList<>();
-        for(int i=0;i<Plans.size();i++){
-            Object s =(Object)Plans.get(i);
-        plans.add(s);
-        }
-        return plans ;
+        return Plans;
     }
 
     //=============================================================
+
 
 }

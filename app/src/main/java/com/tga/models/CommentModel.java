@@ -7,7 +7,10 @@ package com.tga.models;
 public class CommentModel {
     public String id ;
     public String content ;
-    public String date ;
+    public long date ;
     public String userId ;
+    public String postId   ;
+
+
 
 }
