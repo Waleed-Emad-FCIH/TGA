@@ -134,7 +134,7 @@
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activity.Community2" />
+        <activity android:name=".Activity.Communityy" />
         <activity android:name=".Activity.AddPost2" />
         <activity android:name=".Activity.PostDetails"></activity>
     </application>

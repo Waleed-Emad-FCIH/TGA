@@ -86,7 +86,7 @@
 
                 <TextView
                     android:layout_weight="1"
-                    android:id="@+id/phoneno1"
+                    android:id="@+id/txtWritePost"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Description"
@@ -129,7 +129,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
-                android:id="@+id/btnAddPlace"
+                android:id="@+id/btnAddPost"
                 android:background="@color/colorPrimaryDark"
                 android:padding="16dp"
                 android:textSize="18sp"
