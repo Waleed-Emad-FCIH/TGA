@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start"
+    android:orientation="vertical"
+    android:background="#f2f2f2">
+    
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:elevation="8dp"
+            android:layout_margin="10dp"
+
+
+            >
+
+
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#fff"
+
+                android:layout_margin="10dp"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_margin="10dp"
+                    >
+
+                    <LinearLayout
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/imgPP"
+                            android:layout_width="45px"
+                            android:layout_height="45px"
+                            android:src="@mipmap/ic_launcher"
+                            android:scaleType="centerCrop"
+                            />
+
+                        <TextView
+                            android:id="@+id/txtName"
+                            android:layout_marginLeft="16dp"
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Fox News ."
+                            android:textColor="#7b7b7b"
+                            android:textSize="14dp"
+                            android:layout_gravity="center"
+                            />
+
+                        <TextView
+                            android:id="@+id/txtEditPost"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Edit"
+                            android:layout_gravity="center"
+                            />
+                        <TextView
+                            android:id="@+id/txtDeletePost"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Delete"
+                            android:layout_marginLeft="8dp"
+                            android:layout_gravity="center"
+                            />
+                        <TextView
+                            android:id="@+id/txtReportPost"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Report"
+                            android:layout_marginLeft="8dp"
+                            android:layout_gravity="center"
+                            />
+                    </LinearLayout>
+
+
+
+
+
+                    <LinearLayout
+                        android:layout_marginTop="12dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginRight="5dp"
+                            >
+
+                            <TextView
+                                android:id="@+id/txtPostContent"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Trump’s Plan for AmericanMade iPhonew Wold Be Disastrous. Trump’s Plan for AmericanMade iPhonew Wold Be Disastrous"
+                                android:lines="3"
+                                android:textSize="16dp"
+                                android:textColor="#7b7b7b"
+                                android:lineSpacingExtra="3dp"
+                                android:maxLines="3"
+                                />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_weight="2.2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+
+                            >
+
+                            <ImageView
+                                android:id="@+id/postImg1"
+                                android:layout_width="200px"
+                                android:layout_height="200px"
+                                android:src="@mipmap/ic_launcher"
+                                android:scaleType="fitXY"
+                                />
+
+                            <ImageView
+                                android:id="@+id/postImg2"
+                                android:layout_width="200px"
+                                android:layout_height="200px"
+                                android:src="@mipmap/ic_launcher"
+                                android:scaleType="fitXY"
+                                android:visibility="gone"
+                                />
+
+                            <ImageView
+
+                                android:id="@+id/postImg3"
+                                android:layout_width="200px"
+                                android:layout_height="200px"
+                                android:src="@mipmap/ic_launcher"
+                                android:scaleType="fitXY"
+                                android:visibility="gone"
+                                />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginTop="8dp">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/ic_favorite_black_24dp"
+                                    android:elevation="2dp"
+                                    android:id="@+id/imgUnFav"/>
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/heart"
+                                    android:elevation="2dp"
+                                    android:id="@+id/imgFav"/>
+
+                            </RelativeLayout>
+
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1"
+                                android:layout_marginTop="15dp"
+                                android:id="@+id/txtNumLikes"/>
+
+                            <TextView
+                                android:id="@+id/txtvPostTime"
+                                android:layout_weight="0.6"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="2 day ago"
+                                android:textColor="#7b7b7b"
+                                android:textSize="14dp"
+                                android:layout_gravity="center"
+                                android:gravity="right"
+                                android:layout_marginTop="8dp"
+                                />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+
+
+
+            </android.support.v7.widget.CardView>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Comments"
+                android:textColor="#fff"
+                android:textSize="18dp"
+                android:padding="8dp"
+                android:background="@color/colorPrimaryDark"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:id="@+id/recycler_view_comments">
+
+            </android.support.v7.widget.RecyclerView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/btnBuy"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:hint="Write your comment here"
+            android:textSize="16dp"
+            android:textColor="#000"
+            android:padding="16dp"
+            />
+
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight=".2"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:background="#fff"
+            android:src="@drawable/ic_exit_to_app_black_24dp"/>
+    </LinearLayout>
+
+
+
+
+
+</RelativeLayout>

@@ -100,6 +100,8 @@
         <activity android:name=".Activity.EditPlace" />
         <activity android:name=".Activity.AddPlan" />
         <activity android:name=".Activity.EditPlan" />
+        <activity android:name=".Activity.Community" />
+        <activity android:name=".Activity.Comments" />
         <activity
             android:name=".Activity.DiscountsDetails"
             android:configChanges="keyboardHidden|orientation"
@@ -130,10 +132,10 @@
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Activity.MapViewActivity"
-            android:label="@string/title_activity_map_view"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".Activity.Community2" />
+        <activity android:name=".Activity.AddPost2" />
+        <activity android:name=".Activity.PostDetails" />
+        <activity android:name=".Activity.EditComment"></activity>
     </application>
 
 </manifest>
