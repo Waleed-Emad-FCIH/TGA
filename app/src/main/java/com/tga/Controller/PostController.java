@@ -258,15 +258,14 @@ public class PostController extends AppCompatActivity implements DB_Interface{
             DatabaseReference dRef = fd.getReference("comments");
             dRef.child(commentModel.id).removeValue();
             //delete comment id from post comments id
-            delCommentId(commentModel.id);
+        //    delCommentId(commentModel.id);
         }
 
         public void editComment( String newCommentContent) {
             FirebaseDatabase fd = FirebaseDatabase.getInstance();
             DatabaseReference dRef = fd.getReference("comments");
             setContent(newCommentContent);
-            dRef.child(commentModel.id).setValue(commentModel);
-
+            dRef.child(commentModel.id).child("content").setValue(newCommentContent);
         }
 
     }

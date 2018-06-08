@@ -69,29 +69,6 @@
                             android:layout_gravity="center"
                             />
 
-                        <TextView
-                            android:id="@+id/txtEditPost"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Edit"
-                            android:layout_gravity="center"
-                            />
-                        <TextView
-                            android:id="@+id/txtDeletePost"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Delete"
-                            android:layout_marginLeft="8dp"
-                            android:layout_gravity="center"
-                            />
-                        <TextView
-                            android:id="@+id/txtReportPost"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Report"
-                            android:layout_marginLeft="8dp"
-                            android:layout_gravity="center"
-                            />
                     </LinearLayout>
 
 
@@ -254,7 +231,7 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/btnBuy"
+            android:id="@+id/txtwriteComment"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -272,7 +249,10 @@
             android:layout_height="wrap_content"
             android:padding="16dp"
             android:background="#fff"
-            android:src="@drawable/ic_exit_to_app_black_24dp"/>
+            android:src="@drawable/ic_exit_to_app_black_24dp"
+            android:id="@+id/comment"
+            />
+
     </LinearLayout>
 
 
