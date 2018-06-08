@@ -45,7 +45,7 @@
             android:name=".Activity.Search"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.SearchResults"
             android:configChanges="keyboardHidden|orientation"
@@ -124,10 +124,15 @@
             android:name=".Activity.PlaceDetails"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".Activity.ChangePassword"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity.ChangePassword"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity.MapViewActivity"
+            android:label="@string/title_activity_map_view"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

@@ -2,7 +2,8 @@
     <string name="app_name">TGA</string>
     <string name="openDrawer">open_drawer</string>
     <string name="closeDrawer">close_drawer</string>
-
+    <string name="API_key">AIzaSyDw7-WKfbu2dYFhwxHHE5ik-9ykaUeGdPE</string>
+    <string name="SERVER_KEY">AIzaSyCmCOZBZR4VugM013zdD0Li8sxjs8VXEnI</string>
     <string name="country_prompt">Choose a country</string>
     <!--AIzaSyB_7KprS66Hcih9Rfnu05ssVPRdvOdVVy4-->
     <!--Main=AIzaSyAngLhRf_i9ZoagGX0DllBZHlPkaKfAEzY-->
@@ -36,5 +37,6 @@
         <item>About Us</item>
 
     </string-array>
+    <string name="title_activity_map_view">MapViewActivity</string>
 
 </resources>
