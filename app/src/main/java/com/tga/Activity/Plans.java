@@ -1,5 +1,6 @@
 package com.tga.Activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -35,6 +37,7 @@ public class Plans extends AppCompatActivity implements ThingsToDoLoad.ItemClick
 
 
     private RadioButton rbOnlyOneDay,rbMakeYourProgram;
+    private Button submit ;
     private java.util.ArrayList<place> ArrayList;
     private RecyclerView recyclerView;
     private PlacesAdapter mAdapter;
@@ -45,6 +48,7 @@ public class Plans extends AppCompatActivity implements ThingsToDoLoad.ItemClick
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plans);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -53,6 +57,7 @@ public class Plans extends AppCompatActivity implements ThingsToDoLoad.ItemClick
          //=====================  " imbo Code " ====================
                 rbOnlyOneDay = (RadioButton) findViewById(R.id.rbOnleOneDay);
                 rbMakeYourProgram = (RadioButton) findViewById(R.id.rbMakeYourProgram);
+
         View.OnClickListener first_radio_listener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,8 +70,8 @@ public class Plans extends AppCompatActivity implements ThingsToDoLoad.ItemClick
 
             }
         };
-        rbOnlyOneDay.setOnClickListener(first_radio_listener);
-        rbMakeYourProgram.setOnClickListener(second_radio_listener);
+        rbOnlyOneDay.setOnClickListener(second_radio_listener);
+        rbMakeYourProgram.setOnClickListener(first_radio_listener);
 
 
        //===========================================================
@@ -79,10 +84,21 @@ public class Plans extends AppCompatActivity implements ThingsToDoLoad.ItemClick
         request = retrofit.create(RequestInterface.class);
         loadJSON(request,request.getPlacesA_Z());
 
+
         mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new PlacesAdapter(this,this,this);
+
+        try {
+
+
+
+            mAdapter = new PlacesAdapter(this,this,this  , (java.util.ArrayList<String>) getIntent().getExtras().get("placesIds"));
+        }
+        catch (Exception e){
+            mAdapter = new PlacesAdapter(this,this,this  , new ArrayList<>());
+        }
+
         recyclerView.setAdapter(mAdapter);
 
         recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(mLayoutManager) {
@@ -93,7 +109,26 @@ public class Plans extends AppCompatActivity implements ThingsToDoLoad.ItemClick
 
             }
         });
-
+        submit = (Button) findViewById(R.id.submit);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(rbOnlyOneDay.isChecked())
+                {
+                    Intent intent  = new Intent(getApplicationContext(), AddPlan.class);
+                    intent.putExtra("placesId", mAdapter.checkedPlacesIds);
+                    startActivity(intent);
+                }
+                else if(rbMakeYourProgram.isChecked()){
+                    Intent intent  = new Intent(getApplicationContext(), AddProgram.class);
+                    intent.putExtra("placesId", mAdapter.checkedPlacesIds);
+                    startActivity(intent);
+                }
+                else {
+                    Toast.makeText(getApplicationContext() , "Please choase the type of plan " , Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
     }
 
@@ -143,7 +178,6 @@ public class Plans extends AppCompatActivity implements ThingsToDoLoad.ItemClick
                 {
                     ArrayList.addAll(Arrays.asList(jsonResponse.getResults()));
                 }
-
                 next_page_token = jsonResponse.getNext_page_token();
                 mAdapter.add(ArrayList);
                 recyclerView.setAdapter(mAdapter);
@@ -167,7 +201,7 @@ public class Plans extends AppCompatActivity implements ThingsToDoLoad.ItemClick
             onBackPressed();
             return true;
         }
-
+        Toast.makeText(this ,id+"" , Toast.LENGTH_LONG);
         return super.onOptionsItemSelected(item);
     }
 }

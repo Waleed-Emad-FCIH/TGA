@@ -21,6 +21,7 @@ public abstract class LoadMoreRecyclerViewAdapter<T> extends BaseRecyclerViewAda
     private boolean mOnLoadMoreFailed;
     private boolean mIsReachEnd;
 
+
     protected LoadMoreRecyclerViewAdapter(@NonNull Context context,
                                           ItemClickListener itemClickListener,
                                           @NonNull RetryLoadMoreListener retryLoadMoreListener) {
@@ -67,6 +68,7 @@ public abstract class LoadMoreRecyclerViewAdapter<T> extends BaseRecyclerViewAda
 
     @Override
     public int getItemCount() {
+
         return mDataList.size() + 1; // +1 for progress
     }
 

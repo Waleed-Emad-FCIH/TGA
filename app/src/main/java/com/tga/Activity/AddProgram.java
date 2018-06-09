@@ -52,13 +52,7 @@ public class AddProgram extends AppCompatActivity {
 
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        imgAddPlaces.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),AllPlaces.class);
-                startActivity(intent);
-            }
-        });
+
 
         imgProgramStart.setOnClickListener(new View.OnClickListener() {
             @Override
