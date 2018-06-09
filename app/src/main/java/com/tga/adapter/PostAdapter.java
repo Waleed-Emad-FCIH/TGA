@@ -2,7 +2,11 @@ package com.tga.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +16,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.util.Log;
 
+import com.bumptech.glide.Glide;
+import com.firebase.client.Firebase;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.tga.Activity.AddPost2;
 import com.tga.Activity.Comments;
 import com.tga.Activity.PostDetails;
@@ -108,6 +123,7 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.MyViewHolder>
             holder.edittxt.setVisibility(View.INVISIBLE);
         }
 
+
         holder.comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,6 +136,24 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.MyViewHolder>
 
             }
         });
+        FirebaseDatabase fd = FirebaseDatabase.getInstance();
+        final DatabaseReference tRef = fd.getReference("users").child(post.userId);
+        tRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    User user = (User) dataSnapshot.getValue();
+                    Glide.with(context)
+                            .load(user.getProfilePic())
+                            .into(holder.ppimg);
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
 /*
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
