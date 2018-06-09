@@ -30,18 +30,14 @@
             >
 
 
-
-
-
-                <TextView
-                    android:id="@+id/txtDeletePost"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Delete"
-                    android:gravity="right"
-                    android:layout_marginLeft="8dp"
-                    android:layout_gravity="right"
-                    />
+            <TextView
+                android:id="@+id/txtDeletePost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginLeft="8dp"
+                android:gravity="right"
+                android:text="Delete" />
 
 
 
@@ -56,11 +52,11 @@
 
 
 
-                <TextView
+                <EditText
                     android:id="@+id/txtPostContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Trump’s Plan for AmericanMade iPhonew Wold Be Disastrous. Trump’s Plan for AmericanMade iPhonew Wold Be Disastrous"
+                    android:text=" "
                     android:lines="3"
                     android:textSize="16dp"
                     android:textColor="#7b7b7b"

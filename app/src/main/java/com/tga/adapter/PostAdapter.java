@@ -10,6 +10,8 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -39,6 +41,10 @@ import com.tga.model.User;
 import com.tga.models.PostModel;
 
 import java.util.List;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 /**
  * Created by yaser on 30/05/18.
  */
@@ -71,9 +77,16 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.MyViewHolder>
         final PostModel post = postList.get(position);
         holder.content.setText(post.content);
         holder.postTime.setText(String.valueOf(post.date));
+        holder.txtNumLikes.setText(String.valueOf(post.likes));
      //   holder.txtname.setText(user.getDisplayName());
        // holder.ppimg.setImageURI(user.getPhotoUrl());
-    //   holder.txtNumLikes.setText((post.likes));
+   //    holder.txtNumLikes.setText((post.likes));
+
+
+        final ScaleAnimation animation = new ScaleAnimation(0f, 1f, 0f, 1f,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f);
+        animation.setDuration(165);
 
 
 
@@ -166,19 +179,33 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.MyViewHolder>
 
                 context.startActivity(i);
             }
-        });
+        });*/
 
 
-        holder.btnlike.setOnClickListener(new View.OnClickListener() {
+        holder.like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                holder.like.setVisibility(GONE);
+                holder.unlike.startAnimation(animation);
+                holder.unlike.setVisibility(VISIBLE);
                 PostController pc=new PostController(post.id,null,0
-                , null,null,0,null);
+                , user.getUid(),null,0,null);
                 pc.like(user.getUid());
             }
         });
 
-*/
+        holder.unlike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                holder.unlike.setVisibility(GONE);
+                holder.like.startAnimation(animation);
+                holder.like.setVisibility(VISIBLE);
+                PostController pc=new PostController(post.id,null,0
+                        , user.getUid(),null,0,null);
+                pc.unlike(user.getUid());
+            }
+        });
+
     }
 
     @Override
@@ -189,7 +216,7 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.MyViewHolder>
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         public TextView txtname,txtNumLikes, content, edittxt,deltxt,reporttxt,postTime;
-        public ImageView ppimg ,img1,img2,img3,comment;
+        public ImageView ppimg ,img1,img2,img3,comment ,like ,unlike;
         public MyViewHolder(View view){
             super(view);
             txtname = (TextView) view.findViewById(R.id.txtName);
@@ -204,6 +231,15 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.MyViewHolder>
             img3 = (ImageView)view.findViewById(R.id.postImg3);
             txtNumLikes=(TextView)view.findViewById(R.id.txtNumLikes);
             comment=(ImageView)view.findViewById(R.id.comment);
+            like =(ImageView)view.findViewById(R.id.imgFav);
+            unlike=(ImageView)view.findViewById(R.id.imgUnFav);
+            like = itemView.findViewById(R.id.imgFav);
+            unlike = itemView.findViewById(R.id.imgUnFav);
+            unlike.setVisibility(VISIBLE);
+            like.setVisibility(GONE);
+            unlike.invalidate();
+            like.invalidate();
+
 
         }
     }

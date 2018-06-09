@@ -176,13 +176,27 @@ public class PostController extends AppCompatActivity implements DB_Interface{
     public void  like(String currentUserId)
     {
         PostModel ps = getById(postModel.id);
-        ps.likes =+1;
+        ps.likes ++;
         try {
         ps.likesID.add(currentUserId);}
         catch (Exception  e){
 
           ps.likesID = new ArrayList<String>();
             ps.likesID .add(currentUserId);
+        }
+        this.postModel=ps;
+        this.saveToDB();
+    }
+    public void  unlike(String currentUserId)
+    {
+        PostModel ps = getById(postModel.id);
+        ps.likes --;
+        try {
+            ps.likesID.remove(currentUserId);}
+        catch (Exception  e){
+
+            ps.likesID = new ArrayList<String>();
+            ps.likesID .remove(currentUserId);
         }
         this.postModel=ps;
         this.saveToDB();
@@ -258,15 +272,14 @@ public class PostController extends AppCompatActivity implements DB_Interface{
             DatabaseReference dRef = fd.getReference("comments");
             dRef.child(commentModel.id).removeValue();
             //delete comment id from post comments id
-            delCommentId(commentModel.id);
+        //    delCommentId(commentModel.id);
         }
 
         public void editComment( String newCommentContent) {
             FirebaseDatabase fd = FirebaseDatabase.getInstance();
             DatabaseReference dRef = fd.getReference("comments");
             setContent(newCommentContent);
-            dRef.child(commentModel.id).setValue(commentModel);
-
+            dRef.child(commentModel.id).child("content").setValue(newCommentContent);
         }
 
     }

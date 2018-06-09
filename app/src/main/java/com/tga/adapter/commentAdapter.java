@@ -17,15 +17,23 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.tga.Activity.AddPost2;
 import com.tga.Activity.Comments;
+import com.tga.Activity.EditComment;
+import com.tga.Controller.PostController;
 import com.tga.R;
 import com.tga.models.CommentModel;
 import com.tga.models.PostModel;
 
+import java.util.ArrayList;
 import java.util.List;
 public class commentAdapter  extends RecyclerView.Adapter<commentAdapter.MyViewHolder>{
     private List<CommentModel>commentList;
     Context context;
+    FirebaseUser user ;
+
 
 
     public commentAdapter(Context mainActivityContacts,List<CommentModel> commentModels) {
@@ -42,14 +50,54 @@ public class commentAdapter  extends RecyclerView.Adapter<commentAdapter.MyViewH
 
     }
     @Override
-    public void onBindViewHolder(commentAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(final commentAdapter.MyViewHolder holder, int position) {
        final CommentModel comment = commentList.get(position);
 
         holder.content.setText(comment.content);
         holder.postTime.setText(String.valueOf(comment.date));
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
+        final PostController pc  = new PostController(null , null , System.currentTimeMillis(),
+                null , new ArrayList<String>() ,0,null );
+        final PostController.Comment c = pc.new Comment(comment.id, holder.content.getText().toString()
+                , System.currentTimeMillis() ,
+                user.getUid() ,null);
 
         Log.v("num" , commentList.size()+"")    ;
+
+        holder.deltxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+             c.delComment();
+
+            }
+        });
+        holder.edittxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!holder.content.getText().toString().trim().isEmpty()){
+                    Intent i = new Intent(context, EditComment.class);
+                    i.putExtra("postID",pc.getId());
+                    i.putExtra("ID",comment.id);
+                    i.putExtra("content",comment.content);
+
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                    context.startActivity(i);
+                }
+
+
+
+            }
+        });
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user.getUid().equals(comment.userId)){
+            holder.deltxt.setVisibility(View.VISIBLE);
+            holder.edittxt.setVisibility(View.VISIBLE);
+        } else {
+            holder.deltxt.setVisibility(View.INVISIBLE);
+            holder.edittxt.setVisibility(View.INVISIBLE);
+        }
 
     }
 
