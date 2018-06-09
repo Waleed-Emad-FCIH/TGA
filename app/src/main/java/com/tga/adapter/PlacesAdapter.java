@@ -55,6 +55,7 @@ public class PlacesAdapter  extends LoadMoreRecyclerViewAdapter<com.tga.models.P
         if (holder instanceof PlacesAdapter.ItemViewHolder) {
 
             final place placeModel = mDataList.get(position);
+
             cuurentPlaceItemId = mDataList.get(position).getPlace_id();
             try {
 

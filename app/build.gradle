@@ -19,15 +19,31 @@ android {
     }
 
 
+
     compileOptions {
         targetCompatibility 1.8
         sourceCompatibility 1.8
     }
+    defaultConfig {
+        multiDexEnabled true
+    }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/notice.txt'
+    }
 }
 
 
-
 dependencies {
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //noinspection GradleCompatible
@@ -48,6 +64,8 @@ dependencies {
     implementation 'com.android.support:support-v4:26.1.0-alpha1'
     implementation 'com.ernestoyaquello.stepperform:vertical-stepper-form:0.9.9'
     implementation 'com.google.android.gms:play-services-places:11.8.0'
+    implementation 'com.google.android.gms:play-services-maps:11.8.0'
+    //  compile 'com.akexorcist:googledirectionlibrary:1.0.4'
 
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
@@ -55,5 +73,11 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.nineoldandroids:library:2.4.0'
     implementation 'com.daimajia.slider:library:1.1.5@aar'
+//    // https://mvnrepository.com/artifact/org.apache.httpcomponents/httpcore
+//        compile group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.3.3'
+//        compile group: 'org.apache.httpcomponents' , name: 'httpclient-android' , version: '4.3.5.1'
+//// https://mvnrepository.com/artifact/org.apache.httpcomponents/httpmime
+    compile group: 'org.apache.httpcomponents', name: 'httpmime', version: '4.3.3'
+
 }
 apply plugin: 'com.google.gms.google-services'
