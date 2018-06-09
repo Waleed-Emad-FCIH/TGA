@@ -44,7 +44,7 @@
                         android:src="@drawable/ic_pin" />
 
                     <TextView
-                        android:id="@+id/address"
+                        android:id="@+id/title"
                         android:layout_gravity="center"
                         android:layout_marginLeft="5dp"
                         android:layout_width="match_parent"

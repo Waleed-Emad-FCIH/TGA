@@ -1,26 +1,21 @@
 package com.tga.Controller;
 
-import android.icu.text.DateFormat;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.firebase.client.Firebase;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.tga.models.PlaceModel;
-import com.tga.models.PlanModel;
-import com.tga.models.PostModel;
 import com.tga.models.TouristModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.concurrent.Semaphore;
 
 /**
  * Created by root on 3/9/18.
@@ -29,10 +24,11 @@ import java.util.Map;
 public class TouristController extends UserController implements DB_Interface {
 
     private TouristModel touristModel;
+    private DatabaseReference dRef;
 
     public TouristController(String id, String email, String pass, String name,
                              String phoneNo, String adrs, String photo, String nationality,
-                             ArrayList<String> historyPlans, ArrayList<String> historyPrograms) {
+                             ArrayList<String> myPlans, ArrayList<String> myPrograms) {
         super(id, email, pass, name, phoneNo, adrs);
         this.touristModel = new TouristModel();
         touristModel.photo = photo;
@@ -42,41 +38,40 @@ public class TouristController extends UserController implements DB_Interface {
         touristModel.phoneNumber = phoneNo;
         touristModel.address = adrs;
         touristModel.nationality = nationality;
-        touristModel.myPlansID = historyPlans;
-        touristModel.myProgramsID = historyPrograms;
+        touristModel.myPlansID = myPlans;
+        touristModel.myProgramsID = myPrograms;
         touristModel.id = id;
+        touristModel.myFavouritePlacesID = new ArrayList<>();
+        touristModel.myFavouriteProgramsID = new ArrayList<>();
+    }
 
+    private TouristController(TouristModel tm){
+        super(tm.id, tm.email, tm.password, tm.name, tm.phoneNumber, tm.address);
+        this.touristModel = tm;
     }
 
     public void saveToDB() {
-        FirebaseDatabase fd = FirebaseDatabase.getInstance();
-        DatabaseReference dRef = fd.getReference("tourists");
-        touristModel.id = dRef.push().getKey();
-        dRef.child(touristModel.id).setValue(touristModel);
+        DatabaseReference dRef = FirebaseDatabase.getInstance().getReference("tourists");
+        dRef.child(getId()).setValue(touristModel);
     }
 
     @Override
     public void delFromDB() {
-        FirebaseDatabase fd = FirebaseDatabase.getInstance();
-        DatabaseReference dRef = fd.getReference("tourists");
+        DatabaseReference dRef = FirebaseDatabase.getInstance().getReference("tourists");
         dRef.child(getId()).removeValue();
     }
 
     @Override
     public void updateToDB() {
-        FirebaseDatabase fd = FirebaseDatabase.getInstance();
-        DatabaseReference dRef = fd.getReference("tourists");
-        touristModel.id = dRef.push().getKey();
-        dRef.child(touristModel.id).setValue(touristModel);
+        saveToDB();
     }
 
 
-    public ArrayList<TouristModel> listAll() {
-        FirebaseDatabase fd = FirebaseDatabase.getInstance();
-        final DatabaseReference tRef = fd.getReference("tourists");
+    public static ArrayList<TouristModel> listAll() {
+        DatabaseReference dRef = FirebaseDatabase.getInstance().getReference("tourists");
         final ArrayList<TouristModel> touristModels = new ArrayList<>();
 
-        tRef.addValueEventListener(new ValueEventListener() {
+        dRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
@@ -93,7 +88,65 @@ public class TouristController extends UserController implements DB_Interface {
         return touristModels;
     }
 
+    /*public static TouristController getByID(String id) {
+        DatabaseReference dRef = FirebaseDatabase.getInstance().getReference();
+        Query q = dRef.child("tourists").orderByChild("id").equalTo(id);
+        final TouristModel[] tm = new TouristModel[1];
+        final Semaphore semaphore = new Semaphore(0);
 
+        q.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                System.out.println("onDataChange");
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    System.out.println("onDataChange and data exists = " + data.exists());
+                    tm[0] = data.getValue(TouristModel.class);
+                }
+                semaphore.release();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("TouristController", "Failed to read value by ID.", databaseError.toException());
+                semaphore.release();
+            }
+        });
+        System.out.println("Semaphore locked");
+        try {
+            semaphore.acquire();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Semaphore opened");
+        if (tm[0] == null)
+            return null;
+        else
+            return new TouristController(tm[0]);
+    }*/
+
+
+    public static void getByID(@NonNull final SimpleCallback<TouristController> finishedCallback, String id) {
+        DatabaseReference dRef = FirebaseDatabase.getInstance().getReference();
+        Query q = dRef.child("tourists").orderByChild("id").equalTo(id);
+        final TouristModel[] tm = new TouristModel[1];
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    tm[0] = data.getValue(TouristModel.class);
+                    if (tm[0] == null)
+                        finishedCallback.callback(null);
+                    else
+                        finishedCallback.callback(new TouristController(tm[0]));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("TouristController", "Failed to read value by ID.", databaseError.toException());
+            }
+        });
+    }
 
     public String getPhoto() {
         return touristModel.photo;
@@ -110,9 +163,6 @@ public class TouristController extends UserController implements DB_Interface {
 
     public void setNationality(String nationality) {
         touristModel.nationality = nationality;
-        FirebaseDatabase fd = FirebaseDatabase.getInstance();
-        DatabaseReference dRef = fd.getReference(" tourists");
-        dRef.child(getId()).setValue(touristModel);
     }
 
     public ArrayList<String> getHistoryPlans() {
@@ -231,10 +281,7 @@ public class TouristController extends UserController implements DB_Interface {
     public void addProgram(String programID)
     {
         touristModel.myProgramsID.add(programID);
-        FirebaseDatabase fd = FirebaseDatabase.getInstance();
-        DatabaseReference dRef = fd.getReference("tourists");
-        dRef.child(getId()).setValue(touristModel);
-
+        updateToDB();
     }
 
     public void delPlan(String planID) {
@@ -247,9 +294,7 @@ public class TouristController extends UserController implements DB_Interface {
     public void delProgram(String programID) {
 
         touristModel.myProgramsID.remove(programID);
-        FirebaseDatabase fd  = FirebaseDatabase.getInstance();
-        DatabaseReference dRef = fd.getReference("tourists");
-        dRef.child(getId()).setValue(touristModel);
+        updateToDB();
     }
 
 
@@ -257,37 +302,44 @@ public class TouristController extends UserController implements DB_Interface {
 
     }
 
-    public void editMyProgram(String programID) {
-
+    public void editMyProgram(String programID, final String title, final String desc,
+                              final String startDate, final String endDate, final String hotelName) {
+        ProgramController.getByID(new SimpleCallback<ProgramController>() {
+            @Override
+            public void callback(ProgramController pc) {
+                pc.editProgram(title, desc, startDate, endDate, hotelName);
+                pc.updateToDB();
+            }
+        }, programID);
     }
 
     public void favouritePlace(String placeID){
 
         touristModel.myFavouritePlacesID.add(placeID);
-        FirebaseDatabase fd = FirebaseDatabase.getInstance();
-        DatabaseReference dRef = fd.getReference("tourists");
-        dRef.child(getId()).setValue(touristModel);
+        updateToDB();
     }
 
     public void favouriteProgram(String programID){
+        if (touristModel.myFavouriteProgramsID == null)
+            touristModel.myFavouriteProgramsID = new ArrayList<>();
         touristModel.myFavouriteProgramsID.add(programID);
-        FirebaseDatabase fd = FirebaseDatabase.getInstance();
-        DatabaseReference dRef = fd.getReference("tourists");
-        dRef.child(getId()).setValue(touristModel);
+        updateToDB();
     }
 
     public void unFavouritePlace(String placeID){
         touristModel.myFavouritePlacesID.remove(placeID);
-        FirebaseDatabase fd = FirebaseDatabase.getInstance();
-        DatabaseReference dRef = fd.getReference("tourists");
-        dRef.child(getId()).setValue(touristModel);
+        updateToDB();
     }
 
     public void unFavouriteProgram(String programID){
         touristModel.myFavouriteProgramsID.remove(programID);
-        FirebaseDatabase fd = FirebaseDatabase.getInstance();
-        DatabaseReference dRef = fd.getReference("tourists");
-        dRef.child(getId()).setValue(touristModel);
+        updateToDB();
+    }
+
+    public ArrayList<String> getMyFavouritPrograms(){
+        if (this.touristModel.myFavouriteProgramsID == null)
+            return new ArrayList<>();
+        return this.touristModel.myFavouriteProgramsID;
     }
 
     @Override

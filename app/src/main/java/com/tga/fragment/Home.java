@@ -2,7 +2,6 @@ package com.tga.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,9 +12,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tga.Activity.MyPrograms;
+import com.tga.Controller.ProgramController;
 import com.tga.R;
-import com.tga.adapter.RecycleAdapter_Offers;
-import com.tga.model.Offers;
+import com.tga.adapter.RecycleAdapter_Home;
 
 import java.util.ArrayList;
 
@@ -28,18 +27,10 @@ public class Home extends Fragment {
 
     View view;
 
-    private String title[]= {"loxour","pyramids","sharm"};
-
-    private String price[]= {"$1,00,000","$1,00,000","$1,00,000","$1,00,000"};
-    private int image[]= {R.drawable.loxour,R.drawable.pyramids,R.drawable.sharm};
-
-
-    private ArrayList<Offers> ArrayList;
+    private ArrayList<ProgramController> ArrayList;
     private RecyclerView recyclerView;
-    private RecycleAdapter_Offers mAdapter;
+    private RecycleAdapter_Home mAdapter;
     private TextView txtMyPrograms;
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,18 +39,17 @@ public class Home extends Fragment {
 
 
         recyclerView = (RecyclerView) view.findViewById(R.id.home_recyclerview);
-        ArrayList = new ArrayList<>();
+        ArrayList = ProgramController.listAll();
 
 
+        //TODO : active this
+        //for (int i = 0; i < ArrayList.size(); i++) {
+        //    if (ArrayList.get(i).getPrice() == 0)
+        //        ArrayList.remove(i);
+        //}
 
-        for (int i = 0; i < title.length; i++) {
-            Offers beanClassForRecyclerView_contacts = new Offers(title[i],price[i],image[i]);
 
-            ArrayList.add(beanClassForRecyclerView_contacts);
-        }
-
-
-        mAdapter = new RecycleAdapter_Offers(getActivity(),ArrayList);
+        mAdapter = new RecycleAdapter_Home(getActivity(),ArrayList, "Home");
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);

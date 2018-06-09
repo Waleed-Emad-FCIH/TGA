@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.tga.R;
-import com.tga.adapter.RecycleAdapter_Offers;
+import com.tga.adapter.RecycleAdapter_Home;
 import com.tga.model.Offers;
 
 import java.util.ArrayList;
@@ -18,14 +18,14 @@ public class SearchResults extends AppCompatActivity {
 
     private String title[]= {"loxour","pyramids","sharm"};
 
-    private String price[]= {"$1,00,000","$1,00,000","$1,00,000","$1,00,000"};
+    private String price[]= {"$1,000,000","$1,000,000","$1,000,000","$1,000,000"};
     private int image[]= {R.drawable.loxour,R.drawable.pyramids,R.drawable.sharm};
     private ImageView imgBack;
 
-
+/*
     private java.util.ArrayList<Offers> ArrayList;
     private RecyclerView recyclerView;
-    private RecycleAdapter_Offers mAdapter;
+    private RecycleAdapter_Home mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +50,12 @@ public class SearchResults extends AppCompatActivity {
         }
 
 
-        mAdapter = new RecycleAdapter_Offers(getApplicationContext(),ArrayList);
+        mAdapter = new RecycleAdapter_Home(getApplicationContext(),ArrayList);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-    }
+    }*/
 }

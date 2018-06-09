@@ -1,32 +1,21 @@
 package com.tga.Activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.tga.R;
-import com.tga.adapter.Category;
-import com.tga.adapter.RecycleAdapter_Offers;
 import com.tga.adapter.SearchAdapter;
-import com.tga.model.Offers;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class Search extends AppCompatActivity {
 
@@ -38,7 +27,7 @@ public class Search extends AppCompatActivity {
     private ImageView searchicon;
 //
 //    private RecyclerView recyclerView2;
-//    private RecycleAdapter_Offers adapter2;
+//    private RecycleAdapter_Home adapter2;
 //    private GridLayoutManager gridLayoutManager;
 //    private String category;
 //    private String prName;

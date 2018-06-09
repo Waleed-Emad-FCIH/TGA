@@ -11,10 +11,17 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Button;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.tga.Controller.ProgramController;
+import com.tga.Controller.SimpleCallback;
+import com.tga.Controller.TouristController;
 import com.tga.R;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -22,8 +29,10 @@ public class AddProgram extends AppCompatActivity {
 
 
     private ImageView imgAddPlaces;
-    private EditText imgProgramStart,imgProgramEnd;
+    private EditText imgProgramStart,imgProgramEnd, txtTitle, txtDescription, txtHotelName;
     private int mYear,mMonth,mDay;
+    private Button btnAddProgram;
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +45,12 @@ public class AddProgram extends AppCompatActivity {
         imgAddPlaces = (ImageView)findViewById(R.id.imgAddPlaces);
         imgProgramStart = (EditText)findViewById(R.id.imgProgramStart);
         imgProgramEnd =(EditText)findViewById(R.id.imgProgramEnd);
+        btnAddProgram = (Button) findViewById(R.id.btnAddProgram);
+        txtDescription = (EditText) findViewById(R.id.etxtProgramDesc);
+        txtTitle = (EditText) findViewById(R.id.etxtProgramTitle);
+        txtHotelName = (EditText) findViewById(R.id.txtPHotelName);
+
+        userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         imgAddPlaces.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,7 +116,36 @@ public class AddProgram extends AppCompatActivity {
             }
         });
 
+        btnAddProgram.setOnClickListener(new View.OnClickListener(){
 
+            @Override
+            public void onClick(View view) {
+                if (!checkText()) {
+                    final ProgramController pc = new ProgramController(txtTitle.getText().toString(), new ArrayList<String>(), txtDescription.getText().toString(),
+                            imgProgramStart.getText().toString(), imgProgramEnd.getText().toString(),
+                            txtHotelName.getText().toString(), userID);
+                    pc.saveToDB();
+                    TouristController.getByID(new SimpleCallback<TouristController>() {
+                        @Override
+                        public void callback(TouristController data) {
+                            if (data != null)
+                                data.addProgram(pc.getId());
+                        }
+                    }, userID);
+                    Toast.makeText(getApplicationContext(), "Successfully added", Toast.LENGTH_SHORT).show();
+                    onBackPressed();
+                }
+                else
+                    Toast.makeText(getApplicationContext(), "Fill all fields", Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+    private boolean checkText(){
+        return txtTitle.getText().toString().isEmpty() || txtDescription.getText().toString().isEmpty() ||
+                txtHotelName.getText().toString().isEmpty() || imgProgramStart.getText().toString().isEmpty() ||
+                imgProgramEnd.getText().toString().isEmpty() ;
     }
 
     @Override

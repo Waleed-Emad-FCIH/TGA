@@ -100,7 +100,7 @@
         <activity android:name=".Activity.AddPlan" />
         <activity android:name=".Activity.EditPlan" />
         <activity
-            android:name=".Activity.DiscountsDetails"
+            android:name=".Activity.DiscountDetails"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -123,11 +123,13 @@
             android:name=".Activity.PlaceDetails"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".Activity.ChangePassword"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity.ChangePassword"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activity.ProgDetails"></activity>
     </application>
 
 </manifest>

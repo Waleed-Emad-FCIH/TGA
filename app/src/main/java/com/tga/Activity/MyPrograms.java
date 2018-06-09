@@ -11,25 +11,27 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.tga.Controller.ProgramController;
+import com.tga.Controller.SimpleCallback;
+import com.tga.Controller.TouristController;
 import com.tga.R;
-import com.tga.adapter.RecycleAdapter_Offers;
-import com.tga.model.Offers;
+import com.tga.adapter.DiscountsAdapter;
+import com.tga.adapter.RecycleAdapter_Home;
 
 import java.util.ArrayList;
+import java.util.concurrent.Semaphore;
 
 public class MyPrograms extends AppCompatActivity {
 
-    private String title[]= {"loxour","pyramids","sharm"};
-
-    private String price[]= {"$1,00,000","$1,00,000","$1,00,000","$1,00,000"};
-    private int image[]= {R.drawable.loxour,R.drawable.pyramids,R.drawable.sharm};
-
-
-    private java.util.ArrayList<Offers> ArrayList;
     private RecyclerView recyclerView;
-    private RecycleAdapter_Offers mAdapter;
+    private RecycleAdapter_Home mAdapter;
+    private ArrayList<ProgramController> arrayList;
     private FloatingActionButton fabAddProgram;
+    private String userID;
+    private Semaphore semaphore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,31 +43,48 @@ public class MyPrograms extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.myPrograms_recyclerview);
         fabAddProgram = (FloatingActionButton)findViewById(R.id.fabAddProgram);
-        ArrayList = new ArrayList<>();
+        arrayList = new ArrayList<>();
 
+        userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-
-        for (int i = 0; i < title.length; i++) {
-            Offers beanClassForRecyclerView_contacts = new Offers(title[i],price[i],image[i]);
-
-            ArrayList.add(beanClassForRecyclerView_contacts);
-        }
-
-
-        mAdapter = new RecycleAdapter_Offers(getApplicationContext(),ArrayList);
-
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
-
-        fabAddProgram.setOnClickListener(new View.OnClickListener() {
+        TouristController.getByID(new SimpleCallback<TouristController>() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),AddProgram.class);
-                startActivity(intent);
+            public void callback(TouristController data) {
+                if (data == null){
+                    System.out.println("tc is null");
+                    onBackPressed();
+                    Toast.makeText(getApplicationContext(), "Tourist not found", Toast.LENGTH_LONG).show();
+                    return;
+                } else {
+                    ArrayList<String> array = data.getMyPrograms();
+                    for (int i = 0; i < array.size(); i++){
+                        ProgramController.getByID(new SimpleCallback<ProgramController>() {
+                            @Override
+                            public void callback(ProgramController pc) {
+                                if (pc != null){
+                                    arrayList.add(pc);
+                                }
+                            }
+                        }, array.get(i));
+                    }
+
+                    mAdapter = new RecycleAdapter_Home(getApplicationContext(),arrayList, "MyPrograms");
+
+                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+                    recyclerView.setLayoutManager(mLayoutManager);
+                    recyclerView.setItemAnimator(new DefaultItemAnimator());
+                    recyclerView.setAdapter(mAdapter);
+
+                    fabAddProgram.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(getApplicationContext(),AddProgram.class);
+                            startActivity(intent);
+                        }
+                    });
+                }
             }
-        });
+        }, userID);
 
     }
 

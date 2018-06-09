@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.tga.Controller.ProgramController;
 import com.tga.R;
 import com.tga.adapter.DiscountsAdapter;
 import com.tga.adapter.SearchAdapter;
@@ -21,11 +22,7 @@ import java.util.ArrayList;
 
 public class Discounts extends AppCompatActivity {
 
-    private int image[]= {R.drawable.room1,R.drawable.room2,R.drawable.room4,R.drawable.room5,R.drawable.room1};
-    private String title[]= {"special offer for new married","new offer to you","offer offer offer","special offer for new married","new offer to you"};
-    private String offer[]= {"Up to 10%","15% off","10$ Discounts","Up to 10%","15% off"};
-    private String companyName[]= {"blabla","coco","HamadaTourists","Your Guide","HELMT"};
-    private java.util.ArrayList<DiscountsModel> ArrayList;
+    private ArrayList<ProgramController> arrayList;
     private RecyclerView recyclerView;
     private DiscountsAdapter mAdapter;
 
@@ -38,18 +35,15 @@ public class Discounts extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2C3646")));
 
         recyclerView = (RecyclerView) findViewById(R.id.reDiscounts);
-        ArrayList = new ArrayList<>();
+        arrayList = ProgramController.listAll();
 
-
-
-        for (int i = 0; i < image.length; i++) {
-            DiscountsModel beanClassForRecyclerView_contacts = new DiscountsModel(offer[i],title[i],companyName[i],image[i]);
-
-            ArrayList.add(beanClassForRecyclerView_contacts);
+        for (int i = 0; i < arrayList.size(); i++) {
+            if (arrayList.get(i).getDiscountID().isEmpty())
+                arrayList.remove(i);
         }
 
 
-        mAdapter = new DiscountsAdapter(getApplicationContext(),ArrayList);
+        mAdapter = new DiscountsAdapter(getApplicationContext(),arrayList);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));

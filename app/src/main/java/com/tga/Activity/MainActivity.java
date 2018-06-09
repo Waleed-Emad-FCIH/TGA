@@ -33,6 +33,8 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
+import com.tga.Controller.AgentController;
+import com.tga.Controller.TouristController;
 import com.tga.R;
 import com.tga.fragment.AboutUs;
 import com.tga.fragment.ContactUs;
@@ -84,6 +86,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 //        toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
+        //new AgentController("123", "email", "pass", "name", "phone",
+        //        "adrs", "", "regNo", new ArrayList<String>()).saveToDB();
+        /*ArrayList<String> ls = new ArrayList<>();
+        ls.add("String1");
+        new TouristController("gC6s7ZYn5UhE5crneWZm95IzBji1", "zezo@gmail.com", "12345678",
+                "ZezoOo", "phone",
+                "adrs", "", "Egypt", ls, ls).saveToDB();*/
 
         drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
         navigationView = (NavigationView)findViewById(R.id.nav_view);

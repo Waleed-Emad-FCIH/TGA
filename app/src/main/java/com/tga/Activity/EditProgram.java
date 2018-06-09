@@ -8,22 +8,27 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.tga.Controller.ProgramController;
+import com.tga.Controller.SimpleCallback;
 import com.tga.R;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
 public class EditProgram extends AppCompatActivity {
 
     private ImageView imgAddPlaces;
-    private EditText imgProgramStart,imgProgramEnd;
+    private EditText imgProgramStart,imgProgramEnd, txtTitle, txtDescription, txtHotelName;
     private int mYear,mMonth,mDay;
-
+    private Button btnUpdateProgram;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,72 +41,109 @@ public class EditProgram extends AppCompatActivity {
         imgAddPlaces = (ImageView)findViewById(R.id.imgAddPlaces);
         imgProgramStart = (EditText)findViewById(R.id.imgProgramStart);
         imgProgramEnd =(EditText)findViewById(R.id.imgProgramEnd);
+        btnUpdateProgram = (Button) findViewById(R.id.btnEditProgram);
+        txtDescription = (EditText) findViewById(R.id.etxtProgramDesc);
+        txtTitle = (EditText) findViewById(R.id.etxtProgramTitle);
+        txtHotelName = (EditText) findViewById(R.id.txtPHotelName);
 
-        imgAddPlaces.setOnClickListener(new View.OnClickListener() {
+        String progID = getIntent().getStringExtra("PROG_ID");
+        ProgramController.getByID(new SimpleCallback<ProgramController>() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),AllPlaces.class);
-                startActivity(intent);
-            }
-        });
+            public void callback(final ProgramController pc) {
+                imgProgramStart.setText(pc.getStartDate());
+                imgProgramEnd.setText(pc.getEndDate());
+                txtTitle.setText(pc.getTitle());
+                txtDescription.setText(pc.getDescription());
+                txtHotelName.setText(pc.getHotelName());
 
-        imgProgramStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Calendar mcurrentDate = Calendar.getInstance();
-                mYear = mcurrentDate.get(Calendar.YEAR);
-                mMonth = mcurrentDate.get(Calendar.MONTH);
-                mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
-
-                DatePickerDialog mDatePicker = new DatePickerDialog(EditProgram.this, new DatePickerDialog.OnDateSetListener() {
-                    public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
-                        Calendar myCalendar = Calendar.getInstance();
-                        myCalendar.set(Calendar.YEAR, selectedyear);
-                        myCalendar.set(Calendar.MONTH, selectedmonth);
-                        myCalendar.set(Calendar.DAY_OF_MONTH, selectedday);
-                        String myFormat = "dd/MM/yy"; //Change as you need
-                        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.FRANCE);
-                        imgProgramStart.setText(sdf.format(myCalendar.getTime()));
-
-                        mDay = selectedday;
-                        mMonth = selectedmonth;
-                        mYear = selectedyear;
+                imgAddPlaces.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getApplicationContext(),AllPlaces.class);
+                        startActivity(intent);
                     }
-                }, mYear, mMonth, mDay);
-                //mDatePicker.setTitle("Select date");
-                mDatePicker.show();
-            }
-        });
+                });
 
-        imgProgramEnd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Calendar mcurrentDate = Calendar.getInstance();
-                mYear = mcurrentDate.get(Calendar.YEAR);
-                mMonth = mcurrentDate.get(Calendar.MONTH);
-                mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+                imgProgramStart.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Calendar mcurrentDate = Calendar.getInstance();
+                        mYear = mcurrentDate.get(Calendar.YEAR);
+                        mMonth = mcurrentDate.get(Calendar.MONTH);
+                        mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog mDatePicker = new DatePickerDialog(EditProgram.this, new DatePickerDialog.OnDateSetListener() {
-                    public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
-                        Calendar myCalendar = Calendar.getInstance();
-                        myCalendar.set(Calendar.YEAR, selectedyear);
-                        myCalendar.set(Calendar.MONTH, selectedmonth);
-                        myCalendar.set(Calendar.DAY_OF_MONTH, selectedday);
-                        String myFormat = "dd/MM/yy"; //Change as you need
-                        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.FRANCE);
-                        imgProgramEnd.setText(sdf.format(myCalendar.getTime()));
+                        DatePickerDialog mDatePicker = new DatePickerDialog(EditProgram.this, new DatePickerDialog.OnDateSetListener() {
+                            public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
+                                Calendar myCalendar = Calendar.getInstance();
+                                myCalendar.set(Calendar.YEAR, selectedyear);
+                                myCalendar.set(Calendar.MONTH, selectedmonth);
+                                myCalendar.set(Calendar.DAY_OF_MONTH, selectedday);
+                                String myFormat = "dd/MM/yy"; //Change as you need
+                                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.FRANCE);
+                                imgProgramStart.setText(sdf.format(myCalendar.getTime()));
 
-                        mDay = selectedday;
-                        mMonth = selectedmonth;
-                        mYear = selectedyear;
+                                mDay = selectedday;
+                                mMonth = selectedmonth;
+                                mYear = selectedyear;
+                            }
+                        }, mYear, mMonth, mDay);
+                        //mDatePicker.setTitle("Select date");
+                        mDatePicker.show();
                     }
-                }, mYear, mMonth, mDay);
-                //mDatePicker.setTitle("Select date");
-                mDatePicker.show();
+                });
+
+                imgProgramEnd.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Calendar mcurrentDate = Calendar.getInstance();
+                        mYear = mcurrentDate.get(Calendar.YEAR);
+                        mMonth = mcurrentDate.get(Calendar.MONTH);
+                        mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+
+                        DatePickerDialog mDatePicker = new DatePickerDialog(EditProgram.this, new DatePickerDialog.OnDateSetListener() {
+                            public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
+                                Calendar myCalendar = Calendar.getInstance();
+                                myCalendar.set(Calendar.YEAR, selectedyear);
+                                myCalendar.set(Calendar.MONTH, selectedmonth);
+                                myCalendar.set(Calendar.DAY_OF_MONTH, selectedday);
+                                String myFormat = "dd/MM/yy"; //Change as you need
+                                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.FRANCE);
+                                imgProgramEnd.setText(sdf.format(myCalendar.getTime()));
+
+                                mDay = selectedday;
+                                mMonth = selectedmonth;
+                                mYear = selectedyear;
+                            }
+                        }, mYear, mMonth, mDay);
+                        //mDatePicker.setTitle("Select date");
+                        mDatePicker.show();
+                    }
+                });
+
+                btnUpdateProgram.setOnClickListener(new View.OnClickListener(){
+
+                    @Override
+                    public void onClick(View view) {
+                        if (!checkText()) {
+                            pc.editProgram(txtTitle.getText().toString(), txtDescription.getText().toString(),
+                                    imgProgramStart.getText().toString(), imgProgramEnd.getText().toString(),
+                                    txtHotelName.getText().toString());
+                            pc.updateToDB();
+                            Toast.makeText(getApplicationContext(), "Successfully updated", Toast.LENGTH_SHORT).show();
+                            onBackPressed();
+                        }
+                        else
+                            Toast.makeText(getApplicationContext(), "Fill all fields", Toast.LENGTH_LONG).show();
+                    }
+                });
             }
-        });
+        }, progID);
+    }
 
-
+    private boolean checkText(){
+        return txtTitle.getText().toString().isEmpty() || txtDescription.getText().toString().isEmpty() ||
+                txtHotelName.getText().toString().isEmpty() || imgProgramStart.getText().toString().isEmpty() ||
+                imgProgramEnd.getText().toString().isEmpty() ;
     }
 
     @Override
