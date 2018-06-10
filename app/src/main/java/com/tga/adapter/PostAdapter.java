@@ -18,7 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.util.Log;
 
-import com.bumptech.glide.Glide;
+//import com.bumptech.glide.Glide;
 import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,6 +31,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 import com.tga.Activity.AddPost2;
 import com.tga.Activity.Comments;
 import com.tga.Activity.PostDetails;
@@ -40,6 +41,7 @@ import com.tga.R;
 import com.tga.model.User;
 import com.tga.models.PostModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.view.View.GONE;
@@ -91,12 +93,12 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.MyViewHolder>
 
 
 
-        Log.v("num" , postList.size()+"")    ;
+       // Log.v("num" , postList.size()+"")    ;
 
         final PostController object =new PostController(post.id,
                 holder.content.getText().toString()
                 , System.currentTimeMillis(),null,
-                null,0,null);
+                null,0,new ArrayList<>());
 
 
         holder.edittxt.setOnClickListener(new View.OnClickListener() {
@@ -149,16 +151,26 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.MyViewHolder>
 
             }
         });
-        FirebaseDatabase fd = FirebaseDatabase.getInstance();
-        final DatabaseReference tRef = fd.getReference("users").child(post.userId);
-        tRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        try {
+            FirebaseDatabase fd = FirebaseDatabase.getInstance();
+            final DatabaseReference tRef = fd.getReference("users").child(post.userId);
+            tRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    User user = (User) dataSnapshot.getValue();
-                    Glide.with(context)
-                            .load(user.getProfilePic())
+                User muserٍ=  dataSnapshot.getValue(User.class);
+                try {
+                    Picasso.with(context)
+                            .load(muserٍ.getProfilePic())
                             .into(holder.ppimg);
+                }
+                catch (Exception e)
+                {
 
+                }
+
+
+
+                    holder.txtname.setText(muserٍ.getName());
                 }
 
                 @Override
@@ -166,6 +178,11 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.MyViewHolder>
 
                 }
             });
+        }
+        catch (Exception e)
+        {
+
+        }
 
 /*
 

@@ -61,7 +61,7 @@ public class PostController extends AppCompatActivity implements DB_Interface{
         FirebaseDatabase fd = FirebaseDatabase.getInstance();
         DatabaseReference dRef = fd.getReference("posts");
         dRef.child(postModel.id).setValue(postModel);
-        dRef.child((postModel.id)).child("commentsID").setValue(postModel.commentsID);
+       // dRef.child((postModel.id)).child("commentsID").setValue(postModel.commentsID);
 
     }
     public String getId() {
@@ -175,17 +175,33 @@ public class PostController extends AppCompatActivity implements DB_Interface{
 
     public void  like(String currentUserId)
     {
-        PostModel ps = getById(postModel.id);
-        ps.likes ++;
-        try {
-        ps.likesID.add(currentUserId);}
-        catch (Exception  e){
+        FirebaseDatabase fd = FirebaseDatabase.getInstance();
+        final DatabaseReference tRef = fd.getReference("posts").child(postModel.id);
+        tRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+               postModel= dataSnapshot.getValue(PostModel.class);
+               postModel.likes = postModel.likes+1;
+               try {
+                   postModel.likesID.add(currentUserId);
+               }
+               catch (Exception e)
+               {
+                   postModel.likesID = new ArrayList<>();
+                   postModel.likesID.add(currentUserId);
+               }
 
-          ps.likesID = new ArrayList<String>();
-            ps.likesID .add(currentUserId);
-        }
-        this.postModel=ps;
-        this.saveToDB();
+              // tRef.setValue(postModel);
+               updateToDB();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
     public void  unlike(String currentUserId)
     {
@@ -199,7 +215,7 @@ public class PostController extends AppCompatActivity implements DB_Interface{
             ps.likesID .remove(currentUserId);
         }
         this.postModel=ps;
-        this.saveToDB();
+      //  this.updateToDB();
     }
     public  PostModel getById(String id)
     {
