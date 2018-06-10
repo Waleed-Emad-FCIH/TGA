@@ -9,7 +9,6 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.tga.R;
-import com.tga.model.ReviewModel;
 import com.tga.model.reviews;
 
 

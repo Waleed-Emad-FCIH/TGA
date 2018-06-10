@@ -67,8 +67,7 @@ dependencies {
     implementation 'com.ernestoyaquello.stepperform:vertical-stepper-form:0.9.9'
     implementation 'com.google.android.gms:play-services-places:11.8.0'
     implementation 'com.google.android.gms:play-services-maps:11.8.0'
-    compile 'com.akexorcist:googledirectionlibrary:1.0.4'
-    implementation 'com.github.bumptech.glide:glide:4.7.1'
+    implementation 'com.akexorcist:googledirectionlibrary:1.0.4'
     //annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
@@ -77,7 +76,7 @@ dependencies {
     implementation 'com.nineoldandroids:library:2.4.0'
     implementation 'com.daimajia.slider:library:1.1.5@aar'
 
-    compile group: 'org.apache.httpcomponents', name: 'httpmime', version: '4.3.3'
+    implementation group: 'org.apache.httpcomponents', name: 'httpmime', version: '4.3.3'
 
 }
 apply plugin: 'com.google.gms.google-services'

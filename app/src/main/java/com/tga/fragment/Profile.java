@@ -20,8 +20,9 @@ import com.tga.Activity.Community;
 import com.tga.Activity.Community2;
 import com.tga.Activity.EditProfile;
 import com.tga.Activity.History;
+import com.tga.Controller.SimpleCallback;
+import com.tga.Controller.TouristController;
 import com.tga.R;
-import com.tga.model.User;
 import com.tga.util.CircleTransform;
 
 import java.util.ArrayList;
@@ -94,40 +95,22 @@ public class Profile extends Fragment {
 
 
         final String uid = mAuth.getCurrentUser().getUid();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        Query query2 = database.getReference("users").orderByChild("id").equalTo(uid);
-        query2.addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
+        TouristController.getByID(new SimpleCallback<TouristController>() {
             @Override
-            public void onDataChange(com.google.firebase.database.DataSnapshot snapshot) {
-                // do some stuff once
-
-                HashMap<String, User> results = snapshot.getValue(new GenericTypeIndicator<HashMap<String, User>>() {
-                });
-
-                List<User> posts = new ArrayList<>(results.values());
-
-                for (User post : posts) {
-                    txtFullName.setText(post.getName());
-                    txtNationality.setText(post.getCountry());
-                    txtPhone.setText(post.getPhoneNumber());
-                    txtEmail.setText(post.getEmail());
-                    if (post.getProfilePic()!=null  && post.getProfilePic()!= "" && !post.getProfilePic().equals("") && !post.getProfilePic().equals(null)){
-                        Picasso.with(getContext())
-                                .load(post.getProfilePic())
-                                .transform(new CircleTransform())
-                                .into(imgProfile);
-                        picProfile = post.getProfilePic();
-                    }
-
-
+            public void callback(TouristController data) {
+                txtFullName.setText(data.getName());
+                txtNationality.setText(data.getNationality());
+                txtPhone.setText(data.getPhoneNumber());
+                txtEmail.setText(data.getEmail());
+                if (data.getPhoto()!=null  && data.getPhoto()!= "" && !data.getPhoto().equals("") && !data.getPhoto().equals(null)){
+                    Picasso.with(getContext())
+                            .load(data.getPhoto())
+                            .transform(new CircleTransform())
+                            .into(imgProfile);
+                    picProfile = data.getPhoto();
                 }
             }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        },uid);
 
 
         return v;

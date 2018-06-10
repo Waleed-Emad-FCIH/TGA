@@ -33,8 +33,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
+import com.tga.Controller.TouristController;
 import com.tga.R;
-import com.tga.model.User;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,7 +47,7 @@ public class Login extends AppCompatActivity {
     private TextView txtLogin;
     private TextView txtForgetPassword;
     private ImageView imgGoogle;
-    private User user;
+    private TouristController user;
     private EditText email;
     private EditText password;
     private FirebaseAuth mAuth;
@@ -221,16 +222,16 @@ public class Login extends AppCompatActivity {
 
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-                            Query query = database.getReference("users");
+                            Query query = database.getReference("tourists");
                             query.addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
                                 @Override
                                 public void onDataChange(com.google.firebase.database.DataSnapshot snapshot) {
 
                                     try {
-                                        HashMap<String, User> results = snapshot.getValue(new GenericTypeIndicator<HashMap<String, User>>() {});
-                                        List<User> users = new ArrayList<>(results.values());
+                                        HashMap<String, TouristController> results = snapshot.getValue(new GenericTypeIndicator<HashMap<String, TouristController>>() {});
+                                        List<TouristController> users = new ArrayList<>(results.values());
                                         boolean flag=false;
-                                        for (User user:users){
+                                        for (TouristController user:users){
                                             if (user.getId().equals(uid)){
                                                 flag=true;
                                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -242,10 +243,11 @@ public class Login extends AppCompatActivity {
                                             }
                                         }
                                         if (flag==false){
-                                            User user = new User(uid, name, "",  email,  "",  "",
-                                                    "",image,"","");
+                                            TouristController user = new TouristController(uid, email, password.getText().toString(), name,
+                                                    "", "", "", "",
+                                                    new ArrayList<String>(), new ArrayList<String>());
                                             FirebaseDatabase mRef1 = FirebaseDatabase.getInstance();
-                                            DatabaseReference users1 = mRef1.getReference("users");
+                                            DatabaseReference users1 = mRef1.getReference("tourists");
                                             users1.child(uid).setValue(user);
                                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -271,7 +273,7 @@ public class Login extends AppCompatActivity {
     }
 
     protected void setUpUser() {
-        user = new User();
+        user = new TouristController("",email.getText().toString(),password.getText().toString(),"","","");
         user.setEmail(email.getText().toString());
         user.setPassword(password.getText().toString());
     }

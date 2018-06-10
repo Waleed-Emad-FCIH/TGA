@@ -33,7 +33,7 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
-import com.tga.Controller.AgentController;
+import com.tga.Controller.SimpleCallback;
 import com.tga.Controller.TouristController;
 import com.tga.R;
 import com.tga.fragment.AboutUs;
@@ -44,7 +44,7 @@ import com.tga.fragment.Plans;
 import com.tga.fragment.Privacy;
 import com.tga.fragment.Profile;
 import com.tga.fragment.Settings;
-import com.tga.model.User;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -86,17 +86,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 //        toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
-        //new AgentController("123", "email", "pass", "name", "phone",
-        //        "adrs", "", "regNo", new ArrayList<String>()).saveToDB();
-        /*ArrayList<String> ls = new ArrayList<>();
-        ls.add("String1");
-        new TouristController("gC6s7ZYn5UhE5crneWZm95IzBji1", "zezo@gmail.com", "12345678",
-                "ZezoOo", "phone",
-                "adrs", "", "Egypt", ls, ls).saveToDB();*/
 
         drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
         navigationView = (NavigationView)findViewById(R.id.nav_view);
-        myFirebaseRef = new Firebase("https://tguidea-86215.firebaseio.com/users/");
+        myFirebaseRef = new Firebase("https://tguidea-86215.firebaseio.com/tourists/");
 
 
         // Navigation view header
@@ -119,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         frameLayout = (FrameLayout) findViewById(R.id.framelayout);
 
 
-         bottomBar = (BottomBar) findViewById(R.id.bottombar);
+        bottomBar = (BottomBar) findViewById(R.id.bottombar);
         for (int i = 0; i < bottomBar.getTabCount(); i++) {
             bottomBar.getTabAtPosition(i).setGravity(Gravity.CENTER_VERTICAL);
         }
@@ -156,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTabSelected(@IdRes int tabId) {
-             //   Fragment fragment = null;
+                //   Fragment fragment = null;
 
 //                if (getIntent() != null && getIntent().hasExtra("check")) {
 //                    tabId = getIntent().getIntExtra("check", -1);
@@ -243,36 +236,12 @@ public class MainActivity extends AppCompatActivity {
     private void loadNavHeader() {
 
         final String uid = mAuth.getCurrentUser().getUid();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        Query query2 = database.getReference("users").orderByChild("id").equalTo(uid);
-        query2.addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
+        TouristController.getByID(new SimpleCallback<TouristController>() {
             @Override
-            public void onDataChange(com.google.firebase.database.DataSnapshot snapshot) {
-                // do some stuff once
-
-                HashMap<String, User> results = snapshot.getValue(new GenericTypeIndicator<HashMap<String, User>>() {
-                });
-                if (results == null) {
-                    GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                            .requestEmail()
-                            .build();
-                    GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(getApplicationContext(), gso);
-                    mGoogleSignInClient.signOut();
-                    Intent intent = new Intent(MainActivity.this, Login.class);
-                    startActivity(intent);
-                }
-                List<User> posts = new ArrayList<>(results.values());
-
-                for (User post : posts) {
-                    txtUserName.setText(post.getName());
-                }
+            public void callback(TouristController data) {
+                txtUserName.setText(data.getName());
             }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        },uid);
     }
 
     private Fragment getHomeFragment() {

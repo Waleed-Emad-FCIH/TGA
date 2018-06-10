@@ -23,16 +23,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.tga.Controller.TouristController;
 import com.tga.R;
-import com.tga.model.User;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class SignUp extends AppCompatActivity {
 
     private FirebaseDatabase mRef = FirebaseDatabase.getInstance();
-    private User user;
+    private TouristController user;
     private EditText name;
     private EditText email;
     private EditText password;
@@ -77,23 +78,10 @@ public class SignUp extends AppCompatActivity {
 
     }
 
-    protected void setUpUser() {
-        user = new User();
-        user.setName(name.getText().toString());
-        user.setEmail(email.getText().toString());
-        user.setPassword(password.getText().toString());
-        user.setCountry(country.getSelectedItem().toString());
-        user.setGender("");
-        user.setPhoneNumber("");
-        user.setAddress("");
-        user.setbDate("");
-        user.setProfilePic("");
 
-    }
 
     private void createNewAccount(String email, String password) {
 
-        setUpUser();
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -113,22 +101,23 @@ public class SignUp extends AppCompatActivity {
 
     private void onAuthenticationSucess(final FirebaseUser mUser) {
         // Write new user
-        saveNewUser(mUser.getUid(), user.getName(), user.getPhoneNumber(), user.getEmail(), user.getPassword(),user.getCountry(),
-                user.getGender(),user.getProfilePic(),user.getbDate(),user.getAddress());
+        ArrayList<String>myplansIds = new ArrayList<>();
+        ArrayList<String>myprogIds = new ArrayList<>();
+        myplansIds.add("");
+        myprogIds.add("");
+        TouristController user = new TouristController(mUser.getUid(), email.getText().toString(), password.getText().toString(), name.getText().toString(),
+                "", country.getSelectedItem().toString(), "", country.getSelectedItem().toString(),
+                myplansIds, myprogIds);
+
+//        mRef.push().setValue(profileModel);
+        //mRef.child("users").child(userId).setValue(user);
+        DatabaseReference users = mRef.getReference("tourists");
+        users.child(mUser.getUid()).setValue(user);
         startActivity(new Intent(SignUp.this, MainActivity.class));
         finish();
     }
 
-    private void saveNewUser(String userId, String name, String phone, String email, String password,String country
-            , String gender, String profilePic,String bdate, String address) {
-        User user = new User(userId, name, phone,  email,  password,  country,
-                gender, profilePic, bdate, address);
 
-//        mRef.push().setValue(profileModel);
-        //mRef.child("users").child(userId).setValue(user);
-        DatabaseReference users = mRef.getReference("users");
-        users.child(userId).setValue(user);
-    }
 
     private boolean validateForm() {
         boolean valid = true;

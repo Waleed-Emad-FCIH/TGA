@@ -12,19 +12,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.tga.Activity.AddPlan;
-import com.tga.Controller.PlanController;
 import com.tga.R;
 import com.tga.adapter.PlanAdapter;
-import com.tga.callback;
-import com.tga.model.Plan;
 import com.tga.models.PlanModel;
 
 import java.util.ArrayList;

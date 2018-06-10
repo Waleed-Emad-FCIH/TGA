@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.util.Log;
 
-import com.bumptech.glide.Glide;
 import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,14 +30,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 import com.tga.Activity.AddPost2;
 import com.tga.Activity.Comments;
 import com.tga.Activity.PostDetails;
 import com.tga.Controller.PostController;
+import com.tga.Controller.SimpleCallback;
+import com.tga.Controller.TouristController;
 import com.tga.Controller.UserController;
 import com.tga.R;
-import com.tga.model.User;
 import com.tga.models.PostModel;
+import com.tga.util.CircleTransform;
 
 import java.util.List;
 
@@ -149,23 +151,19 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.MyViewHolder>
 
             }
         });
-        FirebaseDatabase fd = FirebaseDatabase.getInstance();
-        final DatabaseReference tRef = fd.getReference("users").child(post.userId);
-        tRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    User user = (User) dataSnapshot.getValue();
-                    Glide.with(context)
-                            .load(user.getProfilePic())
-                            .into(holder.ppimg);
 
-                }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+        TouristController.getByID(new SimpleCallback<TouristController>() {
+            @Override
+            public void callback(TouristController data) {
+                Picasso.with(context)
+                        .load(data.getPhoto())
+                        .transform(new CircleTransform())
+                        .into(holder.ppimg);
+            }
+        },post.userId);
 
-                }
-            });
+
 
 /*
 

@@ -9,14 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.tga.Activity.GettingAround;
-import com.tga.Activity.PlanDetalis;
-import com.tga.Activity.SearchResults;
 import com.tga.R;
-import com.tga.model.Offers;
-import com.tga.model.Plan;
 import com.tga.model.Search;
 
 import java.util.List;
