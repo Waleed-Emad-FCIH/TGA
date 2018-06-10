@@ -1,9 +1,7 @@
 package com.tga.Activity;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -12,26 +10,12 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.gms.location.places.GeoDataClient;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceBufferResponse;
-import com.google.android.gms.location.places.Places;
-import com.google.android.gms.location.places.PlaceDetectionClient;
-
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.tga.R;
 import com.tga.Response.PlaceResponse;
 import com.tga.Response.RequestInterface;
-import com.tga.adapter.PlacesAdapter;
-import com.tga.adapter.RecycleAdapter_Offers;
 import com.tga.adapter.ThingsToDoLoad;
-import com.tga.model.Offers;
-import com.tga.model.PlaceModel;
 import com.tga.model.place;
 import com.tga.util.EndlessRecyclerViewScrollListener;
 

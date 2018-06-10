@@ -5,6 +5,7 @@ import java.util.Date;
 
 public class ProgramModel {
     public String id ;
+    public String ownerID;
     public String title ;
     public ArrayList<String> placesID ;
     public String description ;
@@ -16,6 +17,6 @@ public class ProgramModel {
     public int hitRate; // # of people rated this program
     public ArrayList<String> reviews;
     public ArrayList<String> registeredTouristsID;
-
+    public double price;
 }
 

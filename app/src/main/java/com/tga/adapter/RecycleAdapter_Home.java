@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tga.Activity.HomeDetails;
+import com.tga.Activity.ProgDetails;
+import com.tga.Controller.ProgramController;
 import com.tga.R;
 import com.tga.model.Offers;
 
@@ -22,11 +24,11 @@ import java.util.List;
 /**
  * Created by Rp on 6/14/2016.
  */
-public class RecycleAdapter_Offers extends RecyclerView.Adapter<RecycleAdapter_Offers.MyViewHolder> {
+public class RecycleAdapter_Home extends RecyclerView.Adapter<RecycleAdapter_Home.MyViewHolder> {
 
-    Context context;
-    List<Offers> OffersList;
-
+    private Context context;
+    private List<ProgramController> list;
+    private String source;
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -41,16 +43,17 @@ public class RecycleAdapter_Offers extends RecyclerView.Adapter<RecycleAdapter_O
 
             image = (ImageView) view.findViewById(R.id.image);
             price = (TextView) view.findViewById(R.id.price);
-            title = (TextView) view.findViewById(R.id.address);
+            title = (TextView) view.findViewById(R.id.title);
 
         }
 
     }
 
 
-    public RecycleAdapter_Offers(Context mainActivityContacts, List<Offers> OffersList) {
-        this.OffersList = OffersList;
+    public RecycleAdapter_Home(Context mainActivityContacts, List<ProgramController> list, String source) {
+        this.list = list;
         this.context = mainActivityContacts;
+        this.source = source;
     }
 
 
@@ -70,20 +73,23 @@ public class RecycleAdapter_Offers extends RecyclerView.Adapter<RecycleAdapter_O
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        final Offers offers = OffersList.get(position);
+        final ProgramController pc = list.get(position);
 
-        holder.price.setText(offers.getPrice());
-        holder.title.setText(offers.getTitle());
-        holder.image.setImageResource(offers.getImage());
+        holder.price.setText(String.valueOf(pc.getPrice()));
+        holder.title.setText(pc.getTitle());
+        holder.image.setImageResource(R.drawable.loxour); //TODO: places images
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Intent i = new Intent(context, HomeDetails.class);
-                i.putExtra("price",offers.getPrice());
-                i.putExtra("title",offers.getTitle());
+                Intent i = null;
+                if (source.equals("Home"))
+                    i = new Intent(context, HomeDetails.class);
+                else if (source.equals("MyPrograms"))
+                    i = new Intent(context, ProgDetails.class);
+                i.putExtra("PROG_ID",pc.getId());
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
 
@@ -95,7 +101,7 @@ public class RecycleAdapter_Offers extends RecyclerView.Adapter<RecycleAdapter_O
 
     @Override
     public int getItemCount() {
-        return OffersList.size();
+        return list.size();
     }
 
 

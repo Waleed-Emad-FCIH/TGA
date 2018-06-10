@@ -41,7 +41,7 @@ public class foodTypeAdapter extends RecyclerView.Adapter<foodTypeAdapter.MyView
 
             image = (ImageView) view.findViewById(R.id.PlImage);
 //            price = (TextView) view.findViewById(R.id.price);
-            title = (TextView) view.findViewById(R.id.address);
+            //title = (TextView) view.findViewById(R.id.address);
 
         }
 

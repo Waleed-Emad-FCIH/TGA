@@ -103,7 +103,7 @@
         <activity android:name=".Activity.Community" />
         <activity android:name=".Activity.Comments" />
         <activity
-            android:name=".Activity.DiscountsDetails"
+            android:name=".Activity.DiscountDetails"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />

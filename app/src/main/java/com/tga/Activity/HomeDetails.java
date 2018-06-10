@@ -1,23 +1,33 @@
 package com.tga.Activity;
 
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+import com.tga.Controller.AgentController;
+import com.tga.Controller.ProgramController;
+import com.tga.Controller.SimpleCallback;
+import com.tga.Controller.TouristController;
 import com.tga.R;
 
 import java.util.ArrayList;
 
 public class HomeDetails extends AppCompatActivity  {
 
-    private TextView price, title;
+    private TextView agent, title, desc, reviews, bookNow, favor;
     private ImageView imgBack;
-    private String strprice, strtitle, strimage;
-    private ImageView imgProgramEdit;
+    private ImageView imgProgramEdit, imgProgramDel;
+    private LinearLayout llFavor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,34 +35,121 @@ public class HomeDetails extends AppCompatActivity  {
         setContentView(R.layout.activity_home_details);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Intent i = getIntent();
+        Intent intent = getIntent();
+        String prog_id = intent.getStringExtra("PROG_ID");
+        final String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        strprice = i.getStringExtra("price");
-        strtitle = i.getStringExtra("title");
-        strimage = i.getStringExtra("image");
-
-        price = (TextView) findViewById(R.id.txtPrice);
+        agent = (TextView) findViewById(R.id.txtCompany);
         title = (TextView) findViewById(R.id.txtTitle);
+        desc = (TextView) findViewById(R.id.progDesc);
+        reviews = (TextView) findViewById(R.id.reviews);
+        bookNow = (TextView) findViewById(R.id.txtBookNow);
+        favor = (TextView) findViewById(R.id.txtFavor);
         imgBack = (ImageView)findViewById(R.id.imgBack);
         imgProgramEdit = (ImageView)findViewById(R.id.imgProgramEdit);
+        imgProgramDel = (ImageView)findViewById(R.id.imgProgramDelete);
+        llFavor = (LinearLayout) findViewById(R.id.llFavor);
 
-        price.setText(strprice);
-        title.setText(strtitle);
+        imgProgramEdit.setVisibility(View.GONE);
+        imgProgramDel.setVisibility(View.GONE);
+        bookNow.setVisibility(View.GONE);
 
-        imgBack.setOnClickListener(new View.OnClickListener() {
+        //TODO: photos of places
+        ProgramController.getByID(new SimpleCallback<ProgramController>() {
             @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+            public void callback(final ProgramController pc) {
+                if (pc != null) {
+                    // TODO : Check for current user is the owner to activate imgs buttons
+                    AgentController.getByID(new SimpleCallback<AgentController>() {
+                        @Override
+                        public void callback(final AgentController data) {
+                            if (data != null) {
+                                agent.setText(data.getName());
+                                String t = pc.getTitle() + "  (" + String.valueOf(pc.getPrice()) + " L.E)";
+                                title.setText(t);
+                                desc.setText(pc.getDescription());
+                                ArrayList<String> rev = pc.getReviews();
+                                String revValue = "";
+                                for (int i = 0; i < rev.size(); i++) {
+                                    revValue += rev.get(i);
+                                    if (i != (rev.size() - 1))
+                                        revValue += "\n";
+                                }
+                                reviews.setText(revValue);
 
-        imgProgramEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),EditProgram.class);
-                startActivity(intent);
+                                imgProgramEdit.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Intent intent = new Intent(getApplicationContext(), EditProgram.class);
+                                        intent.putExtra("PROG_ID", pc.getId());
+                                        startActivity(intent);
+                                    }
+                                });
+
+                                imgBack.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        onBackPressed();
+                                    }
+                                });
+
+                                bookNow.setVisibility(View.VISIBLE);
+                                if (pc.getRegisteredList().contains(userID))
+                                    bookNow.setText("Cancel Book");
+                                bookNow.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        if (bookNow.getText().equals("BOOK NOW")){
+                                            pc.registeTourist(userID);
+                                            bookNow.setText("Cancel Book");
+                                        } else {
+                                            pc.unRegisteTourist(userID);
+                                            bookNow.setText("BOOK NOW");
+                                        }
+                                    }
+                                });
+
+                                TouristController.getByID(new SimpleCallback<TouristController>() {
+
+                                    @Override
+                                    public void callback(final TouristController tc) {
+                                        if (tc != null){
+
+                                            if (tc.getMyFavouritPrograms().contains(pc.getId())){
+                                                llFavor.setBackgroundResource(R.drawable.round);
+                                                favor.setText("Remove from Favourites");
+                                            }
+                                            llFavor.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    if (favor.getText().equals("Remove from Favourites")){
+                                                        tc.unFavouriteProgram(pc.getId());
+                                                        favor.setText("Add to Favourites");
+                                                        llFavor.setBackgroundResource(R.color.cardview_light_background);
+                                                    } else {
+                                                        tc.favouriteProgram(pc.getId());
+                                                        llFavor.setBackgroundResource(R.drawable.round);
+                                                        favor.setText("Remove from Favourites");
+                                                    }
+                                                }
+                                            });
+
+                                        }
+                                    }
+                                }, userID);
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Program has been deleted", Toast.LENGTH_LONG).show();
+                                onBackPressed();
+                            }
+                        }
+                    }, pc.getOwnerID());
+                } else {
+                    Toast.makeText(getApplicationContext(), "Program has been deleted", Toast.LENGTH_LONG).show();
+                    onBackPressed();
+                }
             }
-        });
+        }, prog_id);
 
 
     }
