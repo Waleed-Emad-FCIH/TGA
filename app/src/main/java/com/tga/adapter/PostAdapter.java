@@ -161,6 +161,7 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.MyViewHolder>
                         .transform(new CircleTransform())
                         .into(holder.ppimg);
             }
+            //@@
         },post.userId);
 
 
