@@ -2,16 +2,19 @@ package com.tga.fragment.thingsToDo;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.tga.Activity.ThingsToDo;
 import com.tga.R;
 import com.tga.Response.PlaceResponse;
 import com.tga.Response.RequestInterface;
@@ -21,6 +24,7 @@ import com.tga.adapter.ThingsToDoLoad;
 import com.tga.model.PlaceModel;
 import com.tga.model.place;
 import com.tga.util.EndlessRecyclerViewScrollListener;
+import com.tga.util.EndlessScrollListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,14 +38,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TopSpots extends Fragment implements ThingsToDoLoad.ItemClickListener, ThingsToDoLoad.RetryLoadMoreListener{
+public class TopSpots extends Fragment {
+
 
     private java.util.ArrayList<place> ArrayList;
     private RecyclerView recyclerView;
-    private ThingsToDoLoad mAdapter;
+    private ThingsToDoAdpater mAdapter;
     RequestInterface request;
+    Retrofit retrofit;
     private String next_page_token="";
-    private int currentPage;
+    private int currentPage =1;
     LinearLayoutManager mLayoutManager;
 
     public TopSpots() {
@@ -58,62 +64,44 @@ public class TopSpots extends Fragment implements ThingsToDoLoad.ItemClickListen
         recyclerView = (RecyclerView) v.findViewById(R.id.top_spots_recyclerview);
 
 
-        Retrofit retrofit = new Retrofit.Builder()
+        return v;
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ArrayList = new ArrayList<>();
+        retrofit= new Retrofit.Builder()
                 .baseUrl("https://maps.googleapis.com/maps/api/place/textsearch/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         request = retrofit.create(RequestInterface.class);
-        loadJSON(request,request.getTopSpots());
-        mLayoutManager = new LinearLayoutManager(getContext());
+        mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new ThingsToDoLoad(getContext(),this,this);
+        mAdapter = new ThingsToDoAdpater(getContext(),ArrayList);
         recyclerView.setAdapter(mAdapter);
 
-        recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(mLayoutManager) {
-            @Override
-            public void onLoadMore(int page) {
-                currentPage = page;
-                loadMore(page);
 
+        recyclerView.addOnScrollListener(new EndlessScrollListener(mLayoutManager){
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                if (next_page_token!=null && !next_page_token.equals("") ) {
+                    loadJSON(request.getNextPlacePage(next_page_token,"AIzaSyA02qeaptiL2YJ2P9CjHRrLhkkzO3cL7NM"));
+                    next_page_token = "";
+
+                }else {
+                    Log.v("...", "Last Item Wow !");
+                }
             }
         });
 
-        return v;
-    }
-
-    @Override
-    public void onItemClick(View view, int position) {
+        loadJSON(request.getTopSpots());
 
     }
 
-    @Override
-    public void onRetryLoadMore() {
-        loadMore(currentPage);
-    }
-
-    private void loadMore(final int page){
-        mAdapter.startLoadMore();
-
-        // example read end
-        if(page == 3){
-            mAdapter.onReachEnd();
-            return;
-        }
-
-        if (next_page_token!=null && !next_page_token.equals("") ) {
-            loadJSON(request,request.getNextPlacePage(next_page_token,"AIzaSyA02qeaptiL2YJ2P9CjHRrLhkkzO3cL7NM"));
-            next_page_token = "";
-
-        }else {
-            Log.v("...", "Last Item Wow !");
-        }
-
-        // start load more
-    }
-
-
-    private void loadJSON(RequestInterface request, Call<PlaceResponse> getJSON) {
+    private void loadJSON(Call<PlaceResponse> getJSON) {
         Call<PlaceResponse> call = getJSON;
 //        ArrayList = new ArrayList<>();
         call.enqueue(new Callback<PlaceResponse>() {
@@ -121,16 +109,12 @@ public class TopSpots extends Fragment implements ThingsToDoLoad.ItemClickListen
             public void onResponse(Call<PlaceResponse> call, Response<PlaceResponse> response) {
 
                 PlaceResponse jsonResponse = response.body();
-                if (ArrayList==null){
-                    ArrayList = new ArrayList<>(Arrays.asList(jsonResponse.getResults()));
-                }else
-                {
-                    ArrayList.addAll(Arrays.asList(jsonResponse.getResults()));
-                }
-
+                ArrayList.addAll(Arrays.asList(jsonResponse.getResults()));
+                mAdapter.notifyItemRangeInserted(mAdapter.getItemCount(),ArrayList.size()-1);
                 next_page_token = jsonResponse.getNext_page_token();
-                mAdapter.add(ArrayList);
-                recyclerView.setAdapter(mAdapter);
+                if (ArrayList.size() == 0 ){
+                    Toast.makeText(getContext().getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override

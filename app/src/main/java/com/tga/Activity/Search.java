@@ -57,11 +57,11 @@ public class Search extends AppCompatActivity {
         setContentView(R.layout.activity_search);
 
         recyclerView = (RecyclerView) findViewById(R.id.reSearch);
-        PlImage = findViewById(R.id.PlImage);
-        txtName = findViewById(R.id.txtName);
-        txtRating = findViewById(R.id.txtRating);
-        rtPlace = findViewById(R.id.rtPlace);
-        item_search = findViewById(R.id.item_search);
+        PlImage =(ImageView) findViewById(R.id.PlImage);
+        txtName =(TextView) findViewById(R.id.txtName);
+        txtRating =(TextView) findViewById(R.id.txtRating);
+        rtPlace =(RatingBar) findViewById(R.id.rtPlace);
+        item_search =(CardView) findViewById(R.id.item_search);
 
         ArrayList = new ArrayList<>();
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)

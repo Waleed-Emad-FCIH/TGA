@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,7 +18,8 @@ import com.tga.R;
 
 public class ForgotPassword extends AppCompatActivity {
 
-    private TextView txtEmailResetPassword,txtResetPassword;
+    private EditText txtEmailResetPassword;
+    private TextView txtResetPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +29,8 @@ public class ForgotPassword extends AppCompatActivity {
         getSupportActionBar().setTitle("Forgot Password");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2C3646")));
 
-        txtEmailResetPassword = findViewById(R.id.txtEmailResetPassword);
-        txtResetPassword = findViewById(R.id.txtResetPassword);
+        txtEmailResetPassword =(EditText) findViewById(R.id.txtEmailResetPassword);
+        txtResetPassword =(TextView) findViewById(R.id.txtResetPassword);
 
         txtResetPassword.setOnClickListener(new View.OnClickListener() {
             @Override

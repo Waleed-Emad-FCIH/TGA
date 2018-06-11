@@ -78,13 +78,13 @@ public class EditProfile extends AppCompatActivity {
         getSupportActionBar().setTitle("Edit Profile");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2C3646")));
 
-        etxtFullName = findViewById(R.id.etxtFullName);
-        etxtPhone = findViewById(R.id.etxtPhone);
-        etxtEmail = findViewById(R.id.etxtEmail);
-        imgProfile = findViewById(R.id.imgProfile);
-        spCountry = findViewById(R.id.spCountry);
-        txtSaveProfile = findViewById(R.id.txtSaveProfile);
-        txtChangePassword = findViewById(R.id.txtChangePassword);
+        etxtFullName =(EditText) findViewById(R.id.etxtFullName);
+        etxtPhone =(EditText) findViewById(R.id.etxtPhone);
+        etxtEmail =(EditText) findViewById(R.id.etxtEmail);
+        imgProfile =(ImageView) findViewById(R.id.imgProfile);
+        spCountry =(Spinner) findViewById(R.id.spCountry);
+        txtSaveProfile =(TextView) findViewById(R.id.txtSaveProfile);
+        txtChangePassword =(TextView) findViewById(R.id.txtChangePassword);
 
         etxtFullName.setText(getIntent().getStringExtra("fullName"));
         etxtPhone.setText(getIntent().getStringExtra("phone"));

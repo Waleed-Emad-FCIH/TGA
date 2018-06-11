@@ -34,8 +34,8 @@ public class AddPlan extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2C3646")));
 
         edtTitle = (EditText)findViewById(R.id.etxtPlanTitle);
-        edtDes  = findViewById(R.id.etxtPlanDesc);
-        edtLocation = findViewById(R.id.etxtPlanLocation);
+        edtDes  =(EditText) findViewById(R.id.etxtPlanDesc);
+        edtLocation =(EditText) findViewById(R.id.etxtPlanLocation);
         submit = (Button) findViewById(R.id.btnAddProgram);
         ArrayList<String> placesIds = (ArrayList<String>) getIntent().getExtras().get("placesId");
 
