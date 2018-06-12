@@ -43,22 +43,22 @@ private dialoug_interface listerner;
 
             if(R1.isSelected())
             {
-listerner.Apply("food");
+                listerner.Apply("Restaurants");
             }
             else if(R2.isSelected())
             {
-                listerner.Apply("hotel");
+                listerner.Apply("Hotels");
 
             }
 
             else if(R3.isSelected())
             {
-                listerner.Apply("cafe");
+                listerner.Apply("Cafes");
 
             }
             else if(R4.isSelected())
             {
-                listerner.Apply("bar");
+                listerner.Apply("Bars");
 
 
             }else {

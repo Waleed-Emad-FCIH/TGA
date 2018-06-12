@@ -345,7 +345,7 @@ public class PlaceDetails extends AppCompatActivity implements BaseSliderView.On
         imgMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Uri gmmIntentUri = Uri.parse("geo:"+lat+","+lng);
+                Uri gmmIntentUri = Uri.parse("google.navigation:q="+lat+","+lng);
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");
                 if (mapIntent.resolveActivity(getPackageManager()) != null) {

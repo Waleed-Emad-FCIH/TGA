@@ -16,8 +16,7 @@ public interface RequestInterface {
 
     @GET("json?query=Top+spots+in+Cairo&key=AIzaSyB_7KprS66Hcih9Rfnu05ssVPRdvOdVVy4")
     Call<PlaceResponse> getTopSpots();
-    @GET("json?query=Hotel+in+Cairo&key=AIzaSyB_7KprS66Hcih9Rfnu05ssVPRdvOdVVy4")
-    Call<PlaceResponse> getHotels();
+
     @GET("json?query=jewelry+or+casino+or+spa+in+Cairo&key=AIzaSyB_7KprS66Hcih9Rfnu05ssVPRdvOdVVy4")
     Call<PlaceResponse> getPlacesA_Z();
 
@@ -27,7 +26,7 @@ public interface RequestInterface {
     @GET("json?query=museum+and+mall+in+Cairo&key=AIzaSyB_7KprS66Hcih9Rfnu05ssVPRdvOdVVy4")
     Call<PlaceResponse> getInDoors();
 
-    @GET("json?query=restaurants+in+cairo&key=AIzaSyB_7KprS66Hcih9Rfnu05ssVPRdvOdVVy4")
+    @GET("json?query=Restaurants+in+Cairo&key=AIzaSyB_7KprS66Hcih9Rfnu05ssVPRdvOdVVy4")
     Call<PlaceResponse> getResturants();
 
     @GET("json?query=cafe+in+Cairo&key=AIzaSyB_7KprS66Hcih9Rfnu05ssVPRdvOdVVy4")
@@ -35,6 +34,9 @@ public interface RequestInterface {
 
     @GET("json?query=bar+in+Cairo&key=AIzaSyB_7KprS66Hcih9Rfnu05ssVPRdvOdVVy4")
     Call<PlaceResponse> getBar();
+
+    @GET("json?query=Hotels+in+Cairo&key=AIzaSyB_7KprS66Hcih9Rfnu05ssVPRdvOdVVy4")
+    Call<PlaceResponse> getHotels();
 
     @GET("json?")
     Call<PlaceDetailsResponse> getPlaceDetails(@Query("placeid") String id,

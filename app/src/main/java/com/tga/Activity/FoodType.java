@@ -39,7 +39,6 @@ public class FoodType extends AppCompatActivity {
     RequestInterface request;
     Retrofit retrofit;
     private String next_page_token="";
-    private int currentPage;
 
     LinearLayoutManager mLayoutManager;
 
