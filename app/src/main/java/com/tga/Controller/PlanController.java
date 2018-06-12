@@ -2,6 +2,9 @@ package com.tga.Controller;
 
 import android.util.Log;
 
+import com.firebase.client.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,7 +25,7 @@ public class PlanController implements DB_Interface{
     DatabaseReference reference =mRef.getReference().child("plans");
 public  ArrayList<PlanModel> planModels =new ArrayList<>();
     public PlanController(String id, ArrayList<String> placesID, String startDate, String endDate,
-                          String location, String description, String title){
+                          String location, String description, String title ){
         this.planModel = new PlanModel();
         planModel.id = id;
         planModel.placesID = placesID;
@@ -105,6 +108,7 @@ public  ArrayList<PlanModel> planModels =new ArrayList<>();
 
     @Override
     public void saveToDB() {
+        planModel.creatorId  = FirebaseAuth.getInstance().getCurrentUser().getUid();
        planModel.setId(reference.push().getKey());
         reference.child(getId()).setValue(this.planModel);
 

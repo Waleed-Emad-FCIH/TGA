@@ -33,22 +33,6 @@
                 android:layout_gravity="center"
                 android:gravity="center">
 
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ond day trip"
-                    android:layout_margin="10dp"
-                    android:id="@+id/rbOnleOneDay"
-                    />
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Make your Program"
-                    android:layout_margin="10dp"
-                    android:id="@+id/rbMakeYourProgram"
-                    />
-
             </RadioGroup>
 
             <LinearLayout

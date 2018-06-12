@@ -15,9 +15,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.tga.Controller.PostController;
+import com.tga.Controller.SimpleCallback;
 import com.tga.R;
 import com.tga.adapter.PostAdapter;
 import com.tga.adapter.commentAdapter;
+import com.tga.models.CommentModel;
 
 import java.util.ArrayList;
 
@@ -50,30 +52,41 @@ public class Comments  extends AppCompatActivity{
         String value = getIntent().getStringExtra("ID");
         posts= new PostController(value,null,System.currentTimeMillis(),null,
                 null,0,null);
-        cAdapter = new commentAdapter(getApplicationContext(),posts.getComments());
+        posts.getComments(new SimpleCallback<ArrayList<CommentModel>>() {
+            @Override
+            public void callback(ArrayList<CommentModel> data) {
+                cAdapter = new commentAdapter(getApplicationContext(),data);
 
+            }
+        });
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), LinearLayoutManager.VERTICAL));
 
         recyclerView.setAdapter(cAdapter);
 
-        btnPost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String value = getIntent().getStringExtra("ID");
-                if (!TextUtils.isEmpty(txtWritePost.getText().toString().trim()))
-                    if (txtWritePost.getText().toString().trim().length() > 1) {
-                        PostController pc  = new PostController(value , null , System.currentTimeMillis(),
-                                null , new ArrayList<String>() ,0,null );
-                        PostController.Comment c = pc.new Comment(null,txtWritePost.getText().toString()
-                                , System.currentTimeMillis() ,
-                                null ,value);
-                        c.createComment();
-                        // txtWritePost.setText(""
-                    }
-            }
-        });
+
+
+
+//        btnPost.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                String value = getIntent().getStringExtra("ID");
+//                if (!TextUtils.isEmpty(txtWritePost.getText().toString().trim()))
+//                    if (txtWritePost.getText().toString().trim().length() > 1) {
+//                        PostController pc  = new PostController(value , null , System.currentTimeMillis(),
+//                                null , new ArrayList<String>() ,0,null );
+//                        PostController.Comment c = pc.new Comment(null,txtWritePost.getText().toString()
+//                                , System.currentTimeMillis() ,
+//                                null ,value);
+//                        c.createComment();
+//                        // txtWritePost.setText(""
+//                    }
+//
+//                txtWritePost.setText("");
+//
+//            }
+//        });
     }
 
 

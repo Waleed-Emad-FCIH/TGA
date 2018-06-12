@@ -1,6 +1,7 @@
 package com.tga.Controller;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Button;
@@ -147,21 +148,23 @@ public class PostController extends AppCompatActivity implements DB_Interface{
         return posts;
     }
 
-    public ArrayList<CommentModel> getComments()
+    public void  getComments(@NonNull SimpleCallback comments)
     {
 
         FirebaseDatabase fd = FirebaseDatabase.getInstance();
         final DatabaseReference tRef = fd.getReference("comments");
         Query query = tRef.orderByChild("postId").equalTo(this.getId());
-        final ArrayList<CommentModel> comments = new ArrayList<>();
+       // final ArrayList<CommentModel> comments = new ArrayList<>();
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
+                ArrayList<CommentModel> commentModels = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     CommentModel commentModel = snapshot.getValue(CommentModel.class);
-                    comments.add(commentModel);
+                    commentModels.add(commentModel);
                 }
+                comments.callback(commentModels);
+
             }
 
 
@@ -170,10 +173,10 @@ public class PostController extends AppCompatActivity implements DB_Interface{
 
             }
         });
-        return comments;
+
     }
 
-    public void  like(String currentUserId)
+    public void  like(String currentUserId ,@NonNull SimpleCallback isLiked )
     {
         FirebaseDatabase fd = FirebaseDatabase.getInstance();
         final DatabaseReference tRef = fd.getReference("posts").child(postModel.id);
@@ -181,18 +184,44 @@ public class PostController extends AppCompatActivity implements DB_Interface{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                postModel= dataSnapshot.getValue(PostModel.class);
-               postModel.likes = postModel.likes+1;
                try {
-                   postModel.likesID.add(currentUserId);
+                   if(!postModel.likesID.contains(currentUserId))
+                   {
+                       isLiked.callback(new Boolean(true));
+                       postModel.likes = postModel.likes+1;
+                       try {
+                           postModel.likesID.add(currentUserId);
+                       }
+                       catch (Exception e)
+                       {
+                           postModel.likesID = new ArrayList<>();
+                           postModel.likesID.add(currentUserId);
+                       }
+                       updateToDB();
+                   }
+                   else {
+                       isLiked.callback(new Boolean(false));
+                   }
+
                }
                catch (Exception e)
                {
-                   postModel.likesID = new ArrayList<>();
-                   postModel.likesID.add(currentUserId);
+                   isLiked.callback(new Boolean(true));
+                   postModel.likes = postModel.likes+1;
+                   try {
+                       postModel.likesID.add(currentUserId);
+                   }
+                   catch (Exception ee)
+                   {
+                       postModel.likesID = new ArrayList<>();
+                       postModel.likesID.add(currentUserId);
+                   }
+                   updateToDB();
                }
 
+
               // tRef.setValue(postModel);
-               updateToDB();
+
 
             }
 
@@ -203,19 +232,51 @@ public class PostController extends AppCompatActivity implements DB_Interface{
         });
 
     }
-    public void  unlike(String currentUserId)
-    {
-        PostModel ps = getById(postModel.id);
-        ps.likes --;
-        try {
-            ps.likesID.remove(currentUserId);}
-        catch (Exception  e){
 
-            ps.likesID = new ArrayList<String>();
-            ps.likesID .remove(currentUserId);
-        }
-        this.postModel=ps;
-      //  this.updateToDB();
+    public void  unlike( String currentUserId , @NonNull SimpleCallback<Boolean> isLiked )
+    {
+        //final  boolean isLiked =  false ;
+        FirebaseDatabase fd = FirebaseDatabase.getInstance();
+        final DatabaseReference tRef = fd.getReference("posts").child(postModel.id);
+        tRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                postModel= dataSnapshot.getValue(PostModel.class);
+                try {
+                    if(postModel.likesID.contains(currentUserId))
+                    {
+                        isLiked.callback(new Boolean(true));
+                        postModel.likes = postModel.likes-1;
+                        try {
+                            postModel.likesID.remove(postModel.likesID.indexOf(currentUserId));
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
+
+                        // tRef.setValue(postModel);
+                        updateToDB();
+                    }
+                    else {
+                        isLiked.callback(new Boolean(false));
+                    }
+                }
+                catch (Exception e)
+                {
+
+                }
+
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
     public  PostModel getById(String id)
     {

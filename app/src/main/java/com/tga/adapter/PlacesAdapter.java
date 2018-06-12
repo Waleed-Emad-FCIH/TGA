@@ -140,29 +140,31 @@ public class PlacesAdapter  extends LoadMoreRecyclerViewAdapter<com.tga.models.P
             rtPlace = (RatingBar)itemView.findViewById(R.id.rtPlace);
             checkAdd = (CheckBox)itemView.findViewById(R.id.checkAdd);
             itemView.setOnClickListener(this);
-            checkAdd.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    if(b)
-                    {
-                        Log.v("this id " , cuurentPlaceItemId);
-                        Log.v("this id " , mDataList.get(getAdapterPosition()).getPlace_id()+"");
-                        try {
-                            if(!checkedPlacesIds.contains(mDataList.get(getAdapterPosition()).getPlace_id()))
+            try {
+                checkAdd.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                        if (b) {
+                            Log.v("this id ", cuurentPlaceItemId);
+                            Log.v("this id ", mDataList.get(getAdapterPosition()).getPlace_id() + "");
+                            try {
+                                if (!checkedPlacesIds.contains(mDataList.get(getAdapterPosition()).getPlace_id()))
+                                    checkedPlacesIds.add(mDataList.get(getAdapterPosition()).getPlace_id());
+                            } catch (Exception e) {
                                 checkedPlacesIds.add(mDataList.get(getAdapterPosition()).getPlace_id());
-                        }
-                        catch (Exception e)
-                        {
-                            checkedPlacesIds.add(mDataList.get(getAdapterPosition()).getPlace_id());
 
-                        }
+                            }
 
+                        } else {
+                            Log.v("hello", "hello");
+                        }
                     }
-                    else {
-                        Log.v("hello" , "hello");
-                    }
-                }
-            });
+                });
+            }
+            catch (Exception e)
+            {
+
+            }
 
         }
 

@@ -227,7 +227,12 @@ public class PlanPlacesAdabter extends RecyclerView.Adapter<PlanPlacesAdabter.vi
         geometry locations =placeDetailsModels.get(0).getGeometry();
         String name =placeDetailsModels.get(0).getName();
         List<photos> photos =placeDetailsModels.get(0).getPhotos();
-        imgLink = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="+photos.get(0).getPhoto_reference()+"&key=AIzaSyA02qeaptiL2YJ2P9CjHRrLhkkzO3cL7NM";
+        try {
+            imgLink = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=" + photos.get(0).getPhoto_reference() + "&key=AIzaSyA02qeaptiL2YJ2P9CjHRrLhkkzO3cL7NM";
+        }
+        catch (Exception e){
+
+        }
         float rate = placeDetailsModels.get(0).getRating();
         List<reviews> reviews= placeDetailsModels.get(0).getReviews();
         placeDetailsModel.opening_hours opening_hours = placeDetailsModels.get(0).getOpening_hours();
@@ -295,13 +300,21 @@ public class PlanPlacesAdabter extends RecyclerView.Adapter<PlanPlacesAdabter.vi
         for(int i = 0;i<3;i++){
             TextSliderView textSliderView = new TextSliderView(context);
             // initialize a SliderLayout
-            textSliderView
-                    .image("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="+photos.get(i).getPhoto_reference()+"&key=AIzaSyA02qeaptiL2YJ2P9CjHRrLhkkzO3cL7NM")
-                    .setScaleType(BaseSliderView.ScaleType.Fit);
+            try {
 
 
-            textSliderView.bundle(new Bundle());
-            // textSliderView.getBundle().putString("extra",name);
+                textSliderView
+                        .image("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=" + photos.get(i).getPhoto_reference() + "&key=AIzaSyA02qeaptiL2YJ2P9CjHRrLhkkzO3cL7NM")
+                        .setScaleType(BaseSliderView.ScaleType.Fit);
+
+
+                textSliderView.bundle(new Bundle());
+                // textSliderView.getBundle().putString("extra",name);
+            }
+            catch (Exception e)
+            {
+
+            }
 
             holder.mDemoSlider.addSlider(textSliderView);
         }
@@ -325,7 +338,7 @@ public class PlanPlacesAdabter extends RecyclerView.Adapter<PlanPlacesAdabter.vi
 
                 PlaceDetailsResponse jsonResponse = response.body();
                 arrayPlaceDetails = new ArrayList<>(Arrays.asList(jsonResponse.getResult()));
-//                placeDetailsModel[] photos =jsonResponse.getResult();
+//                placeDetailsModel[] photos =jsonResponse.getResult()
                 lun(arrayPlaceDetails  , holder);
             }
 
