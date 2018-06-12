@@ -53,7 +53,7 @@ public class OnArrival extends Fragment {
                 }
             }
         });
-        discRide.setText("Ride service"+" \n\n" + "Ride Service like UBER and CAREEM are an alternative to taxis");
+        discRide.setText("Ride service"+" \n\n" + "Ride Service liked UBER and CAREEM are an alternative to taxis");
         discRide.setMaxLines(1);
         discRide.setOnClickListener(new View.OnClickListener() {
             @Override

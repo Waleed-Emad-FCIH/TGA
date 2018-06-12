@@ -207,6 +207,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.MyViewHolder> 
                         // Get the attribution text.
                         CharSequence attribution = photoMetadata.getAttributions();
                         // Get a full-size bitmap for the photo.
+                            try {
                         Task<PlacePhotoResponse> photoResponse = geoDataClient.getPhoto(photoMetadata);
                         photoResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoResponse>() {
                             @Override
@@ -227,7 +228,13 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.MyViewHolder> 
                                 }
                                 // Log.v("helllo??/>" , photoi[0].toString());
                             }
+
                         });}
+                        catch (Exception e)
+                        {
+
+                        }
+                            }
                         catch (Exception e)
                         {
 

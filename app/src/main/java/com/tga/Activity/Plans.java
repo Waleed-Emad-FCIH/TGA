@@ -65,9 +65,6 @@ openDialog();
             }
         });
 
-        rbOnlyOneDay = (RadioButton) findViewById(R.id.rbOnleOneDay);
-                rbMakeYourProgram = (RadioButton) findViewById(R.id.rbMakeYourProgram);
-
         View.OnClickListener first_radio_listener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,10 +77,6 @@ openDialog();
 
             }
         };
-        rbOnlyOneDay.setOnClickListener(second_radio_listener);
-        rbMakeYourProgram.setOnClickListener(first_radio_listener);
-
-
        //===========================================================
 
         recyclerView = (RecyclerView) findViewById(R.id.set_plan_recyclerview);
@@ -123,19 +116,15 @@ openDialog();
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(rbOnlyOneDay.isChecked())
+
+                if(mAdapter.checkedPlacesIds.size()>=3)
                 {
                     Intent intent  = new Intent(getApplicationContext(), AddPlan.class);
                     intent.putExtra("placesId", mAdapter.checkedPlacesIds);
                     startActivity(intent);
                 }
-                else if(rbMakeYourProgram.isChecked()){
-                    Intent intent  = new Intent(getApplicationContext(), AddProgram.class);
-                    intent.putExtra("placesId", mAdapter.checkedPlacesIds);
-                    startActivity(intent);
-                }
                 else {
-                    Toast.makeText(getApplicationContext() , "Please choase the type of plan " , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext() , "select 3 places as minimum " , Toast.LENGTH_LONG).show();
                 }
             }
         });

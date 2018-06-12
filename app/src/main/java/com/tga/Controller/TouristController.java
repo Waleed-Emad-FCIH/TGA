@@ -9,6 +9,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.tga.models.ProgramModel;
 import com.tga.models.TouristModel;
 
 import java.text.SimpleDateFormat;
@@ -169,99 +170,99 @@ public class TouristController extends UserController implements DB_Interface {
         touristModel.nationality = nationality;
     }
 
-    public ArrayList<String> getHistoryPlans() {
-        ArrayList<String> historyPlansID = new ArrayList<>();
-//        FirebaseDatabase fd = FirebaseDatabase.getInstance();
-//        final  DatabaseReference tRef = fd.getReference("tourists").child(getId());
-//
-//        final DatabaseReference pRef = fd.getReference("plan");
-//        final ArrayList<String> historyPlansID = new ArrayList<>();
-//
-//        tRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//              HashMap<String, Object> tm  = (HashMap<String, Object>) dataSnapshot.getValue();
-//             ArrayList<String>myPlansID = (ArrayList<String>) tm.get("myPlansID");
-//                for (String id : myPlansID)
-//               {
-//                   final String planID = id;
-//                   pRef.child(planID).child("endDate").addValueEventListener(new ValueEventListener() {
-//                       @Override
-//                       public void onDataChange(DataSnapshot dataSnapshot) {
-//                            try {
-//                               if(dataSnapshot.getValue()!=null && isValidPlan(dataSnapshot.getValue().toString()))
-//                               {
-//                                   historyPlansID.add(planID);
-//                               }
-//                           }
-//                           catch (Exception e)
-//                           {
-//
-//                            }
-//                        }
-//
-//                       @Override
-//                       public void onCancelled(DatabaseError databaseError) {
-//
-//                       }
-//                   });
-//
-//               }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-        return  historyPlansID;
+    public void getHistoryPlans(SimpleCallback<ArrayList> plans) {
+        FirebaseDatabase fd = FirebaseDatabase.getInstance();
+        final  DatabaseReference tRef = fd.getReference("tourists").child(getId());
+        final DatabaseReference pRef = fd.getReference("plan");
+        final ArrayList<String> historyPlansID = new ArrayList<>();
+
+        tRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+              HashMap<String, Object> tm  = (HashMap<String, Object>) dataSnapshot.getValue();
+             ArrayList<String>myPlansID = (ArrayList<String>) tm.get("myPlansID");
+                for (String id : myPlansID)
+               {
+
+                   final String planID = id;
+                   pRef.child(planID).child("endDate").addValueEventListener(new ValueEventListener() {
+                       @Override
+                       public void onDataChange(DataSnapshot dataSnapshot) {
+                            try {
+                               if(dataSnapshot.getValue()!=null && isValidPlan(dataSnapshot.getValue().toString()))
+                               {
+                                   historyPlansID.add(planID);
+                               }
+                           }
+                           catch (Exception e)
+                           {
+
+                            }
+                        }
+
+                       @Override
+                       public void onCancelled(DatabaseError databaseError) {
+
+                       }
+                   });
+
+               }
+               plans.callback(historyPlansID);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
-    public ArrayList<String> getHistoryPrograms() {
+    public  void getHistoryPrograms(SimpleCallback<ArrayList> programs) {
         ArrayList<String> historyProgramsID = new ArrayList<>();
-//        FirebaseDatabase fd = FirebaseDatabase.getInstance();
-//        final  DatabaseReference tRef = fd.getReference("tourists").child(getId());
-//        final DatabaseReference pRef = fd.getReference("programs");
-//        final ArrayList<String> historyProgramsID = new ArrayList<>();
-//
-//        tRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                HashMap<String, Object> tm  = (HashMap<String, Object>) dataSnapshot.getValue();
-//                ArrayList<String>myPlansID = (ArrayList<String>) tm.get("myProgramsID");
-//                for (String id : myPlansID)
-//                {
-//                    final String planID = id;
-//                    pRef.child(planID).child("endDate").addValueEventListener(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(DataSnapshot dataSnapshot) {
-//                            try {
-//                                if(dataSnapshot.getValue()!=null && isValidPlan(dataSnapshot.getValue().toString()))
-//                                {
-//                                    historyProgramsID.add(planID);
-//                                }
-//                            }
-//                            catch (Exception e)
-//                            {
-//
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(DatabaseError databaseError) {
-//
-//                        }
-//                    });
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-        return  historyProgramsID;
+        FirebaseDatabase fd = FirebaseDatabase.getInstance();
+        final  DatabaseReference tRef = fd.getReference("tourists").child(getId());
+        final DatabaseReference pRef = fd.getReference("programs");
+        tRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                HashMap<String, Object> tm  = (HashMap<String, Object>) dataSnapshot.getValue();
+                ArrayList<String>myPlansID = (ArrayList<String>) tm.get("myProgramsID");
+                for (String id : myPlansID)
+                {
+
+                    final String planID = id;
+                    pRef.child(planID).child("endDate").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            try {
+                                if(dataSnapshot.getValue()!=null && isValidPlan(dataSnapshot.getValue().toString()))
+                                {
+                                    historyProgramsID.add(planID);
+                                }
+                            }
+                            catch (Exception e)
+                            {
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+                }
+                programs.callback(historyProgramsID);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     public ArrayList<String> getMyPlans() {
