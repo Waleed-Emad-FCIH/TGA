@@ -91,7 +91,9 @@
         <activity
             android:name=".Activity.Plans"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" >
+
+        </activity>
         <activity android:name=".Activity.MyPrograms" />
         <activity android:name=".Activity.AddProgram" />
         <activity android:name=".Activity.AllPlaces" />

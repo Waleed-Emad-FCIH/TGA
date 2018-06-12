@@ -2,8 +2,11 @@ package com.tga.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -25,43 +28,92 @@ import java.util.List;
  * Created by Mada on 2/28/2018.
  */
 
-public class PlacesAdapter  extends LoadMoreRecyclerViewAdapter<com.tga.models.PlaceModel> {
+public class PlacesAdapter  extends RecyclerView.Adapter<PlacesAdapter.MyViewHolder> {
     private static final int TYPE_ITEM = 1;
     public   ArrayList<String> checkedPlacesIds = new ArrayList<>();
-    Context context;
     String cuurentPlaceItemId ;
+    Context context;
+    List<place> placeModels;
 
-    public PlacesAdapter(Context context, ItemClickListener itemClickListener,
-                         RetryLoadMoreListener retryLoadMoreListener , ArrayList<String> checkedPlacesIds) {
-        super(context, itemClickListener, retryLoadMoreListener);
+    public PlacesAdapter(Context mainActivityContacts, List<place> placeModels,ArrayList<String> checkedPlacesIds) {
+        this.placeModels = placeModels;
+        this.context = mainActivityContacts;
         this.checkedPlacesIds = checkedPlacesIds;
-        this.context=context;
-
     }
 
+    public class MyViewHolder extends RecyclerView.ViewHolder {
 
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == TYPE_ITEM) {
-            View view = mInflater.inflate(R.layout.item_place, parent, false);
-            return new PlacesAdapter.ItemViewHolder(view);
+
+        ImageView image;
+        TextView title, txtRating,txtOpenNow;
+        RatingBar rtPlace;
+        CheckBox checkAdd;
+
+
+        public MyViewHolder(View view) {
+            super(view);
+
+            image = (ImageView) view.findViewById(R.id.PlImage);
+            txtRating = (TextView) view.findViewById(R.id.txtRating);
+            title = (TextView) view.findViewById(R.id.txtName);
+            rtPlace = (RatingBar)view.findViewById(R.id.rtPlace);
+            checkAdd = (CheckBox)itemView.findViewById(R.id.checkAdd);
+//            itemView.setOnClickListener(context);
+            checkAdd.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if(b)
+                    {
+                        Log.v("this id " , cuurentPlaceItemId);
+                        Log.v("this id " , placeModels.get(getAdapterPosition()).getPlace_id()+"");
+                        try {
+                            if(!checkedPlacesIds.contains(placeModels.get(getAdapterPosition()).getPlace_id()))
+                                checkedPlacesIds.add(placeModels.get(getAdapterPosition()).getPlace_id());
+                        }
+                        catch (Exception e)
+                        {
+                            checkedPlacesIds.add(placeModels.get(getAdapterPosition()).getPlace_id());
+
+                        }
+
+                    }
+                    else {
+                        Log.v("hello" , "hello");
+                    }
+                }
+            });
         }
-        return super.onCreateViewHolder(parent, viewType);
+
     }
 
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof PlacesAdapter.ItemViewHolder) {
+    public PlacesAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_place, parent, false);
 
-            final place placeModel = mDataList.get(position);
 
-            cuurentPlaceItemId = mDataList.get(position).getPlace_id();
+        return new PlacesAdapter.MyViewHolder(itemView);
+
+
+    }
+
+
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    @Override
+    public void onBindViewHolder(final PlacesAdapter.MyViewHolder holder, int position) {
+
+        if (holder instanceof PlacesAdapter.MyViewHolder) {
+
+            final place placeModel = placeModels.get(position);
+
+            cuurentPlaceItemId = placeModels.get(position).getPlace_id();
             try {
 
                 if(checkedPlacesIds.contains(cuurentPlaceItemId))
                 {
-                    ((ItemViewHolder) holder).checkAdd.setChecked(true);
+                    ((MyViewHolder) holder).checkAdd.setChecked(true);
 
                 }
             }catch (Exception e)
@@ -69,30 +121,30 @@ public class PlacesAdapter  extends LoadMoreRecyclerViewAdapter<com.tga.models.P
 
             }
 
-            ((PlacesAdapter.ItemViewHolder) holder).title.setText(placeModel.getName());
+            ((PlacesAdapter.MyViewHolder) holder).title.setText(placeModel.getName());
             List<photos> photos = placeModel.getPhotos();
 
 
             if (photos==null && placeModel.getImgLink()!=null) {
                 Picasso.with(holder.itemView.getContext())
                         .load(placeModel.getImgLink())
-                        .into(((PlacesAdapter.ItemViewHolder) holder).image);
+                        .into(((PlacesAdapter.MyViewHolder) holder).image);
 
             }else {
                 try {
                     Picasso.with(holder.itemView.getContext())
                             .load("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="+photos.get(0).getPhoto_reference()+"&key=AIzaSyA02qeaptiL2YJ2P9CjHRrLhkkzO3cL7NM")
-                            .into(((PlacesAdapter.ItemViewHolder) holder).image);
+                            .into(((PlacesAdapter.MyViewHolder) holder).image);
 
                 }catch (Exception e){
                     Picasso.with(holder.itemView.getContext())
                             .load("https://d2o57arp16h0eu.cloudfront.net/echo/img/no_image_available.png")
-                            .into(((PlacesAdapter.ItemViewHolder) holder).image);
+                            .into(((PlacesAdapter.MyViewHolder) holder).image);
                 }
             }
 
-            ((PlacesAdapter.ItemViewHolder) holder).txtRating.setText(String.valueOf(placeModel.getRating()));
-            ((PlacesAdapter.ItemViewHolder) holder).rtPlace.setRating(placeModel.getRating());
+            ((PlacesAdapter.MyViewHolder) holder).txtRating.setText(String.valueOf(placeModel.getRating()));
+            ((PlacesAdapter.MyViewHolder) holder).rtPlace.setRating(placeModel.getRating());
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -106,77 +158,14 @@ public class PlacesAdapter  extends LoadMoreRecyclerViewAdapter<com.tga.models.P
                 }
             });
         }
-        super.onBindViewHolder(holder, position);
+
     }
+
 
     @Override
-    protected int getCustomItemViewType(int position) {
-        return TYPE_ITEM;
+    public int getItemCount() {
+        return placeModels.size();
     }
 
-
-
-
-
-
-
-
-
-    private class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView image;
-        TextView title, txtRating;
-        RatingBar rtPlace;
-        CheckBox checkAdd;
-
-
-
-
-        ItemViewHolder(final View itemView) {
-
-            super(itemView);
-            image = (ImageView) itemView.findViewById(R.id.PlImage);
-            txtRating = (TextView) itemView.findViewById(R.id.txtRating);
-            title = (TextView) itemView.findViewById(R.id.txtName);
-            rtPlace = (RatingBar)itemView.findViewById(R.id.rtPlace);
-            checkAdd = (CheckBox)itemView.findViewById(R.id.checkAdd);
-            itemView.setOnClickListener(this);
-            try {
-                checkAdd.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                        if (b) {
-                            Log.v("this id ", cuurentPlaceItemId);
-                            Log.v("this id ", mDataList.get(getAdapterPosition()).getPlace_id() + "");
-                            try {
-                                if (!checkedPlacesIds.contains(mDataList.get(getAdapterPosition()).getPlace_id()))
-                                    checkedPlacesIds.add(mDataList.get(getAdapterPosition()).getPlace_id());
-                            } catch (Exception e) {
-                                checkedPlacesIds.add(mDataList.get(getAdapterPosition()).getPlace_id());
-
-                            }
-
-                        } else {
-                            Log.v("hello", "hello");
-                        }
-                    }
-                });
-            }
-            catch (Exception e)
-            {
-
-            }
-
-        }
-
-        @Override
-        public void onClick(View view) {
-            if (mItemClickListener != null) {
-
-                Log.v("this id " , getAdapterPosition()+"");
-//                mItemClic kListener.onItemClick(view, getAdapterPosition());
-            }
-        }
-
-    }
 
 }
