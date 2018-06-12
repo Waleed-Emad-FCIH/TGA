@@ -11,13 +11,18 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.tga.Controller.SimpleCallback;
+import com.tga.Controller.TouristController;
 import com.tga.R;
 import com.tga.adapter.PlacesAdapter;
 import com.tga.adapter.PlanPlacesAdabter;
+import com.tga.models.TouristModel;
 
 import java.util.ArrayList;
 
@@ -30,14 +35,54 @@ public class PlanDetalis extends AppCompatActivity  {
     private RecyclerView planPlaces ;
     private PlanPlacesAdabter planPlacesAdabter ;
     private RecyclerView.LayoutManager layoutManager;
+    private Button choosePlan , removePlan;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plan_detalis);
+        choosePlan = (Button)findViewById(R.id.choosePlan);
+        removePlan = (Button) findViewById(R.id.removePlanbrn);
         ArrayList<String> placesId = new ArrayList<>();
         placesId  = (ArrayList<String>) getIntent().getExtras().get("placesIds");
+        String planID = (String) getIntent().getExtras().get("planId");
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        TouristController tc  = new TouristController( userId, null ,
+                null , null , null , null );
+
+        tc.getByID(new SimpleCallback<TouristController>() {
+            @Override
+            public void callback(TouristController data) {
+                TouristController touristController  = data;
+                try {
+                    if(touristController.getMyPlans().contains(planID))
+                    {
+                        choosePlan.setVisibility(View.GONE);
+                        removePlan.setVisibility(View.VISIBLE);
+                    }
+                }
+                catch (Exception e )
+                {
+
+                }
+            }
+        } , userId);
 
 
+        choosePlan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                tc.addPlan(planID , userId);
+
+            }
+        });
+        removePlan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tc.delPlan(planID , userId);
+                choosePlan.setVisibility(View.VISIBLE);
+            }
+        });
 
         imgBack = (ImageView)findViewById(R.id.imgBack);
         imgBack.setOnClickListener(new View.OnClickListener() {

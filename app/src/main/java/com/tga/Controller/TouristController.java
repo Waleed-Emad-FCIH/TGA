@@ -46,6 +46,8 @@ public class TouristController extends UserController implements DB_Interface {
         touristModel.myFavouriteProgramsID = new ArrayList<>();
     }
 
+
+
     private TouristController(TouristModel tm){
         super(tm.id, tm.email, tm.password, tm.name, tm.phoneNumber, tm.address);
         this.touristModel = tm;
@@ -273,11 +275,43 @@ public class TouristController extends UserController implements DB_Interface {
         return touristModel.myProgramsID;
     }
 
-    public void addPlan(String planID) {
-        touristModel.myPlansID.add(planID);
+    public void addPlan(String planID , String userId) {
+        final boolean[] flag = {false};
         FirebaseDatabase fd  = FirebaseDatabase.getInstance();
         DatabaseReference dRef = fd.getReference("tourists");
-        dRef.child(getId()).setValue(touristModel);
+        dRef.child(userId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                TouristModel touristModel = dataSnapshot.getValue(TouristModel.class);
+                try {
+                    if(!flag[0])
+                    {
+                        touristModel.myPlansID.add(planID);
+                        flag[0] = true;
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    touristModel.myPlansID = new ArrayList<>();
+                    touristModel.myPlansID.add(planID);
+                    flag[0] =true;
+                }
+
+
+                    dRef.child(userId).setValue(touristModel);
+                    flag[0] = true;
+
+
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
     public  String getId()
@@ -291,11 +325,37 @@ public class TouristController extends UserController implements DB_Interface {
         updateToDB();
     }
 
-    public void delPlan(String planID) {
-        touristModel.myPlansID.remove(planID);
+    public void delPlan(String planID , String userId) {
+        final boolean[] flag = {false};
         FirebaseDatabase fd  = FirebaseDatabase.getInstance();
         DatabaseReference dRef = fd.getReference("tourists");
-        dRef.child(getId()).setValue(touristModel);
+        dRef.child(userId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                TouristModel touristModel = dataSnapshot.getValue(TouristModel.class);
+                try {
+                    if(!flag[0])
+                    {
+                        touristModel.myPlansID.remove(planID);
+                        flag[0] = true;
+                    }
+
+                }
+                catch (Exception e)
+                {
+
+                }
+                dRef.child(userId).setValue(touristModel);
+                flag[0] = true;
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     public void delProgram(String programID) {
@@ -315,7 +375,7 @@ public class TouristController extends UserController implements DB_Interface {
             @Override
             public void callback(ProgramController pc) {
                 pc.editProgram(title, desc, startDate, endDate, hotelName);
-                pc.updateToDB();
+
             }
         }, programID);
     }

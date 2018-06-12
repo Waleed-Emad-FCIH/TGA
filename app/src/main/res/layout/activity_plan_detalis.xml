@@ -51,6 +51,21 @@
 
 
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/choosePlan"
+        android:layout_width="match_parent"
+        android:layout_height="20pt"
+        android:text="choose this plane"
+        android:visibility="visible"/>
+
+    <Button
+        android:id="@+id/removePlanbrn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="remove this plan"
+        android:visibility="gone"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/plan_places"
         android:layout_width="match_parent"

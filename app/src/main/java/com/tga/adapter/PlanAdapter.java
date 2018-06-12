@@ -271,6 +271,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.MyViewHolder> 
             public void onClick(View view) {
                 Intent i = new Intent(context, PlanDetalis.class);
                 i.putExtra("placesIds" , plan.getPlacesID());
+                i.putExtra("planId" , plan.id);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
             }
