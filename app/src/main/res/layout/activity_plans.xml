@@ -74,6 +74,7 @@
                     android:layout_marginRight="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_gravity="center"
+                    android:id="@+id/img_filter"
                     android:src="@drawable/filter_icon"/>
 
             </LinearLayout>

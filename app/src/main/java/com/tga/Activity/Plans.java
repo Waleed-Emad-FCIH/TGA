@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -33,7 +34,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Plans extends AppCompatActivity implements ThingsToDoLoad.ItemClickListener, ThingsToDoLoad.RetryLoadMoreListener{
+public class Plans extends AppCompatActivity implements ThingsToDoLoad.ItemClickListener, ThingsToDoLoad.RetryLoadMoreListener,DialogChooser.dialoug_interface{
 
 
     private RadioButton rbOnlyOneDay,rbMakeYourProgram;
@@ -45,6 +46,7 @@ public class Plans extends AppCompatActivity implements ThingsToDoLoad.ItemClick
     private String next_page_token="";
     private int currentPage;
     private LinearLayoutManager mLayoutManager;
+    private ImageView filter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +57,15 @@ public class Plans extends AppCompatActivity implements ThingsToDoLoad.ItemClick
         getSupportActionBar().setTitle("Select places");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2C3646")));
          //=====================  " imbo Code " ====================
-                rbOnlyOneDay = (RadioButton) findViewById(R.id.rbOnleOneDay);
+        filter =(ImageView)findViewById(R.id.img_filter);
+        filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+openDialog();
+            }
+        });
+
+        rbOnlyOneDay = (RadioButton) findViewById(R.id.rbOnleOneDay);
                 rbMakeYourProgram = (RadioButton) findViewById(R.id.rbMakeYourProgram);
 
         View.OnClickListener first_radio_listener = new View.OnClickListener() {
@@ -203,5 +213,18 @@ public class Plans extends AppCompatActivity implements ThingsToDoLoad.ItemClick
         }
         Toast.makeText(this ,id+"" , Toast.LENGTH_LONG);
         return super.onOptionsItemSelected(item);
+    }
+    void openDialog()
+    {
+        DialogChooser dC= new DialogChooser();
+        dC.show(getSupportFragmentManager(),"Filter Chooser");
+    }
+
+
+    @Override
+    public void Apply(String FilterType) {
+        Intent intent = new Intent(getApplicationContext(),Places_Filter.class);
+        intent.putExtra("type",FilterType);
+        startActivity(intent);
     }
 }

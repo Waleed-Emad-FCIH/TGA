@@ -280,6 +280,7 @@
                     android:text="Messages"
                     android:textColor="#fff"
                     android:padding="8dp"
+                    android:id="@+id/myMessagesBtn"
 
                     />
 

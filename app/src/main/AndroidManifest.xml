@@ -135,8 +135,11 @@
         <activity android:name=".Activity.Community2" />
         <activity android:name=".Activity.AddPost2" />
         <activity android:name=".Activity.PostDetails" />
-        <activity android:name=".Activity.EditComment"></activity>
-        <activity android:name=".Activity.MapViewActivity"/>
+        <activity android:name=".Activity.EditComment" />
+        <activity android:name=".Activity.MapViewActivity" />
+        <activity android:name=".Activity.ChatActivity" />
+        <activity android:name=".Activity.Places_Filter" />
+        <activity android:name=".Activity.MyMessage"></activity>
     </application>
 
 </manifest>

@@ -8,14 +8,13 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.tga.R;
 import com.tga.Response.PlaceResponse;
 import com.tga.Response.RequestInterface;
+import com.tga.adapter.PlacesAdapter;
 import com.tga.adapter.ThingsToDoLoad;
 import com.tga.model.place;
 import com.tga.util.EndlessRecyclerViewScrollListener;
@@ -29,33 +28,45 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class AllPlaces extends AppCompatActivity implements ThingsToDoLoad.ItemClickListener, ThingsToDoLoad.RetryLoadMoreListener{
-private java.util.ArrayList<place> ArrayList;
+public class Places_Filter extends AppCompatActivity implements ThingsToDoLoad.ItemClickListener, ThingsToDoLoad.RetryLoadMoreListener{
+    private java.util.ArrayList<place> ArrayList;
     private RecyclerView recyclerView;
-    private ThingsToDoLoad mAdapter;
+    private String type;
     RequestInterface request;
     private String next_page_token="";
     private int currentPage;
-    LinearLayoutManager mLayoutManager;
+    private ThingsToDoLoad mAdapter;
+
+    private LinearLayoutManager mLayoutManager;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_places);
-
+        setContentView(R.layout.activity_places__filter);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("All Places");
+        type = getIntent().getStringExtra("type");
+        type="Hotels";
+        getSupportActionBar().setTitle(type);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2C3646")));
 
-        recyclerView = (RecyclerView)findViewById(R.id.all_places_recyclerview);
-
+        recyclerView = (RecyclerView)findViewById(R.id.place_type_recyclerview);
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://maps.googleapis.com/maps/api/place/textsearch/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         request = retrofit.create(RequestInterface.class);
-        loadJSON(request,request.getPlacesA_Z());
+        if (type.equals("Restaurants")){
+            loadJSON(request,request.getResturants());
+        }else if(type.equals("Cafes")){
+            loadJSON(request,request.getCafe());
+        }else if (type.equals("Bars")){
+            loadJSON(request,request.getBar());
+        }
+        else if (type.equals("Hotels")){
+            loadJSON(request,request.getHotels());
+
+        }
 
         mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -74,39 +85,6 @@ private java.util.ArrayList<place> ArrayList;
 
 
     }
-
-
-    @Override
-    public void onItemClick(View view, int position) {
-
-    }
-
-    @Override
-    public void onRetryLoadMore() {
-        loadMore(currentPage);
-    }
-
-    private void loadMore(final int page){
-        mAdapter.startLoadMore();
-
-        // example read end
-        if(page == 3){
-            mAdapter.onReachEnd();
-            return;
-        }
-
-        if (next_page_token!=null && !next_page_token.equals("") ) {
-            loadJSON(request,request.getNextPlacePage(next_page_token,"AIzaSyA02qeaptiL2YJ2P9CjHRrLhkkzO3cL7NM"));
-            next_page_token = "";
-
-        }else {
-            Log.v("...", "Last Item Wow !");
-        }
-
-        // start load more
-    }
-
-
     private void loadJSON(RequestInterface request, Call<PlaceResponse> getJSON) {
         Call<PlaceResponse> call = getJSON;
 //        ArrayList = new ArrayList<>();
@@ -135,17 +113,33 @@ private java.util.ArrayList<place> ArrayList;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public void onRetryLoadMore() {
+        loadMore(currentPage);
+    }
 
-        int id = item.getItemId();
+    private void loadMore(final int page){
+        mAdapter.startLoadMore();
 
-        //noinspection SimplifiableIfStatement
-        if (id == android.R.id.home) {
-            // finish the activity
-            onBackPressed();
-            return true;
+        // example read end
+        if(page == 3){
+            mAdapter.onReachEnd();
+            return;
         }
 
-        return super.onOptionsItemSelected(item);
+        if (next_page_token!=null && !next_page_token.equals("") ) {
+            loadJSON(request,request.getNextPlacePage(next_page_token,"AIzaSyA02qeaptiL2YJ2P9CjHRrLhkkzO3cL7NM"));
+            next_page_token = "";
+
+        }else {
+            Log.v("...", "Last Item Wow !");
+        }
+
+        // start load more
+    }
+
+
+    @Override
+    public void onItemClick(View view, int position) {
+
     }
 }

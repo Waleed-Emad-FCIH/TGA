@@ -37,6 +37,8 @@ public class PlanDetalis extends AppCompatActivity  {
         ArrayList<String> placesId = new ArrayList<>();
         placesId  = (ArrayList<String>) getIntent().getExtras().get("placesIds");
 
+
+
         imgBack = (ImageView)findViewById(R.id.imgBack);
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override

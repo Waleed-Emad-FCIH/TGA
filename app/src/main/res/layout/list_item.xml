@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/round"
+    android:layout_marginTop="10dp"
+    android:id="@+id/message_Layout"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/user"
+        android:layout_marginLeft="20dp"
+
+        android:layout_marginStart="20dp"
+        android:id="@+id/sender_image"
+        android:layout_alignTop="@+id/message_text"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="User default status"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/message_time"
+        android:layout_marginTop="12dp"
+android:textColor="@color/colorPrimary"
+        android:textSize="14sp"
+        android:layout_below="@+id/message_text"
+        android:layout_toRightOf="@+id/sender_image"
+        android:layout_toEndOf="@+id/sender_image"
+        android:layout_marginLeft="13dp"
+        android:layout_marginStart="13dp" />
+
+    <TextView
+        android:text="Display Name"
+        android:layout_width="wrap_content"
+        android:textColor="@color/colorPrimary"
+        android:layout_height="wrap_content"
+
+        android:textSize="18sp"
+        android:textStyle="normal|bold"
+
+        android:id="@+id/message_text"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/message_time"
+        android:layout_alignStart="@+id/message_time"
+        android:layout_marginTop="11dp" />
+</RelativeLayout>

@@ -20,6 +20,7 @@ import com.tga.Activity.Community;
 import com.tga.Activity.Community2;
 import com.tga.Activity.EditProfile;
 import com.tga.Activity.History;
+import com.tga.Activity.MyMessage;
 import com.tga.Controller.SimpleCallback;
 import com.tga.Controller.TouristController;
 import com.tga.R;
@@ -34,7 +35,7 @@ public class Profile extends Fragment {
 
     private TextView txtEditProfile,txtHistory;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    private TextView txtFullName,txtNationality,txtPhone,txtEmail,com;
+    private TextView txtFullName,txtNationality,txtPhone,txtEmail,com,myMessages;
     private ImageView imgProfile;
     private String picProfile="";
 
@@ -58,6 +59,15 @@ public class Profile extends Fragment {
 
         txtEditProfile = (TextView)v.findViewById(R.id.txtEditProfile);
         txtHistory = (TextView)v.findViewById(R.id.txtHistory);
+        myMessages = (TextView) v.findViewById(R.id.myMessagesBtn);
+        myMessages.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(new Intent(getContext(),MyMessage.class));
+                startActivity(intent);
+            }
+        });
+
         com = (TextView) v.findViewById(R.id.com);
         com.setOnClickListener(new View.OnClickListener() {
             @Override
