@@ -41,22 +41,22 @@ private dialoug_interface listerner;
             R3=view.findViewById(R.id.cafeRadioBtn);
             R4= view.findViewById(R.id.barRadioBtn);
 
-            if(R1.isSelected())
+            if(R1.isChecked())
             {
                 listerner.Apply("Restaurants");
             }
-            else if(R2.isSelected())
+            else if(R2.isChecked())
             {
                 listerner.Apply("Hotels");
 
             }
 
-            else if(R3.isSelected())
+            else if(R3.isChecked())
             {
                 listerner.Apply("Cafes");
 
             }
-            else if(R4.isSelected())
+            else if(R4.isChecked())
             {
                 listerner.Apply("Bars");
 

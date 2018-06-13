@@ -290,7 +290,7 @@ public class TouristController extends UserController implements DB_Interface {
                     if(!flag[0])
                     {
                         touristModel.myPlansID.add(planID);
-                        touristModel.plansTimes.add(new TouristPlan(planTime , planID));
+                        touristModel.plansTimes.add(new TouristPlan(planTime,false , planID));
                         flag[0] = true;
                     }
 
@@ -300,7 +300,7 @@ public class TouristController extends UserController implements DB_Interface {
                     touristModel.myPlansID = new ArrayList<>();
                     touristModel.myPlansID.add(planID);
                     touristModel.plansTimes = new ArrayList<>();
-                    touristModel.plansTimes.add(new TouristPlan(planTime , planID));
+                    touristModel.plansTimes.add(new TouristPlan(planTime ,false, planID));
                     flag[0] =true;
                 }
 

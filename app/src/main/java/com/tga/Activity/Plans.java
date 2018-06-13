@@ -223,7 +223,7 @@ public class Plans extends AppCompatActivity implements DialogChooser.dialoug_in
                 mAdapter.notifyItemRangeInserted(mAdapter.getItemCount(),ArrayList.size()-1);
                 next_page_token = jsonResponse.getNext_page_token();
                 if (ArrayList.size() == 0 ){
-                    Toast.makeText(getApplicationContext().getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext().getApplicationContext(), "No more Items", Toast.LENGTH_LONG).show();
                 }
             }
 

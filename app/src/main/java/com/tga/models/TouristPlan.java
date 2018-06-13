@@ -6,15 +6,17 @@ package com.tga.models;
 
 public class TouristPlan {
     public String planID;
-    public boolean isNotified  = false;
+    public boolean notified;
     public String planDate;
 
     public TouristPlan() {
-        this.planDate = planDate;
+    }
+
+
+    public TouristPlan(String planID, boolean notified, String planDate) {
         this.planID = planID;
-    }public TouristPlan(String planDate , String planID) {
+        this.notified = notified;
         this.planDate = planDate;
-        this.planID = planID;
     }
 
     public String getPlanID() {
@@ -26,11 +28,11 @@ public class TouristPlan {
     }
 
     public boolean isNotified() {
-        return isNotified;
+        return notified;
     }
 
     public void setNotified(boolean notified) {
-        isNotified = notified;
+        this.notified = notified;
     }
 
     public String getPlanDate() {
