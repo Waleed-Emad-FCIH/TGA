@@ -183,33 +183,14 @@ public class TouristController extends UserController implements DB_Interface {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
               HashMap<String, Object> tm  = (HashMap<String, Object>) dataSnapshot.getValue();
-             ArrayList<String>myPlansID = (ArrayList<String>) tm.get("myPlansID");
-                for (String id : myPlansID)
-               {
-
-                   final String planID = id;
-                   pRef.child(planID).child("endDate").addValueEventListener(new ValueEventListener() {
-                       @Override
-                       public void onDataChange(DataSnapshot dataSnapshot) {
-                            try {
-                               if(dataSnapshot.getValue()!=null && isValidPlan(dataSnapshot.getValue().toString()))
-                               {
-                                   historyPlansID.add(planID);
-                               }
-                           }
-                           catch (Exception e)
-                           {
-
-                            }
-                        }
-
-                       @Override
-                       public void onCancelled(DatabaseError databaseError) {
-
-                       }
-                   });
-
-               }
+             ArrayList<TouristPlan> plansTimes = (ArrayList<TouristPlan>) tm.get("plansTimes");
+                for(TouristPlan touristPlan : plansTimes)
+                {
+                    if(!isValidPlan(touristPlan.planDate))
+                    {
+                        historyPlansID.add(touristPlan.planID);
+                    }
+                }
                plans.callback(historyPlansID);
             }
 
@@ -282,6 +263,7 @@ public class TouristController extends UserController implements DB_Interface {
         final boolean[] flag = {false};
         FirebaseDatabase fd  = FirebaseDatabase.getInstance();
         DatabaseReference dRef = fd.getReference("tourists");
+        DatabaseReference tpRef = fd.getReference("touristsPlans");
         dRef.child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -290,7 +272,10 @@ public class TouristController extends UserController implements DB_Interface {
                     if(!flag[0])
                     {
                         touristModel.myPlansID.add(planID);
-                        touristModel.plansTimes.add(new TouristPlan(planTime,false , planID));
+
+                        TouristPlan touristPlan = new TouristPlan(planTime,false , planID  , userId);
+                        touristPlan.id = tpRef.push().getKey();
+                        tpRef.child(touristPlan.id).setValue(touristPlan);
                         flag[0] = true;
                     }
 
@@ -299,8 +284,9 @@ public class TouristController extends UserController implements DB_Interface {
                 {
                     touristModel.myPlansID = new ArrayList<>();
                     touristModel.myPlansID.add(planID);
-                    touristModel.plansTimes = new ArrayList<>();
-                    touristModel.plansTimes.add(new TouristPlan(planTime ,false, planID));
+                    TouristPlan touristPlan = new TouristPlan(planTime,false , planID  , userId);
+                    touristPlan.id = tpRef.push().getKey();
+                    tpRef.child(touristPlan.id).setValue(touristPlan);
                     flag[0] =true;
                 }
 
@@ -335,6 +321,7 @@ public class TouristController extends UserController implements DB_Interface {
         final boolean[] flag = {false};
         FirebaseDatabase fd  = FirebaseDatabase.getInstance();
         DatabaseReference dRef = fd.getReference("tourists");
+       //    DatabaseReference tpRef = fd.getReference("touristsPlans");
         dRef.child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -343,15 +330,6 @@ public class TouristController extends UserController implements DB_Interface {
                     if(!flag[0])
                     {
                         touristModel.myPlansID.remove(planID);
-                        int i =0;
-                        for(TouristPlan touristPlan : touristModel.plansTimes)
-                        {
-                            if(touristPlan.planID.equals(planID));
-                            {
-                                touristModel.plansTimes.remove(i);
-                            }
-                            i++;
-                        }
                         flag[0] = true;
                     }
 

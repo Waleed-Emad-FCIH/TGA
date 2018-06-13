@@ -8,15 +8,18 @@ public class TouristPlan {
     public String planID;
     public boolean notified;
     public String planDate;
+    public String id ;
+    public String userId;
 
     public TouristPlan() {
     }
 
 
-    public TouristPlan(String planID, boolean notified, String planDate) {
+    public TouristPlan(String planID, boolean notified, String planDate ,  String userId) {
         this.planID = planID;
         this.notified = notified;
         this.planDate = planDate;
+        this.userId = userId;
     }
 
     public String getPlanID() {
