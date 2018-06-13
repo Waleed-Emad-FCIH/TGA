@@ -38,11 +38,31 @@ public class AgentController extends UserController implements DB_Interface{
        agentModel.myProgramsID = myProgsID;
     }
 
+    public AgentController(String id, String email, String pass, String name, String phoneNo, String adrs,
+                           String photo, String registrationNumber, ArrayList<String> myProgsID,boolean state) {
+        super(id, email, pass, name, phoneNo, adrs);
+        agentModel = new AgentModel();
+        agentModel.id = id;
+        agentModel.email = email;
+        agentModel.password = pass;
+        agentModel.name = name;
+        agentModel.phoneNumber = phoneNo;
+        agentModel.address = adrs;
+        agentModel.photo = photo;
+        agentModel.registrationNumber = registrationNumber;
+        agentModel.myProgramsID = myProgsID;
+        agentModel.State=state;
+    }
+
     private AgentController(AgentModel model) {
        super(model.id, model.email, model.password, model.name, model.phoneNumber, model.address);
         agentModel.photo = model.photo;
         agentModel.registrationNumber = model.registrationNumber;
         agentModel.myProgramsID = model.myProgramsID;
+    }
+
+    public boolean getState() {
+        return agentModel.State;
     }
 
     public String getPhoto() {

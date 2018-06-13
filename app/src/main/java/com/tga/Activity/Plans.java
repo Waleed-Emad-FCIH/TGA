@@ -296,9 +296,7 @@ public class Plans extends AppCompatActivity implements DialogChooser.dialoug_in
                 ArrayList.addAll(Arrays.asList(jsonResponse.getResults()));
                 mAdapter.notifyItemRangeInserted(mAdapter.getItemCount(),ArrayList.size()-1);
                 next_page_token = jsonResponse.getNext_page_token();
-                mLayoutManager.setReverseLayout(true);
-                mLayoutManager.setStackFromEnd(true);
-                recyclerView.setLayoutManager(mLayoutManager);
+
                 if (ArrayList.size() == 0 ){
                     Toast.makeText(getApplicationContext().getApplicationContext(), "No more Items", Toast.LENGTH_LONG).show();
                 }

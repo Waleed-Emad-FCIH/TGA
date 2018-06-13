@@ -53,6 +53,7 @@ public class Login extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private ProgressDialog mProgressDialog;
+    private TextView txtRequestAgent;
 
     private static final int RC_SIGN_IN = 0 ;
     private GoogleApiClient mGoogleApiClient;
@@ -68,6 +69,7 @@ public class Login extends AppCompatActivity {
         txtLogin = (TextView) findViewById(R.id.txtlogin);
         txtForgetPassword = (TextView) findViewById(R.id.txtForgotPassword);
         imgGoogle = (ImageView)findViewById(R.id.imgGoogle);
+        txtRequestAgent = (TextView)findViewById(R.id.txtRequestAgent);
         mAuth = FirebaseAuth.getInstance();
         Firebase.setAndroidContext(this);
         txtCreate.setOnClickListener(new View.OnClickListener() {
@@ -76,6 +78,14 @@ public class Login extends AppCompatActivity {
                 Intent intent = new Intent(Login.this, SignUp.class);
                 startActivity(intent);
 
+            }
+        });
+
+        txtRequestAgent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),RequestAgent.class);
+                startActivity(intent);
             }
         });
 
