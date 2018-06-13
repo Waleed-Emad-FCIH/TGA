@@ -284,6 +284,33 @@ public class Plans extends AppCompatActivity implements DialogChooser.dialoug_in
         Toast.makeText(this ,id+"" , Toast.LENGTH_LONG);
         return super.onOptionsItemSelected(item);
     }
+
+    private void loadFilter(Call<PlaceResponse> getJSON) {
+        Call<PlaceResponse> call = getJSON;
+//        ArrayList = new ArrayList<>();
+        call.enqueue(new Callback<PlaceResponse>() {
+            @Override
+            public void onResponse(Call<PlaceResponse> call, Response<PlaceResponse> response) {
+
+                PlaceResponse jsonResponse = response.body();
+                ArrayList.addAll(Arrays.asList(jsonResponse.getResults()));
+                mAdapter.notifyItemRangeInserted(mAdapter.getItemCount(),ArrayList.size()-1);
+                next_page_token = jsonResponse.getNext_page_token();
+                mLayoutManager.setReverseLayout(true);
+                mLayoutManager.setStackFromEnd(true);
+                recyclerView.setLayoutManager(mLayoutManager);
+                if (ArrayList.size() == 0 ){
+                    Toast.makeText(getApplicationContext().getApplicationContext(), "No more Items", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PlaceResponse> call, Throwable t) {
+                Toast.makeText(getApplicationContext().getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
     void openDialog()
     {
         DialogChooser dC= new DialogChooser();
@@ -293,8 +320,19 @@ public class Plans extends AppCompatActivity implements DialogChooser.dialoug_in
 
     @Override
     public void Apply(String FilterType) {
-        Intent intent = new Intent(getApplicationContext(),Places_Filter.class);
-        intent.putExtra("type",FilterType);
-        startActivity(intent);
+        if (FilterType.equals("Cafes")){
+            loadFilter(request.getCafe());
+        }else if(FilterType.equals("Restaurants")){
+            loadFilter(request.getResturants());
+        }
+        else if(FilterType.equals("Hotels")){
+            loadFilter(request.getHotels());
+        }
+        else if(FilterType.equals("Bars")){
+            loadFilter(request.getBar());
+        }
+//        Intent intent = new Intent(getApplicationContext(),Places_Filter.class);
+//        intent.putExtra("type",FilterType);
+//        startActivity(intent);
     }
 }
