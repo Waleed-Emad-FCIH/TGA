@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.tga.Controller.ProgramController;
+import com.tga.Controller.SimpleCallback;
 import com.tga.R;
 import com.tga.adapter.DiscountsAdapter;
 import com.tga.adapter.SearchAdapter;
@@ -35,20 +36,25 @@ public class Discounts extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2C3646")));
 
         recyclerView = (RecyclerView) findViewById(R.id.reDiscounts);
-        arrayList = ProgramController.listAll();
+        ProgramController.listAll(new SimpleCallback<ArrayList<ProgramController>>() {
+            @Override
+            public void callback(ArrayList<ProgramController> data) {
+                arrayList = data;
+                for (int i = 0; i < arrayList.size(); i++) {
+                    if (arrayList.get(i).getDiscountID().isEmpty())
+                        arrayList.remove(i);
+                }
 
-        for (int i = 0; i < arrayList.size(); i++) {
-            if (arrayList.get(i).getDiscountID().isEmpty())
-                arrayList.remove(i);
-        }
 
+                mAdapter = new DiscountsAdapter(getApplicationContext(),arrayList);
 
-        mAdapter = new DiscountsAdapter(getApplicationContext(),arrayList);
+                recyclerView.setHasFixedSize(true);
+                recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                recyclerView.setAdapter(mAdapter);
+            }
+        });
 
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
     }
 
 

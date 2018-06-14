@@ -157,7 +157,7 @@ public class ProgramController implements DB_Interface{
         saveToDB();
     }
 
-    public static ArrayList<ProgramController> listAll() {
+    public static void listAll(final SimpleCallback<ArrayList<ProgramController>> simpleCallback) {
         final ArrayList<ProgramController> list = new ArrayList<>();
         dbRef = FirebaseDatabase.getInstance().getReference("Programs");
         dbRef.addValueEventListener(new ValueEventListener() {
@@ -168,14 +168,15 @@ public class ProgramController implements DB_Interface{
                     if (model != null)
                         list.add(new ProgramController(model));
                 }
+                simpleCallback.callback(list);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.w("ProgramController", "Failed to read list values.", databaseError.toException());
+                simpleCallback.callback(new ArrayList<ProgramController>());
             }
         });
-        return list;
     }
 
     public static void getByID(@NonNull final SimpleCallback<ProgramController> finishedCallback, String id) {

@@ -111,8 +111,7 @@ public class SignUp extends AppCompatActivity {
 
 //        mRef.push().setValue(profileModel);
         //mRef.child("users").child(userId).setValue(user);
-        DatabaseReference users = mRef.getReference("tourists");
-        users.child(mUser.getUid()).setValue(user);
+        user.saveToDB();
         startActivity(new Intent(SignUp.this, MainActivity.class));
         finish();
     }

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.tga.Activity.MyPrograms;
 import com.tga.Controller.ProgramController;
+import com.tga.Controller.SimpleCallback;
 import com.tga.R;
 import com.tga.adapter.RecycleAdapter_Home;
 
@@ -36,33 +37,34 @@ public class Home extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
 
-
-
         recyclerView = (RecyclerView) view.findViewById(R.id.home_recyclerview);
-        ArrayList = ProgramController.listAll();
 
-
-        //TODO : active this
-        //for (int i = 0; i < ArrayList.size(); i++) {
-        //    if (ArrayList.get(i).getPrice() == 0)
-        //        ArrayList.remove(i);
-        //}
-
-
-        mAdapter = new RecycleAdapter_Home(getActivity(),ArrayList, "Home");
-
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
-
-        txtMyPrograms = view.findViewById(R.id.txtMyPrograms);
-
-        txtMyPrograms.setOnClickListener(new View.OnClickListener() {
+        ProgramController.listAll(new SimpleCallback<java.util.ArrayList<ProgramController>>() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), MyPrograms.class);
-                startActivity(intent);
+            public void callback(ArrayList<ProgramController> data) {
+                ArrayList = data;
+                //TODO : active this
+                //for (int i = 0; i < ArrayList.size(); i++) {
+                //    if (ArrayList.get(i).getPrice() == 0)
+                //        ArrayList.remove(i);
+                //}
+
+                mAdapter = new RecycleAdapter_Home(getActivity(),ArrayList, "Home");
+
+                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+                recyclerView.setLayoutManager(mLayoutManager);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                recyclerView.setAdapter(mAdapter);
+
+                txtMyPrograms = view.findViewById(R.id.txtMyPrograms);
+
+                txtMyPrograms.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getContext(), MyPrograms.class);
+                        startActivity(intent);
+                    }
+                });
             }
         });
 
