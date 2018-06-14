@@ -9,6 +9,9 @@
     <!--Main=AIzaSyAngLhRf_i9ZoagGX0DllBZHlPkaKfAEzY-->
     <!--AIzaSyBtkj7v5ZoRr8iX013LBBj5wt58i_gydM0-->
     <!--NewMain=AIzaSyA02qeaptiL2YJ2P9CjHRrLhkkzO3cL7NM-->
+    <string name="facebook_app_id">452104048552423</string>
+    <string name="fb_login_protocol_scheme">fb452104048552423</string>
+
     <string name="GooglePlacesApi">AIzaSyA02qeaptiL2YJ2P9CjHRrLhkkzO3cL7NM</string>
     <string name="places">https://maps.googleapis.com/maps/api/place/textsearch/xml?query=airport+or+food+in+Cairo&amp;key=AIzaSyAngLhRf_i9ZoagGX0DllBZHlPkaKfAEzY</string>
 
