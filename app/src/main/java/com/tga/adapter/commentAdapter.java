@@ -30,7 +30,7 @@ import com.tga.models.PostModel;
 import java.util.ArrayList;
 import java.util.List;
 public class commentAdapter  extends RecyclerView.Adapter<commentAdapter.MyViewHolder>{
-    private List<CommentModel>commentList;
+    public List<CommentModel>commentList;
     Context context;
     FirebaseUser user ;
 

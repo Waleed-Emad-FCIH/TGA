@@ -90,6 +90,7 @@ public class RecycleAdapter_Home extends RecyclerView.Adapter<RecycleAdapter_Hom
                 else if (source.equals("MyPrograms"))
                     i = new Intent(context, ProgDetails.class);
                 i.putExtra("PROG_ID",pc.getId());
+                i.putExtra("user_id",pc.getOwnerID());
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
 

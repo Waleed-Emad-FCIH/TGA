@@ -22,6 +22,7 @@ import com.tga.adapter.ThingsToDoLoad;
 import com.tga.model.PlaceModel;
 import com.tga.model.place;
 import com.tga.util.EndlessRecyclerViewScrollListener;
+import com.tga.util.EndlessScrollListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,12 +34,13 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class PlacesAZ extends Fragment  implements ThingsToDoLoad.ItemClickListener, ThingsToDoLoad.RetryLoadMoreListener{
+public class PlacesAZ extends Fragment {
 
     private java.util.ArrayList<place> ArrayList;
     private RecyclerView recyclerView;
-    private ThingsToDoLoad mAdapter;
+    private ThingsToDoAdpater mAdapter;
     RequestInterface request;
+    Retrofit retrofit;
     private String next_page_token="";
     private int currentPage;
     LinearLayoutManager mLayoutManager;
@@ -56,64 +58,41 @@ public class PlacesAZ extends Fragment  implements ThingsToDoLoad.ItemClickListe
         View v = inflater.inflate(R.layout.fragment_places_az, container, false);
 
         recyclerView = (RecyclerView) v.findViewById(R.id.all_places_recyclerview);
+        ArrayList = new ArrayList<>();
 
-        Retrofit retrofit = new Retrofit.Builder()
+        retrofit= new Retrofit.Builder()
                 .baseUrl("https://maps.googleapis.com/maps/api/place/textsearch/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         request = retrofit.create(RequestInterface.class);
-        loadJSON(request,request.getPlacesA_Z());
-
-        mLayoutManager = new LinearLayoutManager(getContext());
+        mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new ThingsToDoLoad(getContext(),this,this);
+        mAdapter = new ThingsToDoAdpater(getContext(),ArrayList);
         recyclerView.setAdapter(mAdapter);
 
-        recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(mLayoutManager) {
-            @Override
-            public void onLoadMore(int page) {
-                currentPage = page;
-                loadMore(page);
 
+        recyclerView.addOnScrollListener(new EndlessScrollListener(mLayoutManager){
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                if (next_page_token!=null && !next_page_token.equals("") ) {
+                    loadJSON(request.getNextPlacePage(next_page_token,"AIzaSyA02qeaptiL2YJ2P9CjHRrLhkkzO3cL7NM"));
+                    next_page_token = "";
+
+                }else {
+                    Log.v("...", "Last Item Wow !");
+                }
             }
         });
 
+
+        loadJSON(request.getPlacesA_Z());
         return v;
     }
 
-    @Override
-    public void onItemClick(View view, int position) {
-
-    }
-
-    @Override
-    public void onRetryLoadMore() {
-        loadMore(currentPage);
-    }
-
-    private void loadMore(final int page){
-        mAdapter.startLoadMore();
-
-        // example read end
-        if(page == 3){
-            mAdapter.onReachEnd();
-            return;
-        }
-
-        if (next_page_token!=null && !next_page_token.equals("") ) {
-            loadJSON(request,request.getNextPlacePage(next_page_token,"AIzaSyA02qeaptiL2YJ2P9CjHRrLhkkzO3cL7NM"));
-            next_page_token = "";
-
-        }else {
-            Log.v("...", "Last Item Wow !");
-        }
-
-        // start load more
-    }
 
 
-    private void loadJSON(RequestInterface request, Call<PlaceResponse> getJSON) {
+    private void loadJSON(Call<PlaceResponse> getJSON) {
         Call<PlaceResponse> call = getJSON;
 //        ArrayList = new ArrayList<>();
         call.enqueue(new Callback<PlaceResponse>() {
@@ -121,16 +100,12 @@ public class PlacesAZ extends Fragment  implements ThingsToDoLoad.ItemClickListe
             public void onResponse(Call<PlaceResponse> call, Response<PlaceResponse> response) {
 
                 PlaceResponse jsonResponse = response.body();
-                if (ArrayList==null){
-                    ArrayList = new ArrayList<>(Arrays.asList(jsonResponse.getResults()));
-                }else
-                {
-                    ArrayList.addAll(Arrays.asList(jsonResponse.getResults()));
-                }
-
+                ArrayList.addAll(Arrays.asList(jsonResponse.getResults()));
+                mAdapter.notifyItemRangeInserted(mAdapter.getItemCount(),ArrayList.size()-1);
                 next_page_token = jsonResponse.getNext_page_token();
-                mAdapter.add(ArrayList);
-                recyclerView.setAdapter(mAdapter);
+                if (ArrayList.size() == 0 ){
+                    Toast.makeText(getContext().getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override

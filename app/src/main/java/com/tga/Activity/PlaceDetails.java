@@ -105,16 +105,16 @@ public class PlaceDetails extends AppCompatActivity implements BaseSliderView.On
                 onBackPressed();
             }
         });
-        txtPlaceName = findViewById(R.id.txtPlaceName);
-        txtRate =findViewById(R.id.txtRate);
-        rtPlace =findViewById(R.id.rtPlace);
-        txtOpeningDays = findViewById(R.id.txtOpeningDays);
-        recyclerView = findViewById(R.id.recycler_view_reviews);
-        imgMap = findViewById(R.id.imgMap);
-        txtWebsite = findViewById(R.id.txtWebsite);
-        txtPlacePhone = findViewById(R.id.txtPlacePhone);
-        imgFav = findViewById(R.id.imgFav);
-        imgUnFav = findViewById(R.id.imgUnFav);
+        txtPlaceName =(TextView) findViewById(R.id.txtPlaceName);
+        txtRate =(TextView)findViewById(R.id.txtRate);
+        rtPlace =(RatingBar)findViewById(R.id.rtPlace);
+        txtOpeningDays =(TextView) findViewById(R.id.txtOpeningDays);
+        recyclerView =(RecyclerView) findViewById(R.id.recycler_view_reviews);
+        imgMap =(ImageView) findViewById(R.id.imgMap);
+        txtWebsite =(TextView) findViewById(R.id.txtWebsite);
+        txtPlacePhone =(TextView) findViewById(R.id.txtPlacePhone);
+        imgFav =(ImageView) findViewById(R.id.imgFav);
+        imgUnFav =(ImageView) findViewById(R.id.imgUnFav);
 
         imgUnFav.setVisibility(VISIBLE);
         imgFav.setVisibility(GONE);
@@ -345,7 +345,7 @@ public class PlaceDetails extends AppCompatActivity implements BaseSliderView.On
         imgMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Uri gmmIntentUri = Uri.parse("geo:"+lat+","+lng);
+                Uri gmmIntentUri = Uri.parse("google.navigation:q="+lat+","+lng);
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");
                 if (mapIntent.resolveActivity(getPackageManager()) != null) {

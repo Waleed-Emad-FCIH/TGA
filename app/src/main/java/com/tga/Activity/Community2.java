@@ -47,7 +47,7 @@ public class Community2 extends AppCompatActivity {
                 ,user.getUid(),null,0,null);
         pAdapter = new PostAdapter(getApplicationContext(),posts.listAll());
         recyclerView.setAdapter(pAdapter);
-        fab = findViewById(R.id.fab);
+        fab =(FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

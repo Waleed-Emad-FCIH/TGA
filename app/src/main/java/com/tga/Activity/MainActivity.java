@@ -33,6 +33,7 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
+import com.tga.Controller.NotificationsController;
 import com.tga.Controller.SimpleCallback;
 import com.tga.Controller.TouristController;
 import com.tga.R;
@@ -100,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
         txtUserName = (TextView)navHeader.findViewById(R.id.txtName);
         loadNavHeader();
 
+//        new NotificationsController().execute(Long.valueOf(0));
         // initializing navigation menu
         setUpNavigationView();
 

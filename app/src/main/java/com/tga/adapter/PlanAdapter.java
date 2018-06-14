@@ -191,41 +191,61 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.MyViewHolder> 
             ///////////Map image Eng///////////////
 
             int finalI = i;
-            geoDataClient.getPlacePhotos(plan.getPlacesID().get(i)).addOnCompleteListener(new OnCompleteListener<PlacePhotoMetadataResponse>() {
-                @Override
-                public void onComplete(@NonNull Task<PlacePhotoMetadataResponse> task) {
-                    // Get the list of photos.
-                    PlacePhotoMetadataResponse photos = task.getResult();
-                    // Get the PlacePhotoMetadataBuffer (metadata for all of the photos).
-                    PlacePhotoMetadataBuffer photoMetadataBuffer = photos.getPhotoMetadata();
-                    // Get the first photo in the list.
-                    PlacePhotoMetadata photoMetadata = photoMetadataBuffer.get(0);
-                    // Get the attribution text.
-                    CharSequence attribution = photoMetadata.getAttributions();
-                    // Get a full-size bitmap for the photo.
-                    Task<PlacePhotoResponse> photoResponse = geoDataClient.getPhoto(photoMetadata);
-                    photoResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoResponse>() {
-                        @Override
-                        public void onComplete(@NonNull Task<PlacePhotoResponse> task) {
-                            PlacePhotoResponse photo = task.getResult();
-                            Bitmap bitmap = photo.getBitmap();
-                            Log.v("am in 111111", "" + finalI);
-                            switch (finalI) {
-                                case 0:
-                                    holder.imgSite1.setImageBitmap(bitmap);
-                                    break;
-                                case 1:
-                                    holder.imgSite2.setImageBitmap(bitmap);
-                                    break;
-                                case 2:
-                                    holder.imgSite3.setImageBitmap(bitmap);
-                                    break;
+            try {
+
+                geoDataClient.getPlacePhotos(plan.getPlacesID().get(i)).addOnCompleteListener(new OnCompleteListener<PlacePhotoMetadataResponse>() {
+                    @Override
+                    public void onComplete(@NonNull Task<PlacePhotoMetadataResponse> task) {
+                        // Get the list of photos.
+                        PlacePhotoMetadataResponse photos = task.getResult();
+                        // Get the PlacePhotoMetadataBuffer (metadata for all of the photos).
+                        PlacePhotoMetadataBuffer photoMetadataBuffer = photos.getPhotoMetadata();
+                        // Get the first photo in the list.
+                        try {
+
+                        PlacePhotoMetadata photoMetadata = photoMetadataBuffer.get(0);
+                        // Get the attribution text.
+                        CharSequence attribution = photoMetadata.getAttributions();
+                        // Get a full-size bitmap for the photo.
+                            try {
+                        Task<PlacePhotoResponse> photoResponse = geoDataClient.getPhoto(photoMetadata);
+                        photoResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoResponse>() {
+                            @Override
+                            public void onComplete(@NonNull Task<PlacePhotoResponse> task) {
+                                PlacePhotoResponse photo = task.getResult();
+                                Bitmap bitmap = photo.getBitmap();
+                                Log.v("am in 111111", "" + finalI);
+                                switch (finalI) {
+                                    case 0:
+                                        holder.imgSite1.setImageBitmap(bitmap);
+                                        break;
+                                    case 1:
+                                        holder.imgSite2.setImageBitmap(bitmap);
+                                        break;
+                                    case 2:
+                                        holder.imgSite3.setImageBitmap(bitmap);
+                                        break;
+                                }
+                                // Log.v("helllo??/>" , photoi[0].toString());
                             }
-                            // Log.v("helllo??/>" , photoi[0].toString());
+
+                        });}
+                        catch (Exception e)
+                        {
+
                         }
-                    });
-                }
-            });
+                            }
+                        catch (Exception e)
+                        {
+
+                        }
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+
+            }
             ///Set imgs for places//
 
         }///for loop close
@@ -251,6 +271,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.MyViewHolder> 
             public void onClick(View view) {
                 Intent i = new Intent(context, PlanDetalis.class);
                 i.putExtra("placesIds" , plan.getPlacesID());
+                i.putExtra("planId" , plan.id);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
             }

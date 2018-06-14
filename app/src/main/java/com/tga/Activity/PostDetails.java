@@ -78,6 +78,7 @@ public class PostDetails extends AppCompatActivity {
         final DatabaseReference cRef = fd.getReference("comments");
         Query query = cRef.orderByChild("postId").equalTo(value);
         final ArrayList<CommentModel> comments = new ArrayList<>();
+        cAdapter = new commentAdapter(getApplicationContext(),comments);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -86,7 +87,7 @@ public class PostDetails extends AppCompatActivity {
                     CommentModel commentModel = snapshot.getValue(CommentModel.class);
                     comments.add(commentModel);
                 }
-                cAdapter = new commentAdapter(getApplicationContext(),comments);
+                cAdapter.commentList=comments;
                 recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                 recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), LinearLayoutManager.VERTICAL));
@@ -113,7 +114,7 @@ public class PostDetails extends AppCompatActivity {
                                 , System.currentTimeMillis() ,
                                 user.getUid() ,value);
                         c.createComment();
-                        // txtWritePost.setText(""
+                        txtWritePost.setText("");
                     }
             }
         });
