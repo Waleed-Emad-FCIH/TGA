@@ -3,12 +3,15 @@ package com.tga.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.wifi.WifiManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.format.Formatter;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -47,13 +50,15 @@ public class SignUp extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Sign Up");
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2C3646")));
         mAuth = FirebaseAuth.getInstance();
         name = (EditText) findViewById(R.id.etxtFullName);
         email = (EditText) findViewById(R.id.etxtEmail);
         password = (EditText) findViewById(R.id.etxtPassword);
         confirmPassword=(EditText)findViewById(R.id.etxtCPassword);
-
+        country = (Spinner)findViewById(R.id.spCountry);
         btnSignUp=(TextView) findViewById(R.id.txtSignUp);
 
         btnSignUp.setOnClickListener(new android.view.View.OnClickListener() {
@@ -68,7 +73,6 @@ public class SignUp extends AppCompatActivity {
         });
 
 
-        country = (Spinner)findViewById(R.id.spCountry);
         Resources res = getResources();
         String[] items=res.getStringArray(R.array.country_arrays);
         //String[] items = new String[]{"City","Cairo","Giza","Alexandria"};
@@ -187,5 +191,20 @@ public class SignUp extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), Login.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == android.R.id.home) {
+            // finish the activity
+            onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

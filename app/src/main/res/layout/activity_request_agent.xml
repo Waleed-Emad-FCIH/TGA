@@ -110,6 +110,27 @@
             </LinearLayout>
 
 
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Phone Number"
+                android:inputType="number"
+                android:textColorHint="#a9b0c3"
+                android:layout_marginTop="50dp"
+                android:textSize="13dp"
+                android:background="#00000000"
+                android:paddingLeft="8dp"
+                android:id="@+id/etxtPhoneNum"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#a9b0c3"
+                android:layout_marginTop="10dp"
+                >
+            </LinearLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -133,10 +154,10 @@
 
 
             <TextView
-                android:id="@+id/txtSignUp"
+                android:id="@+id/txtRequest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Sign Up"
+                android:text="Request"
                 android:textStyle="bold"
                 android:background="@drawable/round"
                 android:textColor="#CBD1DC"
@@ -144,37 +165,8 @@
                 android:padding="14dp"
                 android:layout_marginTop="50dp"/>
 
-            <!--<TextView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="or sign in with:"-->
-                <!--android:gravity="center"-->
-                <!--android:layout_marginTop="10dp"-->
-                <!--android:textColor="#2C3646"/>-->
-            <!--<LinearLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:orientation="horizontal"-->
-                <!--android:layout_below="@+id/main"-->
-                <!--android:layout_marginTop="30dp"-->
-                <!--android:gravity="center">-->
-
-                <!--<ImageView-->
-                    <!--android:layout_width="50dp"-->
-                    <!--android:layout_height="50dp"-->
-                    <!--android:src="@drawable/fb"-->
-                    <!--android:layout_marginRight="5dp"-->
-                    <!--android:id="@+id/imgFb"-->
-                    <!--/>-->
-                <!--<ImageView-->
-                    <!--android:layout_width="50dp"-->
-                    <!--android:layout_height="50dp"-->
-                    <!--android:src="@drawable/google"-->
-                    <!--android:id="@+id/imgGoogle"/>-->
 
 
-
-            <!--</LinearLayout>-->
 
             <TextView
                 android:id="@+id/ter"
@@ -187,6 +179,7 @@
                 android:textSize="12dp"
                 android:gravity="center"
                 />
+
         </LinearLayout>
 
 

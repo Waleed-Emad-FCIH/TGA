@@ -79,11 +79,13 @@ dependencies {
     implementation 'com.daimajia.slider:library:1.1.5@aar'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation group: 'org.apache.httpcomponents', name: 'httpmime', version: '4.3.3'
+    implementation 'com.facebook.android:facebook-android-sdk:4.9.0'
+
 
 }
 apply plugin: 'com.google.gms.google-services'
 configurations.all {
-    resolutionStrategy.eachDependency {  details ->
+    resolutionStrategy.eachDependency { details ->
         def requested = details.requested
         if (requested.group == 'com.android.support') {
             // Skip multidex because it follows a different versioning pattern.

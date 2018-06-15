@@ -31,16 +31,32 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service android:name=".util.FCMService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider452104048552423"
+            android:exported="true" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+
         <activity
             android:name=".Activity.SignUp"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.HomeDetails"
             android:configChanges="keyboardHidden|orientation"
@@ -96,9 +112,7 @@
         <activity
             android:name=".Activity.Plans"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait" >
-
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity android:name=".Activity.MyPrograms" />
         <activity android:name=".Activity.AddProgram" />
         <activity android:name=".Activity.AllPlaces" />
@@ -146,7 +160,8 @@
         <activity android:name=".Activity.MapViewActivity" />
         <activity android:name=".Activity.ChatActivity" />
         <activity android:name=".Activity.Places_Filter" />
-        <activity android:name=".Activity.MyMessage"></activity>
+        <activity android:name=".Activity.MyMessage" />
+        <activity android:name=".Activity.RequestAgent"></activity>
     </application>
 
 </manifest>
