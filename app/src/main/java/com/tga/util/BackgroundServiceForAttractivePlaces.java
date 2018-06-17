@@ -101,7 +101,7 @@ public class BackgroundServiceForAttractivePlaces extends Service implements Loc
 
 
 
-                handler.postDelayed(runnable, 10000);
+                handler.postDelayed(runnable, 1800000);
 //                Toast.makeText(getApplicationContext(), "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_SHORT).show();
 //                Toast.makeText(context, "Service is still running", Toast.LENGTH_LONG).show();
 

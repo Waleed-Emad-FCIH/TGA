@@ -48,6 +48,7 @@ import com.tga.fragment.Plans;
 import com.tga.fragment.Privacy;
 import com.tga.fragment.Profile;
 import com.tga.fragment.Settings;
+import com.tga.fragment.ShowMyPlans;
 import com.tga.util.BackgroundServiceForAttractivePlaces;
 
 
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     private Handler mHandler;
     private static final String TAG_HOME = "TGA";
     private static final String TAG_FAV = "favourites";
+    private static final String TAG_MY_PLANS = "myplans";
     private static final String TAG_SETTINGS = "settings";
     private static final String TAG_PRIVACY = "privacy";
     private static final String TAG_CONTACTUS = "contact us";
@@ -302,17 +304,21 @@ public class MainActivity extends AppCompatActivity {
                 Favourites favourites = new Favourites();
                 return favourites;
             case 2:
+                ShowMyPlans showMyPlans = new ShowMyPlans();
+                return showMyPlans;
+            case 3:
                 Settings settings = new Settings();
                 return settings;
-            case 3:
+            case 4:
                 Privacy privacy = new Privacy();
                 return privacy;
-            case 4:
+            case 5:
                 ContactUs contactUs =new ContactUs();
                 return contactUs;
-            case 5:
+            case 6:
                 AboutUs aboutUs = new AboutUs();
                 return aboutUs;
+
 
 
             default:
@@ -347,27 +353,33 @@ public class MainActivity extends AppCompatActivity {
                         navItemIndex = 1;
                         CURRENT_TAG = TAG_FAV;
                         break;
-                    case R.id.settings:
+                    case R.id.myPlans:
                         navItemIndex = 2;
+                        CURRENT_TAG = TAG_MY_PLANS;
+                        break;
+                    case R.id.settings:
+                        navItemIndex = 3;
                         CURRENT_TAG = TAG_SETTINGS;
                         break;
                     case R.id.privacy:
-                        navItemIndex = 3;
+                        navItemIndex = 4;
                         CURRENT_TAG = TAG_PRIVACY;
                         break;
                     case R.id.contact:
-                        navItemIndex = 4;
+                        navItemIndex = 5;
                         CURRENT_TAG = TAG_CONTACTUS;
                         break;
                     case R.id.about:
-                        navItemIndex = 5;
+                        navItemIndex = 6;
                         CURRENT_TAG = TAG_ABOUTUS;
                         break;
                     case R.id.logout:
-                        navItemIndex = 6;
+                        navItemIndex = 7;
                         logout();
                         drawer.closeDrawers();
                         return true;
+
+
 
                     default:
                         navItemIndex = 0;
