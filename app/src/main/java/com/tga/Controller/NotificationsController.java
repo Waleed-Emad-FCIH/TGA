@@ -14,20 +14,20 @@ import java.net.URL;
  * Created by Mada on 6/12/2018.
  */
 
-public class NotificationsController extends AsyncTask<Long, Void, Void> {
+public class NotificationsController extends AsyncTask<String, Void, Void> {
 
     public final static String AUTH_KEY_FCM = "AIzaSyCmCOZBZR4VugM013zdD0Li8sxjs8VXEnI";
     public final static String API_URL_FCM = "https://fcm.googleapis.com/fcm/send";
 
     @Override
-    protected Void doInBackground(Long... params) {
+    protected Void doInBackground(String... params) {
 
 
         String token = FirebaseInstanceId.getInstance().getToken().toString();
-        if (params[0]!=0){
-            pushFCMNotification(token,params[0]);
+        if (params[0]==null){
+            pushFCMNotification(token,params[0],"You are nearby attractive place",params[1]);
         }else {
-            pushFCMNotification(token,0);
+            pushFCMNotification(token,params[0], "You are nearby "+params[0],params[1]);
         }
         return null;
 
@@ -44,7 +44,7 @@ public class NotificationsController extends AsyncTask<Long, Void, Void> {
     }
 
 
-    public static void pushFCMNotification(String userDeviceIdKey,long s) {
+    public static void pushFCMNotification(String userDeviceIdKey,String s,String body,String placeId) {
         try {
             String authKey = AUTH_KEY_FCM;   // You FCM AUTH key
             String FMCurl = API_URL_FCM;
@@ -64,10 +64,12 @@ public class NotificationsController extends AsyncTask<Long, Void, Void> {
             json.put("to", userDeviceIdKey.trim());
             JSONObject info = new JSONObject();
             info.put("title", "TGA");   // Notification title
-            if (s != 0) {
+            if (s == null) {
                 info.put("body", "Welcome"); // Notification body
             } else {
-                info.put("body", "Welcome"); // Notification body
+                info.put("body", body);
+                info.put("tag",placeId);
+                // Notification body
 
             }
             json.put("notification", info);

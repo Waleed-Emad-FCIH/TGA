@@ -48,6 +48,7 @@ import com.tga.fragment.Plans;
 import com.tga.fragment.Privacy;
 import com.tga.fragment.Profile;
 import com.tga.fragment.Settings;
+import com.tga.util.BackgroundServiceForAttractivePlaces;
 
 
 import java.util.ArrayList;
@@ -96,6 +97,10 @@ public class MainActivity extends AppCompatActivity {
         new AgentController("n7rAy53qdOULidrWt2KhKCrTu3n1", "agent@gmail.com", "1234567890", "Agent1", "phone",
                 "adrs", "photo", "regisNo", arr).saveToDB();*/
 
+        //Call back ground Service
+        startService(new Intent(this, BackgroundServiceForAttractivePlaces.class));
+
+
         drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
         navigationView = (NavigationView)findViewById(R.id.nav_view);
         myFirebaseRef = new Firebase("https://tguidea-86215.firebaseio.com/tourists/");
@@ -110,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         txtUserName = (TextView)navHeader.findViewById(R.id.txtName);
         loadNavHeader();
 
-//        new NotificationsController().execute(Long.valueOf(0));
+//        new NotificationsController().execute("Ahmed");
         // initializing navigation menu
         setUpNavigationView();
 
