@@ -34,6 +34,8 @@ public class Plans extends Fragment {
     View view;
     private FloatingActionButton floatingActionButton;
     private RecyclerView recyclerView;
+    private RecyclerView suggRecyclerView;
+
     private PlanAdapter mAdapter;
 
     public Plans() {
@@ -95,8 +97,44 @@ public class Plans extends Fragment {
         {
             mAdapter = new PlanAdapter(getActivity(), new ArrayList<>());
             recyclerView.setAdapter(mAdapter);
-        }
+            }
 
+
+
+        /// suggested
+        suggRecyclerView = (RecyclerView) v.findViewById(R.id.rePlansSuggested);
+
+        RecyclerView.LayoutManager suggLayoutManager = new LinearLayoutManager(getActivity());
+        suggRecyclerView.setLayoutManager(suggLayoutManager);
+        suggRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        try {
+
+            reference.addValueEventListener(new ValueEventListener() {
+
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    java.util.ArrayList<PlanModel> ArrayList = new ArrayList<>();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        PlanModel plan = snapshot.getValue(PlanModel.class);
+                        Log.v("data??>>>", "here + " + plan.getTitle() + ArrayList.size());
+                        ArrayList.add(plan);
+
+                    }
+                    mAdapter = new PlanAdapter(getActivity(), ArrayList);
+                    suggRecyclerView.setAdapter(mAdapter);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+        catch (Exception e)
+        {
+            mAdapter = new PlanAdapter(getActivity(), new ArrayList<>());
+            suggRecyclerView.setAdapter(mAdapter);
+        }
 
 
         return v;

@@ -197,7 +197,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.MyViewHolder> 
                     @Override
                     public void onComplete(@NonNull Task<PlacePhotoMetadataResponse> task) {
                         // Get the list of photos.
-                        PlacePhotoMetadataResponse photos = task.getResult();
+                            PlacePhotoMetadataResponse photos = task.getResult();
                         // Get the PlacePhotoMetadataBuffer (metadata for all of the photos).
                         PlacePhotoMetadataBuffer photoMetadataBuffer = photos.getPhotoMetadata();
                         // Get the first photo in the list.

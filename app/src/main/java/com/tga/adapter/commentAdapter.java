@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.tga.Activity.AddPost2;
 import com.tga.Activity.Comments;
 import com.tga.Activity.EditComment;
+import com.tga.Activity.PostDetails;
 import com.tga.Controller.PostController;
 import com.tga.R;
 import com.tga.models.CommentModel;
@@ -33,12 +34,13 @@ public class commentAdapter  extends RecyclerView.Adapter<commentAdapter.MyViewH
     public List<CommentModel>commentList;
     Context context;
     FirebaseUser user ;
+    private  String postId;
 
 
-
-    public commentAdapter(Context mainActivityContacts,List<CommentModel> commentModels) {
+    public commentAdapter(Context mainActivityContacts,List<CommentModel> commentModels ) {
         this.context = mainActivityContacts;
         this.commentList = commentModels;
+        this.postId = postId;
     }
 
     @Override
@@ -69,7 +71,7 @@ public class commentAdapter  extends RecyclerView.Adapter<commentAdapter.MyViewH
             @Override
             public void onClick(View view) {
              c.delComment();
-
+               commentList.remove(comment);
             }
         });
         holder.edittxt.setOnClickListener(new View.OnClickListener() {

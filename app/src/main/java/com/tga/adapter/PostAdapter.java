@@ -35,6 +35,7 @@ import static android.view.View.VISIBLE;
 
 public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.MyViewHolder> {
     private List<PostModel> postList;
+
     Context context;
     FirebaseUser user ;
 
@@ -60,12 +61,18 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.MyViewHolder>
     public void onBindViewHolder(final PostAdapter.MyViewHolder holder, int position) {
         final PostModel post = postList.get(position);
         holder.content.setText(post.content);
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
         holder.postTime.setText(String.valueOf(post.date));
         holder.txtNumLikes.setText(String.valueOf(post.likes));
      //   holder.txtname.setText(user.getDisplayName());
        // holder.ppimg.setImageURI(user.getPhotoUrl());
    //    holder.txtNumLikes.setText((post.likes));
-
+        if(post.likesID.contains(user.getUid()))
+        {
+            holder.unliked.setVisibility(GONE);
+            holder.liked.setVisibility(VISIBLE);
+        }
 
         final ScaleAnimation animation = new ScaleAnimation(0f, 1f, 0f, 1f,
                 Animation.RELATIVE_TO_SELF, 0.5f,
@@ -111,7 +118,6 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.MyViewHolder>
             }
         });
 
-        user = FirebaseAuth.getInstance().getCurrentUser();
         if (user.getUid().equals(post.userId)){
             holder.deltxt.setVisibility(View.VISIBLE);
             holder.edittxt.setVisibility(View.VISIBLE);
@@ -168,7 +174,17 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.MyViewHolder>
             public void onClick(View view) {
                 holder.liked.setVisibility(GONE);
                 holder.unliked.startAnimation(animation);
+                holder.liked.invalidate();
                 holder.unliked.setVisibility(VISIBLE);
+                Integer d = Integer.valueOf(holder.txtNumLikes.getText().toString()) -1;
+                if (d==-1)
+                {
+                    d = 0 ;
+                    holder.txtNumLikes.setText(d.toString());
+                }
+                else {
+                    holder.txtNumLikes.setText(d.toString());
+                }
                 PostController pc=new PostController(post.id,null,0
                 , user.getUid(),null,0,null);
                 pc.unlike(user.getUid(), new SimpleCallback<Boolean>() {
@@ -191,7 +207,10 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.MyViewHolder>
                    public void callback(Object data) {
                        holder.unliked.setVisibility(GONE);
                        holder.liked.startAnimation(animation);
+                       holder.unliked.invalidate();
                        holder.liked.setVisibility(VISIBLE);
+
+
                    }
                });
             }
@@ -222,10 +241,8 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.MyViewHolder>
             img3 = (ImageView)view.findViewById(R.id.postImg3);
             txtNumLikes=(TextView)view.findViewById(R.id.txtNumLikes);
             comment=(ImageView)view.findViewById(R.id.comment);
-            liked =(ImageView)view.findViewById(R.id.imgFav);
-            unliked =(ImageView)view.findViewById(R.id.imgUnFav);
-            liked = itemView.findViewById(R.id.imgFav);
-            unliked = itemView.findViewById(R.id.imgUnFav);
+            liked =(ImageView)view.findViewById(R.id.imgLiked);
+            unliked =(ImageView)view.findViewById(R.id.imgNotLiked);
             unliked.setVisibility(VISIBLE);
             liked.setVisibility(GONE);
             unliked.invalidate();
