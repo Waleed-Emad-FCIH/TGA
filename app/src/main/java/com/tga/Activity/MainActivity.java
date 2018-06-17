@@ -90,11 +90,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 //        toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
-        ArrayList<String> arr = new ArrayList<>();
+        /*ArrayList<String> arr = new ArrayList<>();
         arr.add("-LESVJCsbfDn-R2NKc26");
         arr.add("-LESW-jJmkHqoPixMOAO");
         new AgentController("n7rAy53qdOULidrWt2KhKCrTu3n1", "agent@gmail.com", "1234567890", "Agent1", "phone",
-                "adrs", "photo", "regisNo", arr).saveToDB();
+                "adrs", "photo", "regisNo", arr).saveToDB();*/
 
         drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
         navigationView = (NavigationView)findViewById(R.id.nav_view);
