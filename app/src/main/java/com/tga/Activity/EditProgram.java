@@ -12,10 +12,12 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.tga.Controller.ProgramController;
 import com.tga.Controller.SimpleCallback;
+import com.tga.Controller.SimpleSession;
 import com.tga.R;
 
 import java.text.SimpleDateFormat;
@@ -27,6 +29,8 @@ public class EditProgram extends AppCompatActivity {
 
     private ImageView imgAddPlaces;
     private EditText imgProgramStart,imgProgramEnd, txtTitle, txtDescription, txtHotelName;
+    private EditText txtPrice, txtMinNo, txtMaxNo;
+    private LinearLayout llPrice, llMinNo, llMaxNo;
     private int mYear,mMonth,mDay;
     private Button btnUpdateProgram;
 
@@ -45,6 +49,19 @@ public class EditProgram extends AppCompatActivity {
         txtDescription = (EditText) findViewById(R.id.etxtProgramDesc);
         txtTitle = (EditText) findViewById(R.id.etxtProgramTitle);
         txtHotelName = (EditText) findViewById(R.id.txtPHotelName);
+        txtPrice = (EditText) findViewById(R.id.txtPrice);
+        txtMaxNo = (EditText) findViewById(R.id.txtMaxNo);
+        txtMinNo = (EditText) findViewById(R.id.txtMinNo);
+        llPrice = (LinearLayout) findViewById(R.id.llPrice);
+        llMinNo = (LinearLayout) findViewById(R.id.llMinNo);
+        llMaxNo = (LinearLayout) findViewById(R.id.llMaxNo);
+
+        if (SimpleSession.isNull()){
+            Toast.makeText(getApplicationContext(), "Session ended", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(this, Login.class));
+            finish();
+        }
+        SimpleSession session = SimpleSession.getInstance();
 
         String progID = getIntent().getStringExtra("PROG_ID");
         ProgramController.getByID(new SimpleCallback<ProgramController>() {
@@ -55,6 +72,14 @@ public class EditProgram extends AppCompatActivity {
                 txtTitle.setText(pc.getTitle());
                 txtDescription.setText(pc.getDescription());
                 txtHotelName.setText(pc.getHotelName());
+                if (session.getUserRole() == SimpleSession.AGENT_ROLE){
+                    llPrice.setVisibility(View.VISIBLE);
+                    llMaxNo.setVisibility(View.VISIBLE);
+                    llMinNo.setVisibility(View.VISIBLE);
+                    txtPrice.setText(String.valueOf(pc.getPrice()));
+                    txtMinNo.setText(String.valueOf(pc.getMinNo()));
+                    txtMaxNo.setText(String.valueOf(pc.getMaxNo()));
+                }
 
                 imgAddPlaces.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -128,12 +153,22 @@ public class EditProgram extends AppCompatActivity {
                             pc.editProgram(txtTitle.getText().toString(), txtDescription.getText().toString(),
                                     imgProgramStart.getText().toString(), imgProgramEnd.getText().toString(),
                                     txtHotelName.getText().toString());
+                            if (session.getUserRole() == SimpleSession.AGENT_ROLE){
+                                if (!checkAgentText()) {
+                                    pc.setPrice(Double.parseDouble(txtPrice.getText().toString()));
+                                    pc.setMinNo(Integer.parseInt(txtMinNo.getText().toString()));
+                                    pc.setMaxNo(Integer.parseInt(txtMaxNo.getText().toString()));
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "All fields are required", Toast.LENGTH_LONG).show();
+                                    return;
+                                }
+                            }
                             pc.updateToDB();
                             Toast.makeText(getApplicationContext(), "Successfully updated", Toast.LENGTH_SHORT).show();
                             onBackPressed();
                         }
                         else
-                            Toast.makeText(getApplicationContext(), "Fill all fields", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "All fields are required", Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -144,6 +179,11 @@ public class EditProgram extends AppCompatActivity {
         return txtTitle.getText().toString().isEmpty() || txtDescription.getText().toString().isEmpty() ||
                 txtHotelName.getText().toString().isEmpty() || imgProgramStart.getText().toString().isEmpty() ||
                 imgProgramEnd.getText().toString().isEmpty() ;
+    }
+
+    private boolean checkAgentText(){
+        return txtPrice.getText().toString().isEmpty() || txtMinNo.getText().toString().isEmpty() ||
+                txtMaxNo.getText().toString().isEmpty();
     }
 
     @Override

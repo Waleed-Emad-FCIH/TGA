@@ -17,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.tga.Controller.AgentController;
 import com.tga.Controller.ProgramController;
 import com.tga.Controller.SimpleCallback;
+import com.tga.Controller.SimpleSession;
 import com.tga.Controller.TouristController;
 import com.tga.R;
 
@@ -25,9 +26,10 @@ import java.util.ArrayList;
 public class HomeDetails extends AppCompatActivity  {
 
     private TextView agent, title, desc, reviews, bookNow, favor;
-    private ImageView imgBack;
+    private ImageView imgBack,imgSendMsg;
     private ImageView imgProgramEdit, imgProgramDel;
     private LinearLayout llFavor;
+    private String Agent_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +39,15 @@ public class HomeDetails extends AppCompatActivity  {
 
         Intent intent = getIntent();
         String prog_id = intent.getStringExtra("PROG_ID");
+        Agent_id =intent.getStringExtra("user_id");
         final String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        if (SimpleSession.isNull()) {
+            Toast.makeText(getApplicationContext(), "Session has been expired", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(this, Login.class));
+            finish();
+            return;
+        }
+        SimpleSession session = SimpleSession.getInstance();
 
         agent = (TextView) findViewById(R.id.txtCompany);
         title = (TextView) findViewById(R.id.txtTitle);
@@ -48,11 +58,16 @@ public class HomeDetails extends AppCompatActivity  {
         imgBack = (ImageView)findViewById(R.id.imgBack);
         imgProgramEdit = (ImageView)findViewById(R.id.imgProgramEdit);
         imgProgramDel = (ImageView)findViewById(R.id.imgProgramDelete);
+        imgSendMsg = (ImageView)findViewById(R.id.imgSendMsg);
         llFavor = (LinearLayout) findViewById(R.id.llFavor);
 
         imgProgramEdit.setVisibility(View.GONE);
         imgProgramDel.setVisibility(View.GONE);
         bookNow.setVisibility(View.GONE);
+        
+        if(session.getUserRole() != SimpleSession.TOURIST_ROLE){
+            imgSendMsg.setVisibility(View.GONE);
+        }
 
         //TODO: photos of places
         ProgramController.getByID(new SimpleCallback<ProgramController>() {
@@ -77,6 +92,21 @@ public class HomeDetails extends AppCompatActivity  {
                                 }
                                 reviews.setText(revValue);
 
+                                if (data.getId().equals(userID)){
+                                    imgProgramEdit.setVisibility(View.VISIBLE);
+                                    imgProgramDel.setVisibility(View.VISIBLE);
+                                }
+
+                                imgSendMsg.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+
+                                        Intent chat_intent= new Intent(getApplicationContext(),ChatActivity.class);
+                                        chat_intent.putExtra("user_id",Agent_id);
+                                        startActivity(chat_intent);
+                                    }
+                                });
+
                                 imgProgramEdit.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
@@ -93,9 +123,10 @@ public class HomeDetails extends AppCompatActivity  {
                                     }
                                 });
 
-                                bookNow.setVisibility(View.VISIBLE);
-                                if (pc.getRegisteredList().contains(userID))
+                                bookNow.setVisibility(View.VISIBLE); //I visible it after page load
+                                if (pc.getRegisteredList().contains(userID)) {
                                     bookNow.setText("Cancel Book");
+                                }
                                 bookNow.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
@@ -109,34 +140,29 @@ public class HomeDetails extends AppCompatActivity  {
                                     }
                                 });
 
-                                TouristController.getByID(new SimpleCallback<TouristController>() {
-
-                                    @Override
-                                    public void callback(final TouristController tc) {
-                                        if (tc != null){
-
-                                            if (tc.getMyFavouritPrograms().contains(pc.getId())){
+                                if (session.getUserRole() == SimpleSession.TOURIST_ROLE){
+                                    TouristController tc = (TouristController) session.getUserObj();
+                                    if (tc.getMyFavouritPrograms().contains(pc.getId())){
+                                        llFavor.setBackgroundResource(R.drawable.round);
+                                        favor.setText("Remove from Favourites");
+                                    }
+                                    llFavor.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            if (favor.getText().equals("Remove from Favourites")){
+                                                tc.unFavouriteProgram(pc.getId());
+                                                favor.setText("Add to Favourites");
+                                                llFavor.setBackgroundResource(R.color.cardview_light_background);
+                                            } else {
+                                                tc.favouriteProgram(pc.getId());
                                                 llFavor.setBackgroundResource(R.drawable.round);
                                                 favor.setText("Remove from Favourites");
                                             }
-                                            llFavor.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View view) {
-                                                    if (favor.getText().equals("Remove from Favourites")){
-                                                        tc.unFavouriteProgram(pc.getId());
-                                                        favor.setText("Add to Favourites");
-                                                        llFavor.setBackgroundResource(R.color.cardview_light_background);
-                                                    } else {
-                                                        tc.favouriteProgram(pc.getId());
-                                                        llFavor.setBackgroundResource(R.drawable.round);
-                                                        favor.setText("Remove from Favourites");
-                                                    }
-                                                }
-                                            });
-
                                         }
-                                    }
-                                }, userID);
+                                    });
+                                } else {
+                                    llFavor.setVisibility(View.GONE);
+                                }
 
                             } else {
                                 Toast.makeText(getApplicationContext(), "Program has been deleted", Toast.LENGTH_LONG).show();

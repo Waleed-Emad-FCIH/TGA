@@ -43,9 +43,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
+import com.tga.Controller.AgentController;
+import com.tga.Controller.SimpleCallback;
+import com.tga.Controller.SimpleSession;
 import com.tga.Controller.TouristController;
 import com.tga.R;
-import com.tga.models.UserModel;
+import com.tga.models.TouristModel;
 
 
 import java.text.SimpleDateFormat;
@@ -60,7 +63,6 @@ public class Login extends AppCompatActivity {
     private TextView txtLogin;
     private TextView txtForgetPassword;
     private ImageView imgGoogle,imgFb;
-    private TouristController user;
     private EditText email;
     private EditText password;
     private FirebaseAuth mAuth;
@@ -141,10 +143,8 @@ public class Login extends AppCompatActivity {
         FirebaseUser mUser = mAuth.getCurrentUser();
         if (mUser != null) {
 
-            String uid = mAuth.getCurrentUser().getUid();
             Intent i = new Intent(this, MainActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            i.putExtra("user_id", uid);
             startActivity(i);
             finish();
 
@@ -193,7 +193,6 @@ public class Login extends AppCompatActivity {
         txtLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setUpUser();
                 signIn(email.getText().toString(), password.getText().toString());
             }
         });
@@ -270,11 +269,7 @@ public class Login extends AppCompatActivity {
         }
     }
 
-
-
-
-
-
+    //Facebook
     private void signInWithFacebook(AccessToken token) {
         //Log.d(TAG, "signInWithFacebook:" + token);
 
@@ -300,56 +295,29 @@ public class Login extends AppCompatActivity {
                             final String name=task.getResult().getUser().getDisplayName();
                             final String email=task.getResult().getUser().getEmail();
                             final String image=task.getResult().getUser().getPhotoUrl().toString();
+                            final String phoneNo = task.getResult().getUser().getPhoneNumber();
 
-                            FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-                            Query query = database.getReference("tourists");
-                            query.addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
+                            TouristController.listAll(new SimpleCallback<ArrayList<TouristController>>() {
                                 @Override
-                                public void onDataChange(com.google.firebase.database.DataSnapshot snapshot) {
-
-                                    try {
-                                        HashMap<String, UserModel> results = snapshot.getValue(new GenericTypeIndicator<HashMap<String, UserModel>>() {});
-                                        List<UserModel> users = new ArrayList<>(results.values());
-                                        boolean flag=false;
-                                        for (UserModel user:users){
-                                            if (user.getId().equals(uid)){
-                                                flag=true;
-                                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                startActivity(intent);
-                                                finish();
-
-                                                hideProgressDialog();
-                                            }
-                                        }
-                                        if (flag==false){
-                                            ArrayList<String>myplansIds = new ArrayList<>();
-                                            ArrayList<String>myprogIds = new ArrayList<>();
-                                            myplansIds.add("");
-                                            myprogIds.add("");
-                                            TouristController user = new TouristController(uid, email, password.getText().toString(), name,
-                                                    "", "", image, "",
-                                                    myplansIds, myprogIds);
-                                            FirebaseDatabase mRef1 = FirebaseDatabase.getInstance();
-                                            DatabaseReference users1 = mRef1.getReference("tourists");
-                                            users1.child(uid).setValue(user);
-                                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                            startActivity(intent);
-                                            finish();
+                                public void callback(ArrayList<TouristController> data) {
+                                    boolean flag=false;
+                                    for (TouristController user : data){
+                                        if (user.getId().equals(uid)){
+                                            flag=true;
+                                            runMainActivity();
 
                                             hideProgressDialog();
                                         }
                                     }
-                                    catch (Exception e){
-                                        //Create a new User and Save it in Firebase database
+                                    if (!flag){
+                                        TouristController user = new TouristController(uid, email, password.getText().toString(), name,
+                                                phoneNo, "", image, "",
+                                                new ArrayList<>(), new ArrayList<>());
+                                        user.saveToDB();
+                                        runMainActivity();
 
+                                        hideProgressDialog();
                                     }
-                                }
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
                                 }
                             });
                         }
@@ -357,9 +325,15 @@ public class Login extends AppCompatActivity {
                 });
     }
 
+    private void runMainActivity() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
 
 
-//Google
+    //Google
     private void firebaseAuthWithGoogle(GoogleSignInAccount token) {
         //Log.d(TAG, "signInWithGoogle:" + token);
 
@@ -380,56 +354,29 @@ public class Login extends AppCompatActivity {
                             final String name=task.getResult().getUser().getDisplayName();
                             final String email=task.getResult().getUser().getEmail();
                             final String image=task.getResult().getUser().getPhotoUrl().toString();
+                            final String phoneNo = task.getResult().getUser().getPhoneNumber();
 
-                            FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-                            Query query = database.getReference("tourists");
-                            query.addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
+                            TouristController.listAll(new SimpleCallback<ArrayList<TouristController>>() {
                                 @Override
-                                public void onDataChange(com.google.firebase.database.DataSnapshot snapshot) {
-
-                                    try {
-                                        HashMap<String, UserModel> results = snapshot.getValue(new GenericTypeIndicator<HashMap<String, UserModel>>() {});
-                                        List<UserModel> users = new ArrayList<>(results.values());
-                                        boolean flag=false;
-                                        for (UserModel user:users){
-                                            if (user.getId().equals(uid)){
-                                                flag=true;
-                                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                startActivity(intent);
-                                                finish();
-
-                                                hideProgressDialog();
-                                            }
-                                        }
-                                        if (flag==false){
-                                            ArrayList<String>myplansIds = new ArrayList<>();
-                                            ArrayList<String>myprogIds = new ArrayList<>();
-                                            myplansIds.add("");
-                                            myprogIds.add("");
-                                            TouristController user = new TouristController(uid, email, password.getText().toString(), name,
-                                                    "", "", image, "",
-                                                    myplansIds, myprogIds);
-                                            FirebaseDatabase mRef1 = FirebaseDatabase.getInstance();
-                                            DatabaseReference users1 = mRef1.getReference("tourists");
-                                            users1.child(uid).setValue(user);
-                                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                            startActivity(intent);
-                                            finish();
+                                public void callback(ArrayList<TouristController> data) {
+                                    boolean flag=false;
+                                    for (TouristController user : data){
+                                        if (user.getId().equals(uid)){
+                                            flag=true;
+                                            runMainActivity();
 
                                             hideProgressDialog();
                                         }
                                     }
-                                    catch (Exception e){
-                                        //Create a new User and Save it in Firebase database
+                                    if (!flag){
+                                        TouristController user = new TouristController(uid, email, password.getText().toString(), name,
+                                                phoneNo, "", image, "",
+                                                new ArrayList<>(), new ArrayList<>());
+                                        user.saveToDB();
+                                        runMainActivity();
 
+                                        hideProgressDialog();
                                     }
-                                }
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
                                 }
                             });
                         }
@@ -437,12 +384,7 @@ public class Login extends AppCompatActivity {
                 });
     }
 
-    protected void setUpUser() {
-        user = new TouristController("",email.getText().toString(),password.getText().toString(),"","","");
-        user.setEmail(email.getText().toString());
-        user.setPassword(password.getText().toString());
-    }
-
+    //Email && Password
     private void signIn(String email, String password) {
         //Log.d(TAG, "signIn:" + email);
         if (!validateForm()) {
@@ -463,19 +405,11 @@ public class Login extends AppCompatActivity {
                         if (!task.isSuccessful()) {
                             Toast.makeText(Login.this, "Check you email or password",
                                     Toast.LENGTH_SHORT).show();
+                            hideProgressDialog();
 
                         } else {
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            String uid = mAuth.getCurrentUser().getUid();
-                            intent.putExtra("user_id", uid);
-                            startActivity(intent);
-                            finish();
-
-
+                            runMainActivity();
                         }
-
-                        hideProgressDialog();
                     }
                 });
         //

@@ -28,7 +28,7 @@ public class Home extends Fragment {
 
     View view;
 
-    private ArrayList<ProgramController> ArrayList;
+    private ArrayList<ProgramController> arrayList;
     private RecyclerView recyclerView;
     private RecycleAdapter_Home mAdapter;
     private TextView txtMyPrograms;
@@ -42,14 +42,14 @@ public class Home extends Fragment {
         ProgramController.listAll(new SimpleCallback<java.util.ArrayList<ProgramController>>() {
             @Override
             public void callback(ArrayList<ProgramController> data) {
-                ArrayList = data;
-                //TODO : active this
-                //for (int i = 0; i < ArrayList.size(); i++) {
-                //    if (ArrayList.get(i).getPrice() == 0)
-                //        ArrayList.remove(i);
-                //}
+                arrayList = data;
+                //Remove tourist programs
+                for (int i = 0; i < arrayList.size(); i++) {
+                    if (arrayList.get(i).getPrice() == 0)
+                        arrayList.remove(i);
+                }
 
-                mAdapter = new RecycleAdapter_Home(getActivity(),ArrayList, "Home");
+                mAdapter = new RecycleAdapter_Home(getActivity(),arrayList, "Home");
 
                 RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
                 recyclerView.setLayoutManager(mLayoutManager);

@@ -41,7 +41,7 @@ public class Discounts extends AppCompatActivity {
             public void callback(ArrayList<ProgramController> data) {
                 arrayList = data;
                 for (int i = 0; i < arrayList.size(); i++) {
-                    if (arrayList.get(i).getDiscountID().isEmpty())
+                    if (arrayList.get(i).getPrice() == 0)
                         arrayList.remove(i);
                 }
 

@@ -44,12 +44,22 @@ public class ProgramController implements DB_Interface{
         programModel.registeredTouristsID = new ArrayList<>();
         programModel.ownerID = ownerID;
         programModel.price = 0;
+        programModel.minNo = 0;
+        programModel.maxNo = 0;
     }
 
     private String dbID(String ref){
         dbRef = FirebaseDatabase.getInstance().getReference(ref);
         String id = dbRef.push().getKey();
         return id;
+    }
+
+    public int getMinNo(){
+        return programModel.minNo;
+    }
+
+    public int getMaxNo(){
+        return programModel.maxNo;
     }
 
     public String getId() {
@@ -274,6 +284,14 @@ public class ProgramController implements DB_Interface{
 
     public void updateDiscount(String endDate, double discountPercentage) {
         discount.edit(endDate, discountPercentage);
+    }
+
+    public void setMaxNo(int maxNo) {
+        this.programModel.maxNo = maxNo;
+    }
+
+    public void setMinNo(int minNo) {
+        this.programModel.minNo = minNo;
     }
 
 
