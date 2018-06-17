@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -33,8 +34,10 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
+import com.tga.Controller.AgentController;
 import com.tga.Controller.NotificationsController;
 import com.tga.Controller.SimpleCallback;
+import com.tga.Controller.SimpleSession;
 import com.tga.Controller.TouristController;
 import com.tga.R;
 import com.tga.fragment.AboutUs;
@@ -45,6 +48,7 @@ import com.tga.fragment.Plans;
 import com.tga.fragment.Privacy;
 import com.tga.fragment.Profile;
 import com.tga.fragment.Settings;
+import com.tga.util.BackgroundServiceForAttractivePlaces;
 
 
 import java.util.ArrayList;
@@ -87,12 +91,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 //        toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
+        /*ArrayList<String> arr = new ArrayList<>();
+        arr.add("-LESVJCsbfDn-R2NKc26");
+        arr.add("-LESW-jJmkHqoPixMOAO");
+        new AgentController("n7rAy53qdOULidrWt2KhKCrTu3n1", "agent@gmail.com", "1234567890", "Agent1", "phone",
+                "adrs", "photo", "regisNo", arr).saveToDB();*/
+
+        //Call back ground Service
+        startService(new Intent(this, BackgroundServiceForAttractivePlaces.class));
+
 
         drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
         navigationView = (NavigationView)findViewById(R.id.nav_view);
         myFirebaseRef = new Firebase("https://tguidea-86215.firebaseio.com/tourists/");
 
-
+        //Session Starter
+        makeSession();
         // Navigation view header
 //        activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
         mHandler = new Handler();
@@ -101,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         txtUserName = (TextView)navHeader.findViewById(R.id.txtName);
         loadNavHeader();
 
-//        new NotificationsController().execute(Long.valueOf(0));
+//        new NotificationsController().execute("Ahmed");
         // initializing navigation menu
         setUpNavigationView();
 
@@ -190,6 +204,38 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void makeSession() {
+        String uid = mAuth.getCurrentUser().getUid();
+        if (uid == null) {
+            logout();
+        }
+        TouristController.getByID(new SimpleCallback<TouristController>() {
+            @Override
+            public void callback(TouristController tc) {
+                if (tc != null){
+                    SimpleSession session = SimpleSession.getInstance();
+                    session.setUserObj(tc);
+                    session.setUserRole(SimpleSession.TOURIST_ROLE);
+                } else {
+                    AgentController.getByID(new SimpleCallback<AgentController>() {
+                        @Override
+                        public void callback(AgentController ac) {
+                            if (ac != null){
+                                SimpleSession session = SimpleSession.getInstance();
+                                session.setUserObj(ac);
+                                session.setUserRole(SimpleSession.AGENT_ROLE);
+                            } else {
+                                Toast.makeText(getApplicationContext(), "User has been deleted",
+                                        Toast.LENGTH_LONG).show();
+                                logout();
+                            }
+                        }
+                    }, uid);
+                }
+            }
+        }, uid);
     }
 
     private void loadHomeFragment() {
@@ -319,16 +365,13 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.logout:
                         navItemIndex = 6;
-                        mAuth.signOut();
-                        Intent intent = new Intent(getApplicationContext(), Login.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        finish();
+                        logout();
                         drawer.closeDrawers();
                         return true;
 
                     default:
                         navItemIndex = 0;
+                        CURRENT_TAG = TAG_HOME;
                 }
 
                 //Checking if the item is in checked state or not, if not make it in checked state
@@ -365,6 +408,15 @@ public class MainActivity extends AppCompatActivity {
 //
 //        //calling sync state is necessary or else your hamburger icon wont show up
 //        actionBarDrawerToggle.syncState();
+    }
+
+    private void logout() {
+        mAuth.signOut();
+        Intent intent = new Intent(getApplicationContext(), Login.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        SimpleSession.destroySession();
+        startActivity(intent);
+        finish();
     }
 
     @Override

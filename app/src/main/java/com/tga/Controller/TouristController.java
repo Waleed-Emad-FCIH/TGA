@@ -52,6 +52,12 @@ public class TouristController extends UserController implements DB_Interface {
     private TouristController(TouristModel tm){
         super(tm.id, tm.email, tm.password, tm.name, tm.phoneNumber, tm.address);
         this.touristModel = tm;
+        touristModel.id = tm.id;
+        touristModel.email = tm.email;
+        touristModel.password = tm.password;
+        touristModel.name = tm.name;
+        touristModel.phoneNumber = tm.phoneNumber;
+        touristModel.address = tm.address;
     }
 
     public TouristController(String id, String email, String pass, String name, String phoneNo, String adrs) {
@@ -75,25 +81,25 @@ public class TouristController extends UserController implements DB_Interface {
     }
 
 
-    public static ArrayList<TouristModel> listAll() {
+    public static void listAll(SimpleCallback<ArrayList<TouristController>> simpleCallback) {
         DatabaseReference dRef = FirebaseDatabase.getInstance().getReference("tourists");
-        final ArrayList<TouristModel> touristModels = new ArrayList<>();
+        final ArrayList<TouristController> touristModels = new ArrayList<>();
 
         dRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     TouristModel touristModel = snapshot.getValue(TouristModel.class);
-                    touristModels.add(touristModel);
+                    touristModels.add(new TouristController(touristModel));
                 }
+                simpleCallback.callback(touristModels);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                simpleCallback.callback(touristModels);
             }
         });
-        return touristModels;
     }
 
     /*public static TouristController getByID(String id) {

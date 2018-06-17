@@ -18,5 +18,7 @@ public class ProgramModel {
     public ArrayList<String> reviews;
     public ArrayList<String> registeredTouristsID;
     public double price;
+    public int minNo; // Minimum number to launch a program for Agent
+    public int maxNo; // Maximum number of tourists to a program for Agent
 }
 

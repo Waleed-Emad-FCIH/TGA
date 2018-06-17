@@ -44,12 +44,22 @@ public class ProgramController implements DB_Interface{
         programModel.registeredTouristsID = new ArrayList<>();
         programModel.ownerID = ownerID;
         programModel.price = 0;
+        programModel.minNo = 0;
+        programModel.maxNo = 0;
     }
 
     private String dbID(String ref){
         dbRef = FirebaseDatabase.getInstance().getReference(ref);
         String id = dbRef.push().getKey();
         return id;
+    }
+
+    public int getMinNo(){
+        return programModel.minNo;
+    }
+
+    public int getMaxNo(){
+        return programModel.maxNo;
     }
 
     public String getId() {
@@ -157,7 +167,7 @@ public class ProgramController implements DB_Interface{
         saveToDB();
     }
 
-    public static ArrayList<ProgramController> listAll() {
+    public static void listAll(final SimpleCallback<ArrayList<ProgramController>> simpleCallback) {
         final ArrayList<ProgramController> list = new ArrayList<>();
         dbRef = FirebaseDatabase.getInstance().getReference("Programs");
         dbRef.addValueEventListener(new ValueEventListener() {
@@ -168,14 +178,15 @@ public class ProgramController implements DB_Interface{
                     if (model != null)
                         list.add(new ProgramController(model));
                 }
+                simpleCallback.callback(list);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.w("ProgramController", "Failed to read list values.", databaseError.toException());
+                simpleCallback.callback(new ArrayList<ProgramController>());
             }
         });
-        return list;
     }
 
     public static void getByID(@NonNull final SimpleCallback<ProgramController> finishedCallback, String id) {
@@ -273,6 +284,14 @@ public class ProgramController implements DB_Interface{
 
     public void updateDiscount(String endDate, double discountPercentage) {
         discount.edit(endDate, discountPercentage);
+    }
+
+    public void setMaxNo(int maxNo) {
+        this.programModel.maxNo = maxNo;
+    }
+
+    public void setMinNo(int minNo) {
+        this.programModel.minNo = minNo;
     }
 
 
