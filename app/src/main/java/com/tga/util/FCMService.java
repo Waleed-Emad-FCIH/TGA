@@ -13,6 +13,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.tga.Activity.MainActivity;
 import com.tga.Activity.PlaceDetails;
+import com.tga.Activity.ShowMyPlans;
 import com.tga.R;
 
 import org.json.JSONObject;
@@ -22,6 +23,7 @@ import java.util.Map;
 
 public class FCMService extends FirebaseMessagingService {
     private static final String TAG = "FCMCallbackService";
+    PendingIntent pendingIntent;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -42,11 +44,19 @@ public class FCMService extends FirebaseMessagingService {
         int color = getResources().getColor(R.color.colorPrimary);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        Intent intent = new Intent(this, PlaceDetails.class);
-        intent.putExtra("id",notification.getTag());
+        if (notification.getTag().equals("0")){
+            Intent intent = new Intent(this, ShowMyPlans.class);
 //        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
-                PendingIntent.FLAG_ONE_SHOT);
+             pendingIntent = PendingIntent.getActivity(this, 0, intent,
+                    PendingIntent.FLAG_ONE_SHOT);
+        }else {
+            Intent intent = new Intent(this, PlaceDetails.class);
+            intent.putExtra("id",notification.getTag());
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+             pendingIntent = PendingIntent.getActivity(this, 0, intent,
+                    PendingIntent.FLAG_ONE_SHOT);
+        }
+
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setContentTitle(notification.getTitle())

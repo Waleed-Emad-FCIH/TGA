@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -55,9 +54,9 @@
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-
-        <service android:name=".util.BackgroundServiceForAttractivePlaces" android:exported="false" />
-
+        <service
+            android:name=".util.BackgroundServiceForAttractivePlaces"
+            android:exported="false" />
 
         <activity
             android:name=".Activity.SignUp"
@@ -118,7 +117,7 @@
         <activity
             android:name=".Activity.Plans"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity android:name=".Activity.MyPrograms" />
         <activity android:name=".Activity.AddProgram" />
         <activity android:name=".Activity.AllPlaces" />
@@ -167,7 +166,8 @@
         <activity android:name=".Activity.ChatActivity" />
         <activity android:name=".Activity.Places_Filter" />
         <activity android:name=".Activity.MyMessage" />
-        <activity android:name=".Activity.RequestAgent"></activity>
+        <activity android:name=".Activity.RequestAgent" />
+        <activity android:name=".Activity.ShowMyPlans"></activity>
     </application>
 
 </manifest>

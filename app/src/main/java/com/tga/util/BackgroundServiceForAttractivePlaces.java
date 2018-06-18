@@ -96,7 +96,7 @@ public class BackgroundServiceForAttractivePlaces extends Service implements Loc
 
                 if (nearest!= null&& nearest.length>0&&nearest[0]!=15.0) {
                     int k = index[findMinIdx(nearest)];
-                    new NotificationsController().execute(name[k],id[k]);
+                    new NotificationsController().execute("You are nearby "+name[k],id[k]);
                 }
 
 
