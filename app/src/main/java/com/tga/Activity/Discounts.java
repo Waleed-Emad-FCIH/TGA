@@ -41,7 +41,7 @@ public class Discounts extends AppCompatActivity {
             public void callback(ArrayList<ProgramController> data) {
                 arrayList = data;
                 for (int i = 0; i < arrayList.size(); i++) {
-                    if (arrayList.get(i).getPrice() == 0)
+                    if (arrayList.get(i).getDiscountID().isEmpty())
                         arrayList.remove(i);
                 }
 
@@ -78,10 +78,10 @@ public class Discounts extends AppCompatActivity {
             return true;
         }
 
-        if (id == R.id.add){
+        /*if (id == R.id.add){
             Intent intent = new Intent(getApplicationContext(),AddDiscounts.class);
             startActivity(intent);
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }

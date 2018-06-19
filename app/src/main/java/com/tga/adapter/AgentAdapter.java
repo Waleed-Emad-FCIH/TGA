@@ -52,7 +52,7 @@ public class AgentAdapter extends BaseAdapter {
         final   AgentModel agent = (AgentModel) this.getItem(position);
 
         messageTxt.setText(agent.getName());
-        messageTime.setText(agent.getCompany());
+        //messageTime.setText(agent.getCompany());
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

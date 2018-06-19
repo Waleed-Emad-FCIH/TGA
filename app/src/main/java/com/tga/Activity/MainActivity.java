@@ -39,6 +39,7 @@ import com.tga.Controller.NotificationsController;
 import com.tga.Controller.SimpleCallback;
 import com.tga.Controller.SimpleSession;
 import com.tga.Controller.TouristController;
+import com.tga.Controller.UserController;
 import com.tga.R;
 import com.tga.fragment.AboutUs;
 import com.tga.fragment.ContactUs;
@@ -213,21 +214,16 @@ public class MainActivity extends AppCompatActivity {
                     SimpleSession session = SimpleSession.getInstance();
                     session.setUserObj(tc);
                     session.setUserRole(SimpleSession.TOURIST_ROLE);
-                } else {
-                    AgentController.getByID(new SimpleCallback<AgentController>() {
-                        @Override
-                        public void callback(AgentController ac) {
-                            if (ac != null){
-                                SimpleSession session = SimpleSession.getInstance();
-                                session.setUserObj(ac);
-                                session.setUserRole(SimpleSession.AGENT_ROLE);
-                            } else {
-                                Toast.makeText(getApplicationContext(), "User has been deleted",
-                                        Toast.LENGTH_LONG).show();
-                                logout();
-                            }
-                        }
-                    }, uid);
+                }
+            }
+        }, uid);
+        AgentController.getByID(new SimpleCallback<AgentController>() {
+            @Override
+            public void callback(AgentController ac) {
+                if (ac != null){
+                    SimpleSession session = SimpleSession.getInstance();
+                    session.setUserObj(ac);
+                    session.setUserRole(SimpleSession.AGENT_ROLE);
                 }
             }
         }, uid);
@@ -278,13 +274,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadNavHeader() {
 
-        final String uid = mAuth.getCurrentUser().getUid();
-        TouristController.getByID(new SimpleCallback<TouristController>() {
+        SimpleSession session = SimpleSession.getInstance();
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void callback(TouristController data) {
-                txtUserName.setText(data.getName());
+            public void run() {
+                txtUserName.setText(((UserController) session.getUserObj()).getName());
             }
-        },uid);
+        }, 2000);
     }
 
     private Fragment getHomeFragment() {

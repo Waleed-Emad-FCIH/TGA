@@ -8,30 +8,12 @@ import java.util.ArrayList;
  */
 
 public class AgentModel extends UserModel {
-public String id ;
-public boolean State;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String photo;
     public String registrationNumber;
     public ArrayList<String> myProgramsID;
     public String name;
-    String company;
-
-    public boolean isState() {
-        return State;
-    }
-
-    public void setState(boolean state) {
-        State = state;
-    }
+    public boolean State;
 
     public String getName() {
         return name;
@@ -39,14 +21,6 @@ public boolean State;
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getCompany() {
-        return company;
-    }
-
-    public void setCompany(String company) {
-        this.company = company;
     }
 
     public String getPhoto() {

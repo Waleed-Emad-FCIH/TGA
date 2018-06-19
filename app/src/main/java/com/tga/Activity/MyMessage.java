@@ -59,7 +59,7 @@ public class MyMessage extends AppCompatActivity {
           for(DataSnapshot myitem:dataSnapshot.getChildren()) {
               AgentModel agentModel = new AgentModel();
               agentModel.setName(myitem.child("name").getValue().toString());
-              agentModel.setCompany(myitem.child("company").getValue().toString());
+              //agentModel.setCompany(myitem.child("company").getValue().toString());
               agentModel.setId(myitem.child("id").getValue().toString());
               agents.add(agentModel);
           }

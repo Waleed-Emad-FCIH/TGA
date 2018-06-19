@@ -69,6 +69,17 @@
                             android:src="@drawable/msg_icon" />
 
                         <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/percentage_sign"
+                            android:layout_gravity="right"
+                            android:layout_marginRight="10dp"
+                            android:padding="2dp"
+                            android:id="@+id/imgAddDiscount"
+                            android:visibility="gone"
+                            />
+
+                        <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_mode_edit_black_24dp"

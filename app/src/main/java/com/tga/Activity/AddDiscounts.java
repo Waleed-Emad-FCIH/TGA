@@ -1,6 +1,8 @@
 package com.tga.Activity;
 
 import android.app.DatePickerDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -27,6 +29,9 @@ public class AddDiscounts extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_discounts);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Add Discount");
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2C3646")));
 
         title = (EditText) findViewById(R.id.etxtDiscountTitle);
         desc = (EditText) findViewById(R.id.etxtDiscountDesc);
@@ -74,12 +79,13 @@ public class AddDiscounts extends AppCompatActivity {
                 add.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (checkText() && Integer.parseInt(percentage.getText().toString()) >= 1
+                        if (!checkText() && Integer.parseInt(percentage.getText().toString()) >= 1
                                 &&Integer.parseInt(percentage.getText().toString()) < 100) {
                             pc.setDiscount(endDate.getText().toString(),
                                     Double.parseDouble(percentage.getText().toString()) / 100);
                             pc.updateToDB();
                             Toast.makeText(getApplicationContext(), "Discount added", Toast.LENGTH_SHORT).show();
+                            onBackPressed();
                         }
                         else
                             Toast.makeText(getApplicationContext(), "Fill all fields", Toast.LENGTH_LONG).show();
