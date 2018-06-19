@@ -17,6 +17,8 @@ import com.tga.R;
 import com.tga.adapter.DiscountsAdapter;
 
 import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.List;
 
 public class History extends AppCompatActivity {
 
@@ -39,6 +41,7 @@ public class History extends AppCompatActivity {
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         final TouristController[] tc = new TouristController[1];
+
         TouristController.getByID(new SimpleCallback<TouristController>() {
             @Override
             public void callback(TouristController data) {
@@ -49,17 +52,24 @@ public class History extends AppCompatActivity {
                     return;
                 } else {
                     tc[0] = data;
-                    ArrayList<String> array = tc[0].getHistoryPrograms();
-                    for (int i = 0; i < array.size(); i++){
-                        ProgramController.getByID(new SimpleCallback<ProgramController>() {
-                            @Override
-                            public void callback(ProgramController pc) {
-                                if (pc != null){
-                                    arrayList.add(pc);
-                                }
+                     tc[0].getHistoryPlans(new SimpleCallback<ArrayList>() {
+                        @Override
+                        public void callback(ArrayList data) {
+                            ArrayList<String> array = data;
+                            for (int i = 0; i < array.size(); i++) {
+                                ProgramController.getByID(new SimpleCallback<ProgramController>() {
+                                    @Override
+                                    public void callback(ProgramController pc) {
+                                        if (pc != null) {
+                                            arrayList.add(pc);
+                                        }
+                                    }
+                                }, array.get(i));
                             }
-                        }, array.get(i));
-                    }
+                        }
+                    });
+
+
 
                     mAdapter = new DiscountsAdapter(getApplicationContext(),arrayList);
 

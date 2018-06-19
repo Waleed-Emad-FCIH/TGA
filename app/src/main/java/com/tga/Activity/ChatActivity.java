@@ -41,7 +41,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
         private RecyclerView mUsersList;
         private DatabaseReference mConversationReferences;
-        DatabaseReference   mDatabaseRefernce= FirebaseDatabase.getInstance().getReference().child("Users");
+        DatabaseReference   mDatabaseRefernce= FirebaseDatabase.getInstance().getReference().child("tourists");
         ArrayList<ChatMessage> ChatMessages = new ArrayList<>();
         ArrayList<String> previousMessages= new ArrayList<>();
         private ProgressDialog mPrgress;

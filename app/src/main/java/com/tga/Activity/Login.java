@@ -2,11 +2,13 @@ package com.tga.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.format.Formatter;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -14,6 +16,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.firebase.client.Firebase;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -25,6 +34,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -33,11 +43,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
+import com.tga.Controller.AgentController;
+import com.tga.Controller.SimpleCallback;
+import com.tga.Controller.SimpleSession;
 import com.tga.Controller.TouristController;
 import com.tga.R;
+import com.tga.models.TouristModel;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -46,13 +62,14 @@ public class Login extends AppCompatActivity {
     private TextView txtCreate;
     private TextView txtLogin;
     private TextView txtForgetPassword;
-    private ImageView imgGoogle;
-    private TouristController user;
+    private ImageView imgGoogle,imgFb;
     private EditText email;
     private EditText password;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private ProgressDialog mProgressDialog;
+    private TextView txtRequestAgent;
+    private CallbackManager callbackManager;
 
     private static final int RC_SIGN_IN = 0 ;
     private GoogleApiClient mGoogleApiClient;
@@ -62,12 +79,15 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
 
         txtCreate = (TextView)findViewById(R.id.create);
         txtLogin = (TextView) findViewById(R.id.txtlogin);
         txtForgetPassword = (TextView) findViewById(R.id.txtForgotPassword);
         imgGoogle = (ImageView)findViewById(R.id.imgGoogle);
+        imgFb = (ImageView)findViewById(R.id.imgFb);
+        txtRequestAgent = (TextView)findViewById(R.id.txtRequestAgent);
         mAuth = FirebaseAuth.getInstance();
         Firebase.setAndroidContext(this);
         txtCreate.setOnClickListener(new View.OnClickListener() {
@@ -76,6 +96,14 @@ public class Login extends AppCompatActivity {
                 Intent intent = new Intent(Login.this, SignUp.class);
                 startActivity(intent);
 
+            }
+        });
+
+        txtRequestAgent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),RequestAgent.class);
+                startActivity(intent);
             }
         });
 
@@ -115,10 +143,8 @@ public class Login extends AppCompatActivity {
         FirebaseUser mUser = mAuth.getCurrentUser();
         if (mUser != null) {
 
-            String uid = mAuth.getCurrentUser().getUid();
             Intent i = new Intent(this, MainActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            i.putExtra("user_id", uid);
             startActivity(i);
             finish();
 
@@ -148,6 +174,9 @@ public class Login extends AppCompatActivity {
                 }
             }
         });
+
+
+
     }
 
     private void signIn() {
@@ -164,12 +193,52 @@ public class Login extends AppCompatActivity {
         txtLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setUpUser();
                 signIn(email.getText().toString(), password.getText().toString());
             }
         });
 
         mAuth.addAuthStateListener(mAuthListener);
+
+
+
+
+        //FaceBook
+
+        callbackManager = CallbackManager.Factory.create();
+        LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
+        loginButton.setReadPermissions("email", "public_profile");
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                //Log.d(TAG, "facebook:onSuccess:" + loginResult);
+                signInWithFacebook(loginResult.getAccessToken());
+//                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//                String uid = mAuth.getCurrentUser().getUid();
+//                intent.putExtra("user_id", uid);
+//                startActivity(intent);
+//                finish();
+            }
+
+            @Override
+            public void onCancel() {
+                //Log.d(TAG, "facebook:onCancel");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+
+                //Log.d(TAG, "facebook:onError", error);
+            }
+        });
+
+        imgFb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loginButton.performClick();
+            }
+        });
+
+
     }
 
     @Override
@@ -183,6 +252,7 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
@@ -199,6 +269,71 @@ public class Login extends AppCompatActivity {
         }
     }
 
+    //Facebook
+    private void signInWithFacebook(AccessToken token) {
+        //Log.d(TAG, "signInWithFacebook:" + token);
+
+        showProgressDialog();
+
+
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        // Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(Login.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            hideProgressDialog();
+                        }else{
+                            final String uid=task.getResult().getUser().getUid();
+                            final String name=task.getResult().getUser().getDisplayName();
+                            final String email=task.getResult().getUser().getEmail();
+                            final String image=task.getResult().getUser().getPhotoUrl().toString();
+                            final String phoneNo = task.getResult().getUser().getPhoneNumber();
+
+                            TouristController.listAll(new SimpleCallback<ArrayList<TouristController>>() {
+                                @Override
+                                public void callback(ArrayList<TouristController> data) {
+                                    boolean flag=false;
+                                    for (TouristController user : data){
+                                        if (user.getId().equals(uid)){
+                                            flag=true;
+                                            runMainActivity();
+
+                                            hideProgressDialog();
+                                        }
+                                    }
+                                    if (!flag){
+                                        TouristController user = new TouristController(uid, email, password.getText().toString(), name,
+                                                phoneNo, "", image, "",
+                                                new ArrayList<>(), new ArrayList<>());
+                                        user.saveToDB();
+                                        runMainActivity();
+
+                                        hideProgressDialog();
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+    }
+
+    private void runMainActivity() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+
+    //Google
     private void firebaseAuthWithGoogle(GoogleSignInAccount token) {
         //Log.d(TAG, "signInWithGoogle:" + token);
 
@@ -219,52 +354,29 @@ public class Login extends AppCompatActivity {
                             final String name=task.getResult().getUser().getDisplayName();
                             final String email=task.getResult().getUser().getEmail();
                             final String image=task.getResult().getUser().getPhotoUrl().toString();
+                            final String phoneNo = task.getResult().getUser().getPhoneNumber();
 
-                            FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-                            Query query = database.getReference("tourists");
-                            query.addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
+                            TouristController.listAll(new SimpleCallback<ArrayList<TouristController>>() {
                                 @Override
-                                public void onDataChange(com.google.firebase.database.DataSnapshot snapshot) {
-
-                                    try {
-                                        HashMap<String, TouristController> results = snapshot.getValue(new GenericTypeIndicator<HashMap<String, TouristController>>() {});
-                                        List<TouristController> users = new ArrayList<>(results.values());
-                                        boolean flag=false;
-                                        for (TouristController user:users){
-                                            if (user.getId().equals(uid)){
-                                                flag=true;
-                                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                startActivity(intent);
-                                                finish();
-
-                                                hideProgressDialog();
-                                            }
-                                        }
-                                        if (flag==false){
-                                            TouristController user = new TouristController(uid, email, password.getText().toString(), name,
-                                                    "", "", "", "",
-                                                    new ArrayList<String>(), new ArrayList<String>());
-                                            FirebaseDatabase mRef1 = FirebaseDatabase.getInstance();
-                                            DatabaseReference users1 = mRef1.getReference("tourists");
-                                            users1.child(uid).setValue(user);
-                                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                            startActivity(intent);
-                                            finish();
+                                public void callback(ArrayList<TouristController> data) {
+                                    boolean flag=false;
+                                    for (TouristController user : data){
+                                        if (user.getId().equals(uid)){
+                                            flag=true;
+                                            runMainActivity();
 
                                             hideProgressDialog();
                                         }
                                     }
-                                    catch (Exception e){
-                                        //Create a new User and Save it in Firebase database
+                                    if (!flag){
+                                        TouristController user = new TouristController(uid, email, password.getText().toString(), name,
+                                                phoneNo, "", image, "",
+                                                new ArrayList<>(), new ArrayList<>());
+                                        user.saveToDB();
+                                        runMainActivity();
 
+                                        hideProgressDialog();
                                     }
-                                }
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
                                 }
                             });
                         }
@@ -272,12 +384,7 @@ public class Login extends AppCompatActivity {
                 });
     }
 
-    protected void setUpUser() {
-        user = new TouristController("",email.getText().toString(),password.getText().toString(),"","","");
-        user.setEmail(email.getText().toString());
-        user.setPassword(password.getText().toString());
-    }
-
+    //Email && Password
     private void signIn(String email, String password) {
         //Log.d(TAG, "signIn:" + email);
         if (!validateForm()) {
@@ -298,23 +405,11 @@ public class Login extends AppCompatActivity {
                         if (!task.isSuccessful()) {
                             Toast.makeText(Login.this, "Check you email or password",
                                     Toast.LENGTH_SHORT).show();
+                            hideProgressDialog();
 
                         } else {
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            String uid = mAuth.getCurrentUser().getUid();
-                            intent.putExtra("user_id", uid);
-                            startActivity(intent);
-                            finish();
-
-//                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//                            String uid = mAuth.getCurrentUser().getUid();
-//                            intent.putExtra("user_id", uid);
-//                            startActivity(intent);
-//                            finish();
+                            runMainActivity();
                         }
-
-                        hideProgressDialog();
                     }
                 });
         //

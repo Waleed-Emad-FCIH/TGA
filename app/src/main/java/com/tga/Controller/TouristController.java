@@ -9,7 +9,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.tga.models.ProgramModel;
 import com.tga.models.TouristModel;
+import com.tga.models.TouristPlan;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,9 +47,17 @@ public class TouristController extends UserController implements DB_Interface {
         touristModel.myFavouriteProgramsID = new ArrayList<>();
     }
 
+
+
     private TouristController(TouristModel tm){
         super(tm.id, tm.email, tm.password, tm.name, tm.phoneNumber, tm.address);
         this.touristModel = tm;
+        touristModel.id = tm.id;
+        touristModel.email = tm.email;
+        touristModel.password = tm.password;
+        touristModel.name = tm.name;
+        touristModel.phoneNumber = tm.phoneNumber;
+        touristModel.address = tm.address;
     }
 
     public TouristController(String id, String email, String pass, String name, String phoneNo, String adrs) {
@@ -71,30 +81,31 @@ public class TouristController extends UserController implements DB_Interface {
     }
 
 
-    public static ArrayList<TouristModel> listAll() {
+    public static void listAll(SimpleCallback<ArrayList<TouristController>> simpleCallback) {
         DatabaseReference dRef = FirebaseDatabase.getInstance().getReference("tourists");
-        final ArrayList<TouristModel> touristModels = new ArrayList<>();
+        final ArrayList<TouristController> touristModels = new ArrayList<>();
 
         dRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     TouristModel touristModel = snapshot.getValue(TouristModel.class);
-                    touristModels.add(touristModel);
+                    touristModels.add(new TouristController(touristModel));
                 }
+                simpleCallback.callback(touristModels);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                simpleCallback.callback(touristModels);
             }
         });
-        return touristModels;
     }
 
     /*public static TouristController getByID(String id) {
         DatabaseReference dRef = FirebaseDatabase.getInstance().getReference();
-        Query q = dRef.child("tourists").orderByChild("id").equalTo(id);
+
+
         final TouristModel[] tm = new TouristModel[1];
         final Semaphore semaphore = new Semaphore(0);
 
@@ -169,99 +180,81 @@ public class TouristController extends UserController implements DB_Interface {
         touristModel.nationality = nationality;
     }
 
-    public ArrayList<String> getHistoryPlans() {
-        ArrayList<String> historyPlansID = new ArrayList<>();
-//        FirebaseDatabase fd = FirebaseDatabase.getInstance();
-//        final  DatabaseReference tRef = fd.getReference("tourists").child(getId());
-//
-//        final DatabaseReference pRef = fd.getReference("plan");
-//        final ArrayList<String> historyPlansID = new ArrayList<>();
-//
-//        tRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//              HashMap<String, Object> tm  = (HashMap<String, Object>) dataSnapshot.getValue();
-//             ArrayList<String>myPlansID = (ArrayList<String>) tm.get("myPlansID");
-//                for (String id : myPlansID)
-//               {
-//                   final String planID = id;
-//                   pRef.child(planID).child("endDate").addValueEventListener(new ValueEventListener() {
-//                       @Override
-//                       public void onDataChange(DataSnapshot dataSnapshot) {
-//                            try {
-//                               if(dataSnapshot.getValue()!=null && isValidPlan(dataSnapshot.getValue().toString()))
-//                               {
-//                                   historyPlansID.add(planID);
-//                               }
-//                           }
-//                           catch (Exception e)
-//                           {
-//
-//                            }
-//                        }
-//
-//                       @Override
-//                       public void onCancelled(DatabaseError databaseError) {
-//
-//                       }
-//                   });
-//
-//               }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-        return  historyPlansID;
+
+
+    public void getHistoryPlans(SimpleCallback<ArrayList> plans) {
+        FirebaseDatabase fd = FirebaseDatabase.getInstance();
+        final DatabaseReference tpRef = fd.getReference("touristsPlans");
+        Query q = tpRef.orderByChild("userId").equalTo(this.getId());
+        final ArrayList<String> historyPlansID = new ArrayList<>();
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren())
+                {
+                    TouristPlan touristPlan = dataSnapshot1.getValue(TouristPlan.class);
+                    if(!isValidPlan(touristPlan.planDate))
+                    {
+                        historyPlansID.add(touristPlan.planID);
+                    }
+                }
+               plans.callback(historyPlansID);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
-    public ArrayList<String> getHistoryPrograms() {
+    public  void getHistoryPrograms(SimpleCallback<ArrayList> programs) {
         ArrayList<String> historyProgramsID = new ArrayList<>();
-//        FirebaseDatabase fd = FirebaseDatabase.getInstance();
-//        final  DatabaseReference tRef = fd.getReference("tourists").child(getId());
-//        final DatabaseReference pRef = fd.getReference("programs");
-//        final ArrayList<String> historyProgramsID = new ArrayList<>();
-//
-//        tRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                HashMap<String, Object> tm  = (HashMap<String, Object>) dataSnapshot.getValue();
-//                ArrayList<String>myPlansID = (ArrayList<String>) tm.get("myProgramsID");
-//                for (String id : myPlansID)
-//                {
-//                    final String planID = id;
-//                    pRef.child(planID).child("endDate").addValueEventListener(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(DataSnapshot dataSnapshot) {
-//                            try {
-//                                if(dataSnapshot.getValue()!=null && isValidPlan(dataSnapshot.getValue().toString()))
-//                                {
-//                                    historyProgramsID.add(planID);
-//                                }
-//                            }
-//                            catch (Exception e)
-//                            {
-//
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(DatabaseError databaseError) {
-//
-//                        }
-//                    });
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-        return  historyProgramsID;
+        FirebaseDatabase fd = FirebaseDatabase.getInstance();
+        final  DatabaseReference tRef = fd.getReference("tourists").child(getId());
+        final DatabaseReference pRef = fd.getReference("programs");
+        tRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                HashMap<String, Object> tm  = (HashMap<String, Object>) dataSnapshot.getValue();
+                ArrayList<String>myPlansID = (ArrayList<String>) tm.get("myProgramsID");
+                try {
+                    for (String id : myPlansID) {
+                        final String planID = id;
+                        pRef.child(planID).child("endDate").addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                try {
+                                    if (dataSnapshot.getValue() != null && isValidPlan(dataSnapshot.getValue().toString())) {
+                                        historyProgramsID.add(planID);
+                                    }
+                                } catch (Exception e) {
+
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+                    }
+                }
+                catch (Exception e)
+                {
+
+                }
+                programs.callback(historyProgramsID);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     public ArrayList<String> getMyPlans() {
@@ -272,11 +265,52 @@ public class TouristController extends UserController implements DB_Interface {
         return touristModel.myProgramsID;
     }
 
-    public void addPlan(String planID) {
-        touristModel.myPlansID.add(planID);
+
+    public void addPlan(String planID , String userId , String planTime) {
+        final boolean[] flag = {false};
         FirebaseDatabase fd  = FirebaseDatabase.getInstance();
         DatabaseReference dRef = fd.getReference("tourists");
-        dRef.child(getId()).setValue(touristModel);
+        DatabaseReference tpRef = fd.getReference("touristsPlans");
+        dRef.child(userId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                TouristModel touristModel = dataSnapshot.getValue(TouristModel.class);
+                try {
+                    if(!flag[0])
+                    {
+                        touristModel.myPlansID.add(planID);
+
+                        TouristPlan touristPlan = new TouristPlan(planID,false , planTime  , userId);
+                        touristPlan.id = tpRef.push().getKey();
+                        tpRef.child(touristPlan.id).setValue(touristPlan);
+                        flag[0] = true;
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    touristModel.myPlansID = new ArrayList<>();
+                    touristModel.myPlansID.add(planID);
+                    TouristPlan touristPlan = new TouristPlan(planTime,false , planID  , userId);
+                    touristPlan.id = tpRef.push().getKey();
+                    tpRef.child(touristPlan.id).setValue(touristPlan);
+                    flag[0] =true;
+                }
+
+
+                    dRef.child(userId).setValue(touristModel);
+                    flag[0] = true;
+
+
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
     public  String getId()
@@ -290,11 +324,38 @@ public class TouristController extends UserController implements DB_Interface {
         updateToDB();
     }
 
-    public void delPlan(String planID) {
-        touristModel.myPlansID.remove(planID);
+    public void delPlan(String planID , String userId) {
+        final boolean[] flag = {false};
         FirebaseDatabase fd  = FirebaseDatabase.getInstance();
         DatabaseReference dRef = fd.getReference("tourists");
-        dRef.child(getId()).setValue(touristModel);
+       //    DatabaseReference tpRef = fd.getReference("touristsPlans");
+        dRef.child(userId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                TouristModel touristModel = dataSnapshot.getValue(TouristModel.class);
+                try {
+                    if(!flag[0])
+                    {
+                        touristModel.myPlansID.remove(planID);
+                        flag[0] = true;
+                    }
+
+                }
+                catch (Exception e)
+                {
+
+                }
+                dRef.child(userId).setValue(touristModel);
+                flag[0] = true;
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     public void delProgram(String programID) {
@@ -314,7 +375,7 @@ public class TouristController extends UserController implements DB_Interface {
             @Override
             public void callback(ProgramController pc) {
                 pc.editProgram(title, desc, startDate, endDate, hotelName);
-                pc.updateToDB();
+
             }
         }, programID);
     }
@@ -369,17 +430,17 @@ public class TouristController extends UserController implements DB_Interface {
     }
     public boolean isValidPlan(String date)
     {
-        int Year = Integer.parseInt(date.substring(0,4));
-        int Month = Integer.parseInt(date.substring(5,7));
-        int Day = Integer.parseInt(date.substring(8,10 ));
+        int Day = Integer.parseInt(date.substring(0,2));
+        int Month = Integer.parseInt(date.substring(3,5));
+        int Year = Integer.parseInt(date.substring(6,8));
 
         Date currentDate = new Date();
-        java.text.DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        java.text.DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
         String strDate = dateFormat.format(currentDate).toString();
 
-        int currentYear = Integer.parseInt(strDate.substring(0,4));
-        int currentMonth = Integer.parseInt(strDate.substring(5,7));
-        int currentDay = Integer.parseInt(strDate.substring(8,10 ));
+        int currentDay = Integer.parseInt(strDate.substring(0,2));
+        int currentMonth = Integer.parseInt(strDate.substring(3,5));
+        int currentYear = Integer.parseInt(strDate.substring(6,8));
 
         if(currentYear>Year)
         {

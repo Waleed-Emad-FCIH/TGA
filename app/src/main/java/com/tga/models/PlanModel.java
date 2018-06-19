@@ -16,6 +16,7 @@ public class PlanModel {
     public String endDate ;
     public  String description;
     public String location ;
+    public String  creatorId ;
 
     public String getDescription() {
         return description;

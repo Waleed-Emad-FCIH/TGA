@@ -24,8 +24,8 @@ import java.util.ArrayList;
 public class ProgDetails extends AppCompatActivity {
     DatabaseReference mDatabase;
     private TextView title, desc;
-    private ImageView imgBack, imgProgramEdit, imgProgramDel,imgSendMsg;
-String Agent_id;
+    private ImageView imgBack, imgProgramEdit, imgProgramDel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,23 +33,7 @@ String Agent_id;
         Intent intent = getIntent();
 
         String prog_id = intent.getStringExtra("PROG_ID");
-        Agent_id =intent.getStringExtra("user_id");
-        if (prog_id != null)
-            System.out.println(prog_id);
-        else
-            System.out.println("prog_id is null");
 
-        imgSendMsg = (ImageView)findViewById(R.id.imgSendMsg);
-
-        imgSendMsg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent chat_intent= new Intent(getApplicationContext(),ChatActivity.class);
-                chat_intent.putExtra("user_id",Agent_id);
-                startActivity(chat_intent);
-            }
-        });
         title = (TextView) findViewById(R.id.txtTitle);
         desc = (TextView) findViewById(R.id.progDesc);
         imgBack = (ImageView)findViewById(R.id.imgBack);

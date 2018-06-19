@@ -12,11 +12,14 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.tga.Controller.AgentController;
 import com.tga.Controller.ProgramController;
 import com.tga.Controller.SimpleCallback;
+import com.tga.Controller.SimpleSession;
 import com.tga.Controller.TouristController;
 import com.tga.R;
 
@@ -30,6 +33,8 @@ public class AddProgram extends AppCompatActivity {
 
     private ImageView imgAddPlaces;
     private EditText imgProgramStart,imgProgramEnd, txtTitle, txtDescription, txtHotelName;
+    private EditText txtPrice, txtMinNo, txtMaxNo;
+    private LinearLayout llPrice, llMinNo, llMaxNo;
     private int mYear,mMonth,mDay;
     private Button btnAddProgram;
     private String userID;
@@ -49,10 +54,26 @@ public class AddProgram extends AppCompatActivity {
         txtDescription = (EditText) findViewById(R.id.etxtProgramDesc);
         txtTitle = (EditText) findViewById(R.id.etxtProgramTitle);
         txtHotelName = (EditText) findViewById(R.id.txtPHotelName);
+        txtPrice = (EditText) findViewById(R.id.txtPrice);
+        txtMaxNo = (EditText) findViewById(R.id.txtMaxNo);
+        txtMinNo = (EditText) findViewById(R.id.txtMinNo);
+        llPrice = (LinearLayout) findViewById(R.id.llPrice);
+        llMinNo = (LinearLayout) findViewById(R.id.llMinNo);
+        llMaxNo = (LinearLayout) findViewById(R.id.llMaxNo);
+
+        if (SimpleSession.isNull()){
+            Toast.makeText(getApplicationContext(), "Session ended", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(this, Login.class));
+            finish();
+        }
+        SimpleSession session = SimpleSession.getInstance();
+        if (session.getUserRole() == SimpleSession.AGENT_ROLE){
+            llPrice.setVisibility(View.VISIBLE);
+            llMaxNo.setVisibility(View.VISIBLE);
+            llMinNo.setVisibility(View.VISIBLE);
+        }
 
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-
 
         imgProgramStart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,19 +139,38 @@ public class AddProgram extends AppCompatActivity {
                     final ProgramController pc = new ProgramController(txtTitle.getText().toString(), new ArrayList<String>(), txtDescription.getText().toString(),
                             imgProgramStart.getText().toString(), imgProgramEnd.getText().toString(),
                             txtHotelName.getText().toString(), userID);
+                    if (session.getUserRole() == SimpleSession.AGENT_ROLE){
+                        if (checkAgentText()) {
+                            try {
+                                pc.setPrice(Double.valueOf(txtPrice.getText().toString()));
+                            } catch (Exception e) {
+                                Toast.makeText(getApplicationContext(), "Price should be a real number", Toast.LENGTH_LONG).show();
+                                return;
+                            }
+                            try {
+                                pc.setMaxNo(Integer.parseInt(txtMaxNo.getText().toString()));
+                                pc.setMinNo(Integer.parseInt(txtMinNo.getText().toString()));
+                            } catch (Exception e) {
+                                Toast.makeText(getApplicationContext(), "Max and Min No.s should be an integer numbers", Toast.LENGTH_LONG).show();
+                                return;
+                            }
+                        } else
+                            Toast.makeText(getApplicationContext(), "All fields are required", Toast.LENGTH_LONG).show();
+                    }
                     pc.saveToDB();
-                    TouristController.getByID(new SimpleCallback<TouristController>() {
-                        @Override
-                        public void callback(TouristController data) {
-                            if (data != null)
-                                data.addProgram(pc.getId());
-                        }
-                    }, userID);
+                    if (session.getUserRole() == SimpleSession.AGENT_ROLE){
+                        ((AgentController)session.getUserObj()).addProgram(pc.getId());
+                    } else if (session.getUserRole() == SimpleSession.TOURIST_ROLE){
+                        ((TouristController)session.getUserObj()).addProgram(pc.getId());
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Program didn't added .. Error on Session roles", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
                     Toast.makeText(getApplicationContext(), "Successfully added", Toast.LENGTH_SHORT).show();
                     onBackPressed();
-                }
-                else
-                    Toast.makeText(getApplicationContext(), "Fill all fields", Toast.LENGTH_LONG).show();
+                } else
+                    Toast.makeText(getApplicationContext(), "All fields are required", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -140,6 +180,11 @@ public class AddProgram extends AppCompatActivity {
         return txtTitle.getText().toString().isEmpty() || txtDescription.getText().toString().isEmpty() ||
                 txtHotelName.getText().toString().isEmpty() || imgProgramStart.getText().toString().isEmpty() ||
                 imgProgramEnd.getText().toString().isEmpty() ;
+    }
+
+    private boolean checkAgentText(){
+        return txtPrice.getText().toString().isEmpty() || txtMinNo.getText().toString().isEmpty() ||
+                txtMaxNo.getText().toString().isEmpty();
     }
 
     @Override

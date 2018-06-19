@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="TGA is an online service that provides recommendations for hotels, resorts, inns, vacations, travel packages, travel guides and lots more.\nTGA provide you with the wisdom of the crowds to help them decide where to stay, how to fly, what to do and where to eat.\nOur Team:\n
+        android:text="TGA is an online service that provides recommendations for hotels, resorts, inns, vacations, travel packages, travel guides and lots more.\nTGA provide you with the wisdom of the crowds to help them decide where to stay, what to do and where to eat and more.\nOur Team:\n
 1- Abdulrahman Mohamed\n
 2- Ahmed Elewa\n
 3- Mohamed Ahmed\n

@@ -41,28 +41,27 @@ private dialoug_interface listerner;
             R3=view.findViewById(R.id.cafeRadioBtn);
             R4= view.findViewById(R.id.barRadioBtn);
 
-            if(R1.isSelected())
+            if(R1.isChecked())
             {
-            listerner.Apply("food");
+                listerner.Apply("Restaurants");
             }
-            else if(R2.isSelected())
+            else if(R2.isChecked())
             {
-                listerner.Apply("hotel");
-
-            }
-
-            else if(R3.isSelected())
-            {
-                listerner.Apply("cafe");
+                listerner.Apply("Hotels");
 
             }
-            else if(R4.isSelected())
-            {
-                listerner.Apply("bar");
 
+            else if(R3.isChecked())
+            {
+                listerner.Apply("Cafes");
 
             }
-            else {
+            else if(R4.isChecked())
+            {
+                listerner.Apply("Bars");
+
+
+            }else {
 
             }
 

@@ -26,46 +26,43 @@
                 android:layout_height="wrap_content"
                 android:text="Submit" />
 
-            <RadioGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center"
-                android:gravity="center">
+            <!--<RadioGroup-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:gravity="center">-->
 
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ond day trip"
-                    android:layout_margin="10dp"
-                    android:id="@+id/rbOnleOneDay"
-                    />
+                <!--<RadioButton-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Ond day trip"-->
+                    <!--android:layout_margin="10dp"-->
+                    <!--android:id="@+id/rbOnleOneDay"-->
+                    <!--/>-->
 
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Make your Program"
-                    android:layout_margin="10dp"
-                    android:id="@+id/rbMakeYourProgram"
-                    />
+                <!--<RadioButton-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Make your Program"-->
+                    <!--android:layout_margin="10dp"-->
+                    <!--android:id="@+id/rbMakeYourProgram"-->
+                    <!--/>-->
 
-            </RadioGroup>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <fragment
-                    android:id="@+id/place_autocomplete_fragment"
-                    android:layout_width="0dp"
-                    android:layout_weight=".2"
-                    android:layout_height="wrap_content"
-                    android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
-                    >
+            <!--</RadioGroup>-->
 
 
-                </fragment>
+
+                <!--<fragment-->
+                    <!--android:id="@+id/place_autocomplete_fragment"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_weight=".2"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"-->
+                    <!--&gt;-->
+
+
+                <!--</fragment>-->
 
 
                 <ImageView
@@ -73,11 +70,13 @@
                     android:layout_height="30dp"
                     android:layout_marginRight="8dp"
                     android:layout_marginLeft="8dp"
-                    android:layout_gravity="center"
-                    android:id="@+id/img_filter"
-                    android:src="@drawable/filter_icon"/>
+                    android:layout_gravity="right"
 
-            </LinearLayout>
+                    android:id="@+id/img_filter"
+                    android:src="@drawable/filter_icon"
+                    />
+
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"

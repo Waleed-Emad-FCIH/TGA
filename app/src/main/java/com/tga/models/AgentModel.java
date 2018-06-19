@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public class AgentModel extends UserModel {
 public String id ;
+public boolean State;
 
     public String getId() {
         return id;
@@ -23,6 +24,14 @@ public String id ;
     public ArrayList<String> myProgramsID;
     public String name;
     String company;
+
+    public boolean isState() {
+        return State;
+    }
+
+    public void setState(boolean state) {
+        State = state;
+    }
 
     public String getName() {
         return name;

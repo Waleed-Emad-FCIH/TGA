@@ -10,6 +10,7 @@ public class TouristModel extends UserModel {
     public String photo;
     public String nationality;
     public ArrayList<String> myPlansID;
+    public ArrayList<TouristPlan> plansTimes;
     public ArrayList<String> myProgramsID;
     public ArrayList<String> myFavouritePlacesID;
     public ArrayList<String> myFavouriteProgramsID;

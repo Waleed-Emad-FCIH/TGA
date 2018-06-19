@@ -51,6 +51,74 @@
 
 
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/choosePlan"
+        android:layout_width="match_parent"
+        android:layout_height="20pt"
+        android:text="choose this plane"
+        android:visibility="visible"/>
+
+    <Button
+        android:id="@+id/removePlanbrn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="remove this plan"
+        android:visibility="gone"/>
+    <Button
+        android:id="@+id/submitChoosingPlan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="submit"
+        android:visibility="gone"/>
+
+
+    <LinearLayout
+        android:id="@+id/planTime"
+        android:layout_width="match_parent"
+        android:layout_height="25pt"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:visibility="gone"
+
+        >
+
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/zip1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Plan Date"
+            android:textSize="12dp"
+            android:textColor="@color/bb_inActiveBottomBarItemColor" />
+
+        <LinearLayout
+            android:layout_weight="0.6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/imgProgramEnd"
+                android:drawableRight="@drawable/ic_content_paste_black_24dp"
+                android:src="@drawable/ic_content_paste_black_24dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#333333"
+                android:background="#00000000"
+                android:maxLines="1"
+                android:maxLength="15"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#dad8d8" />
+
+        </LinearLayout>
+    </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/plan_places"
         android:layout_width="match_parent"

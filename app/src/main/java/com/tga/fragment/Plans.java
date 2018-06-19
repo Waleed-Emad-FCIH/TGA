@@ -13,10 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.tga.R;
 import com.tga.adapter.PlanAdapter;
@@ -32,6 +34,8 @@ public class Plans extends Fragment {
     View view;
     private FloatingActionButton floatingActionButton;
     private RecyclerView recyclerView;
+    private RecyclerView suggRecyclerView;
+
     private PlanAdapter mAdapter;
 
     public Plans() {
@@ -65,29 +69,72 @@ public class Plans extends Fragment {
         ///take from database
         FirebaseDatabase mRef = com.google.firebase.database.FirebaseDatabase.getInstance();
         DatabaseReference reference =mRef.getReference().child("plans");
+        try {
+            String currentUserId= FirebaseAuth.getInstance().getCurrentUser().getUid();
+            Query query = reference.orderByChild("creatorId").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            query.addValueEventListener(new ValueEventListener() {
 
-        reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    java.util.ArrayList<PlanModel> ArrayList = new ArrayList<>();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        PlanModel plan = snapshot.getValue(PlanModel.class);
+                        Log.v("data??>>>", "here + " + plan.getTitle() + ArrayList.size());
+                        ArrayList.add(plan);
 
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                 java.util.ArrayList<PlanModel> ArrayList =new ArrayList<>();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    PlanModel plan = snapshot.getValue(PlanModel.class);
-                    Log.v("data??>>>", "here + " + plan.getTitle() + ArrayList.size());
-                    ArrayList.add(plan);
+                    }
+                    mAdapter = new PlanAdapter(getActivity(), ArrayList);
+                    recyclerView.setAdapter(mAdapter);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
                 }
-                mAdapter = new PlanAdapter(getActivity(),ArrayList);
-                recyclerView.setAdapter(mAdapter);
+            });
+        }
+        catch (Exception e)
+        {
+            mAdapter = new PlanAdapter(getActivity(), new ArrayList<>());
+            recyclerView.setAdapter(mAdapter);
             }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
 
+        /// suggested
+        suggRecyclerView = (RecyclerView) v.findViewById(R.id.rePlansSuggested);
+
+        RecyclerView.LayoutManager suggLayoutManager = new LinearLayoutManager(getActivity());
+        suggRecyclerView.setLayoutManager(suggLayoutManager);
+        suggRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        try {
+
+            reference.addValueEventListener(new ValueEventListener() {
+
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    java.util.ArrayList<PlanModel> ArrayList = new ArrayList<>();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        PlanModel plan = snapshot.getValue(PlanModel.class);
+                        Log.v("data??>>>", "here + " + plan.getTitle() + ArrayList.size());
+                        ArrayList.add(plan);
+
+                    }
+                    mAdapter = new PlanAdapter(getActivity(), ArrayList);
+                    suggRecyclerView.setAdapter(mAdapter);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+        catch (Exception e)
+        {
+            mAdapter = new PlanAdapter(getActivity(), new ArrayList<>());
+            suggRecyclerView.setAdapter(mAdapter);
+        }
 
 
         return v;
