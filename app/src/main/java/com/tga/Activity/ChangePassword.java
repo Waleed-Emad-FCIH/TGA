@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ public class ChangePassword extends AppCompatActivity {
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,12 +41,18 @@ public class ChangePassword extends AppCompatActivity {
         txtSave = (TextView)findViewById(R.id.txtSave);
         etxtCurrentPassword = (TextView)findViewById(R.id.etxtCurrentPassword);
 
+        etxtUserEmail.setText(getIntent().getStringExtra("email"));
+        etxtUserEmail.setEnabled(false);
+
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         txtSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
+                    if (!validateForm()) {
+                        return;
+                    }
                     AuthCredential credential = EmailAuthProvider
                             .getCredential(etxtUserEmail.getText().toString(), etxtCurrentPassword.getText().toString());
                     user.reauthenticate(credential)
@@ -80,5 +88,24 @@ public class ChangePassword extends AppCompatActivity {
 
 
 
+    }
+
+
+    private boolean validateForm() {
+        boolean valid = true;
+
+        String userPassword = etxtNewPassword.getText().toString();
+        if (TextUtils.isEmpty(userPassword)||userPassword.length()<8) {
+            etxtNewPassword.setError("Password at least 8 character");
+            valid = false;
+        } else {
+            etxtNewPassword.setError(null);
+        }
+
+
+
+
+
+        return valid;
     }
 }

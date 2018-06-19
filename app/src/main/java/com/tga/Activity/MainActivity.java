@@ -35,7 +35,6 @@ import com.tga.fragment.Home;
 import com.tga.fragment.Plans;
 import com.tga.fragment.Privacy;
 import com.tga.fragment.Profile;
-import com.tga.fragment.Settings;
 import com.tga.models.TouristPlan;
 import com.tga.util.BackgroundServiceForAttractivePlaces;
 
@@ -60,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG_HOME = "TGA";
     private static final String TAG_FAV = "favourites";
     private static final String TAG_MY_PLANS = "myplans";
-    private static final String TAG_SETTINGS = "settings";
     private static final String TAG_PRIVACY = "privacy";
     private static final String TAG_CONTACTUS = "contact us";
     private static final String TAG_ABOUTUS = "about us";
@@ -322,15 +320,12 @@ public class MainActivity extends AppCompatActivity {
                 return favourites;
 
             case 2:
-                Settings settings = new Settings();
-                return settings;
-            case 3:
                 Privacy privacy = new Privacy();
                 return privacy;
-            case 4:
+            case 3:
                 ContactUs contactUs =new ContactUs();
                 return contactUs;
-            case 5:
+            case 4:
                 AboutUs aboutUs = new AboutUs();
                 return aboutUs;
 
@@ -368,29 +363,25 @@ public class MainActivity extends AppCompatActivity {
                         navItemIndex = 1;
                         CURRENT_TAG = TAG_FAV;
                         break;
-                    case R.id.settings:
-                        navItemIndex = 2;
-                        CURRENT_TAG = TAG_SETTINGS;
-                        break;
                     case R.id.privacy:
-                        navItemIndex = 3;
+                        navItemIndex = 2;
                         CURRENT_TAG = TAG_PRIVACY;
                         break;
                     case R.id.contact:
-                        navItemIndex = 4;
+                        navItemIndex = 3;
                         CURRENT_TAG = TAG_CONTACTUS;
                         break;
                     case R.id.about:
-                        navItemIndex = 5;
+                        navItemIndex = 4;
                         CURRENT_TAG = TAG_ABOUTUS;
                         break;
                     case R.id.logout:
-                        navItemIndex = 6;
+                        navItemIndex = 5;
                         logout();
                         drawer.closeDrawers();
                         return true;
                     case R.id.myPlans:
-                        navItemIndex = 7;
+                        navItemIndex = 6;
                         Intent intent = new Intent(getApplicationContext(),ShowMyPlans.class);
                         startActivity(intent);
                         CURRENT_TAG = TAG_MY_PLANS;

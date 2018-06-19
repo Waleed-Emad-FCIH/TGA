@@ -129,6 +129,7 @@ public class EditProfile extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(),ChangePassword.class);
+                intent.putExtra("email",getIntent().getStringExtra("email"));
                 startActivity(intent);
             }
         });

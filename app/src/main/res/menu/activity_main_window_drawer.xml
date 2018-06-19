@@ -17,11 +17,7 @@
             android:title="Show My Plans"
             android:icon="@drawable/ic_content_paste_black_24dp"
             />
-        <item
-            android:id="@+id/settings"
-            android:title="Setting"
-            android:icon="@drawable/ic_settings_black_24dp"
-            />
+
         <item
             android:id="@+id/privacy"
             android:title="Privacy And Policy"
