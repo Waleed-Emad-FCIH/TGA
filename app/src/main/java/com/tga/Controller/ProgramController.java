@@ -14,13 +14,14 @@ import com.tga.models.DiscountModel;
 import com.tga.models.ProgramModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ProgramController implements DB_Interface{
 
     private ProgramModel programModel;
     private Discount discount;
     private static DatabaseReference dbRef;
-
+ArrayList<String> ProgramsOfAgent ;
     private ProgramController(ProgramModel pm){
         this.programModel = pm;
         this.setDiscount(pm.discountID);
@@ -151,7 +152,158 @@ public class ProgramController implements DB_Interface{
         dbRef = FirebaseDatabase.getInstance().getReference("Programs");
         dbRef.child(this.getId()).setValue(this.programModel);
     }
+    //============================== imbo code =================
+    public ArrayList<String> ListProgramsOfAgent (String id)
+    {
+        dbRef = FirebaseDatabase.getInstance().getReference("Programs");
+        dbRef.addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
 
+            for(DataSnapshot ds:dataSnapshot.getChildren())
+            {
+                if (ds.child("ownerID").getValue().equals(id) )
+                {
+                   ProgramsOfAgent.add( ds.child("id").getValue().toString());
+                }
+                }
+
+
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    });
+    return ProgramsOfAgent;
+    }
+
+    //-----------------------------------------------------------
+
+    public ArrayList<String> getNames(ArrayList<String> Registered) {
+       DatabaseReference touristReference = FirebaseDatabase.getInstance().getReference("Programs");
+
+        Integer s = (Integer) Registered.size();
+        touristReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (int i = 0; i < Registered.size(); i++) {
+
+                    Registered.set(i, dataSnapshot.child(Registered.get(i)).child("name").getValue().toString());
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
+
+
+return Registered;
+
+
+
+
+    }
+//-------------------------------
+ArrayList<String> getTouristsRegistered(String id)
+{
+
+    ArrayList<String> Tourists= new ArrayList<>();
+    dbRef = FirebaseDatabase.getInstance().getReference("Programs");
+    dbRef.child(id).child("registeredTouristsID").addValueEventListener(new ValueEventListener() {
+
+    @Override
+    public void onDataChange(DataSnapshot dataSnapshot) {
+   for (DataSnapshot tourists:dataSnapshot.getChildren())
+   {
+        Tourists.add(tourists.getValue().toString());
+
+   }
+    }
+
+    @Override
+    public void onCancelled(DatabaseError databaseError) {
+
+    }
+});
+return  Tourists;
+}
+//------------------------------------------------------------------
+ArrayList<String> getProgramReviews(String id)
+    {
+
+        ArrayList<String> reviews= new ArrayList<>();
+        dbRef = FirebaseDatabase.getInstance().getReference("Programs");
+        dbRef.child(id).child("reviews").addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot tourists:dataSnapshot.getChildren())
+                {
+                    reviews.add(tourists.getValue().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return  reviews;
+    }
+
+    public ArrayList<ProgramModel> GetSomePrograms(ArrayList<String> ProgramsIdS)
+    {ArrayList<ProgramModel> Programs= new ArrayList<>();
+        dbRef = FirebaseDatabase.getInstance().getReference("Programs");
+
+        for (String programId :ProgramsIdS)
+        {
+            dbRef.child(programId).addValueEventListener(new ValueEventListener() {
+                ProgramModel programModel;
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                programModel.id=dataSnapshot.child("id").getValue().toString();
+                programModel.description=dataSnapshot.child("description").getValue().toString();
+                    programModel.endDate=dataSnapshot.child("endDate").getValue().toString();
+                    programModel.startDate=dataSnapshot.child("startDate").getValue().toString();
+                    programModel.title=dataSnapshot.child("title").getValue().toString();
+                    if (!dataSnapshot.child("price").getValue().equals(""))
+                    programModel.price=(double)dataSnapshot.child("price").getValue();
+                    programModel.discountID=dataSnapshot.child("discountID").getValue().toString();
+                    programModel.hotelName=dataSnapshot.child("hotelName").getValue().toString();
+                    programModel.rate=(int)dataSnapshot.child("rate").getValue();
+                    programModel.ownerID=dataSnapshot.child("ownerID").getValue().toString();
+                    programModel.hitRate=(int)dataSnapshot.child("hitRate").getValue();
+                    if(dataSnapshot.hasChild("reviews"))
+                    {
+                        programModel.reviews=  getProgramReviews(programId);
+
+                    }
+
+
+                    if(dataSnapshot.hasChild("registeredTouristsID"))
+                    {
+                      programModel.registeredTouristsID=  getTouristsRegistered(programId);
+
+                    }
+       Programs.add(programModel);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+return Programs;
+    }
+
+    //==========================================================
     @Override
     public void updateToDB() {
         saveToDB();

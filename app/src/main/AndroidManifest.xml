@@ -139,7 +139,10 @@
         <activity android:name=".Activity.MapViewActivity" />
         <activity android:name=".Activity.ChatActivity" />
         <activity android:name=".Activity.Places_Filter" />
-        <activity android:name=".Activity.MyMessage"></activity>
+        <activity android:name=".Activity.MyMessage" />
+        <activity android:name=".Activity.Reports" />
+        <activity android:name=".Activity.ProgramReport" />
+        <activity android:name=".Activity.Financial"></activity>
     </application>
 
 </manifest>

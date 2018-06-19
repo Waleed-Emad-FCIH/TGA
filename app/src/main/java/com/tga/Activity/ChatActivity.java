@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -44,7 +45,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
         ArrayList<ChatMessage> ChatMessages = new ArrayList<>();
         ArrayList<String> previousMessages= new ArrayList<>();
         private ProgressDialog mPrgress;
-        ImageButton fab;
+        Button fab;
         EditText mInputMessage;
         private ListView listOfMessages;
         FirebaseUser mCurrentUser;
@@ -63,7 +64,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
             mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
             mPrgress = new ProgressDialog(this);
             mInputMessage = (EditText) findViewById(R.id.input);
-            fab = (ImageButton) findViewById(R.id.fab);
+            fab = (Button) findViewById(R.id.fab);
             listOfMessages = (ListView) findViewById(R.id.list_of_messages);
 
 

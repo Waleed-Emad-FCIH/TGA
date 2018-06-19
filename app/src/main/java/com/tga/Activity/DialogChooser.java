@@ -43,7 +43,7 @@ private dialoug_interface listerner;
 
             if(R1.isSelected())
             {
-listerner.Apply("food");
+            listerner.Apply("food");
             }
             else if(R2.isSelected())
             {
@@ -61,7 +61,8 @@ listerner.Apply("food");
                 listerner.Apply("bar");
 
 
-            }else {
+            }
+            else {
 
             }
 

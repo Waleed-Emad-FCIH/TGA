@@ -76,12 +76,7 @@ public class CustomAdapter extends BaseAdapter {
             mDatabaseRefernce.child(SenderName).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    image = dataSnapshot.child("photo").getValue().toString();
 
-                    if (!image.equals("")) {
-                        Picasso.with(c).load(image).placeholder(R.drawable.user).into(SenderImage);
-
-                    }
 
                 }
                 @Override
@@ -100,12 +95,6 @@ public class CustomAdapter extends BaseAdapter {
             mDatabaseRefernce.child(ReceiverName).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    image = dataSnapshot.child("photo").getValue().toString();
-
-                    if (! image.equals("")) {
-                        Picasso.with(c).load(image).placeholder(R.drawable.user).into(SenderImage);
-
-                    }
 
                 }
                 @Override
