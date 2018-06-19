@@ -20,8 +20,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.tga.Controller.PostController;
+import com.tga.Controller.SimpleCallback;
 import com.tga.R;
 import com.tga.adapter.PostAdapter;
+import com.tga.models.PostModel;
+
+import java.util.ArrayList;
 
 
 public class Community extends AppCompatActivity  {
@@ -46,16 +50,19 @@ public class Community extends AppCompatActivity  {
         btnPost = (Button) findViewById(R.id.btnPost);
         layoutPost = (LinearLayout) findViewById(R.id.layoutPost);
         user = FirebaseAuth.getInstance().getCurrentUser();
-
-        posts= new PostController(null,txtWritePost.getText().toString(),
-                System.currentTimeMillis(),user.getUid(),null,0,null);
-       pAdapter = new PostAdapter(getApplicationContext(),posts.listAll());
-
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        posts= new PostController(null,txtWritePost.getText().toString(),
+                System.currentTimeMillis(),user.getUid(),null,0,null);
+        posts.listAll(new SimpleCallback<ArrayList<PostModel>>() {
+            @Override
+            public void callback(ArrayList<PostModel> data) {
+                pAdapter = new PostAdapter(getApplicationContext(),data);
+                recyclerView.setAdapter(pAdapter);
+            }
+        });
 
-       recyclerView.setAdapter(pAdapter);
         btnPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

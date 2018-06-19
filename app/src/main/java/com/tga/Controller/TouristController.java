@@ -9,6 +9,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.tga.models.PlaceModel;
+import com.tga.models.PlanModel;
 import com.tga.models.ProgramModel;
 import com.tga.models.TouristModel;
 import com.tga.models.TouristPlan;
@@ -311,6 +313,40 @@ public class TouristController extends UserController implements DB_Interface {
 
             }
         });
+
+    }
+    public void  getMyChosenPlan(SimpleCallback<ArrayList<PlanModel>> Chocallback , String id)
+    {
+
+        getByID(new SimpleCallback<TouristController>() {
+            @Override
+            public void callback(TouristController data) {
+                touristModel=data.touristModel;
+                ArrayList<PlanModel> planModels = new ArrayList<>();
+
+                for (int i =0 ; i<touristModel.myPlansID.size() ; i++)
+                {
+                    String planId = touristModel.myPlansID.get(i);
+                    PlanController planController = new PlanController(planId , null , null , null ,
+                            null , null , null);
+                    int finalI = i;
+                    planController.getById(new SimpleCallback<PlanModel>() {
+                        @Override
+                        public void callback(PlanModel pdata) {
+
+                        planModels.add(pdata);
+                        if(finalI == touristModel.myPlansID.size()-1)
+                        {
+                            Chocallback.callback(planModels);
+                        }
+                        }
+                    } , planId);
+                }
+
+
+            }
+        } , id);
+
 
     }
     public  String getId()

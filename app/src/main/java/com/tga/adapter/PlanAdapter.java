@@ -212,20 +212,26 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.MyViewHolder> 
                         photoResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoResponse>() {
                             @Override
                             public void onComplete(@NonNull Task<PlacePhotoResponse> task) {
-                                PlacePhotoResponse photo = task.getResult();
-                                Bitmap bitmap = photo.getBitmap();
-                                Log.v("am in 111111", "" + finalI);
-                                switch (finalI) {
-                                    case 0:
-                                        holder.imgSite1.setImageBitmap(bitmap);
-                                        break;
-                                    case 1:
-                                        holder.imgSite2.setImageBitmap(bitmap);
-                                        break;
-                                    case 2:
-                                        holder.imgSite3.setImageBitmap(bitmap);
-                                        break;
+                                try {
+                                    PlacePhotoResponse photo = task.getResult();
+                                    Bitmap bitmap = photo.getBitmap();
+                                    Log.v("am in 111111", "" + finalI);
+                                    switch (finalI) {
+                                        case 0:
+                                            holder.imgSite1.setImageBitmap(bitmap);
+                                            break;
+                                        case 1:
+                                            holder.imgSite2.setImageBitmap(bitmap);
+                                            break;
+                                        case 2:
+                                            holder.imgSite3.setImageBitmap(bitmap);
+                                            break;
+                                    }
                                 }
+                              catch (Exception e)
+                              {
+
+                              }
                                 // Log.v("helllo??/>" , photoi[0].toString());
                             }
 

@@ -17,8 +17,12 @@ import android.widget.LinearLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.tga.Controller.PostController;
+import com.tga.Controller.SimpleCallback;
 import com.tga.R;
 import com.tga.adapter.PostAdapter;
+import com.tga.models.PostModel;
+
+import java.util.ArrayList;
 
 public class Community2 extends AppCompatActivity {
 
@@ -45,8 +49,15 @@ public class Community2 extends AppCompatActivity {
         user = FirebaseAuth.getInstance().getCurrentUser();
         posts= new PostController(null,null, System.currentTimeMillis()
                 ,user.getUid(),null,0,null);
-        pAdapter = new PostAdapter(getApplicationContext(),posts.listAll());
-        recyclerView.setAdapter(pAdapter);
+        posts.listAll(new SimpleCallback<ArrayList<PostModel>>() {
+            @Override
+            public void callback(ArrayList<PostModel> data) {
+                pAdapter = new PostAdapter(getApplicationContext(),data);
+                recyclerView.setAdapter(pAdapter);
+
+            }
+        });
+
         fab =(FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

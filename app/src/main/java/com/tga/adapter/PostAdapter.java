@@ -24,6 +24,7 @@ import com.tga.R;
 import com.tga.models.PostModel;
 import com.tga.util.CircleTransform;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.view.View.GONE;
@@ -34,16 +35,17 @@ import static android.view.View.VISIBLE;
  */
 
 public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.MyViewHolder> {
-    private List<PostModel> postList;
+    private ArrayList<PostModel> postList;
 
     Context context;
     FirebaseUser user ;
 
 
 
-    public PostAdapter(Context mainActivityContacts,List<PostModel> postsModels) {
+    public PostAdapter(Context mainActivityContacts,ArrayList<PostModel> postsModels) {
         this.context = mainActivityContacts;
-        this.postList = postsModels;
+        this.postList= new ArrayList<>();
+        this.postList =postsModels;
     }
 
 
@@ -68,11 +70,21 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.MyViewHolder>
      //   holder.txtname.setText(user.getDisplayName());
        // holder.ppimg.setImageURI(user.getPhotoUrl());
    //    holder.txtNumLikes.setText((post.likes));
-        if(post.likesID.contains(user.getUid()))
-        {
-            holder.unliked.setVisibility(GONE);
-            holder.liked.setVisibility(VISIBLE);
+        try {
+            if(post.likesID.contains(user.getUid()))
+            {
+                holder.unliked.setVisibility(GONE);
+                holder.liked.setVisibility(VISIBLE);
+            }
+            else {
+                holder.unliked.setVisibility(VISIBLE);
+            }
         }
+        catch (Exception e)
+        {
+            holder.unliked.setVisibility(VISIBLE);
+        }
+
 
         final ScaleAnimation animation = new ScaleAnimation(0f, 1f, 0f, 1f,
                 Animation.RELATIVE_TO_SELF, 0.5f,
@@ -141,32 +153,31 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.MyViewHolder>
         });
 
 
-        TouristController.getByID(new SimpleCallback<TouristController>() {
-            @Override
-            public void callback(TouristController data) {
-                Picasso.with(context)
-                        .load(data.getPhoto())
-                        .transform(new CircleTransform())
-                        .into(holder.ppimg);
-            }
-            //@@
-        },post.userId);
+            TouristController.getByID(new SimpleCallback<TouristController>() {
+                @Override
+                public void callback(TouristController data) {
+                    try {
+                        holder.txtname.setText(data.getName());
+                        Picasso.with(context)
+                                .load(data.getPhoto())
+                                .transform(new CircleTransform())
+                                .into(holder.ppimg);
+
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                    }
+
+
+                //@@
+            },post.userId);
 
 
 
-/*
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(context, Comments.class);
-                i.putExtra("ID",post.id);
 
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                context.startActivity(i);
-            }
-        });*/
 
 
         holder.liked.setOnClickListener(new View.OnClickListener() {

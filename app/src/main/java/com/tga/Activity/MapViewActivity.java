@@ -46,6 +46,7 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
 
         GoogleDirection.withServerKey("AIzaSyA02qeaptiL2YJ2P9CjHRrLhkkzO3cL7NM")
                 .from(latLngs.get(0))
+                .and(latLngs.subList(1,latLngs.size()-2))
                 .to(latLngs.get(latLngs.size()-1)).execute(new DirectionCallback() {
             @Override
             public void onDirectionSuccess(Direction direction, String rawBody) {
