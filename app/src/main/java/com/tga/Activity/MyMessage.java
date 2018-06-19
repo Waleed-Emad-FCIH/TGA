@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,7 +39,12 @@ public class MyMessage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_message);
-        mDatabaseRefernce = FirebaseDatabase.getInstance().getReference().child("agents");
+String s = getIntent().getStringExtra("key");
+if(s.equals("Agents"))
+        mDatabaseRefernce = FirebaseDatabase.getInstance().getReference().child("Agents");
+       else
+    mDatabaseRefernce = FirebaseDatabase.getInstance().getReference().child("tourists");
+
         mUsersList = (ListView)findViewById(R.id.users_list);
         mPrgress= new ProgressDialog(this);
 

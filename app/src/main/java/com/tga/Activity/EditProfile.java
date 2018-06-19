@@ -129,6 +129,7 @@ public class EditProfile extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(),ChangePassword.class);
+                intent.putExtra("email",getIntent().getStringExtra("email"));
                 startActivity(intent);
             }
         });
@@ -141,7 +142,7 @@ public class EditProfile extends AppCompatActivity {
                 if (picUri != null) {
                     FirebaseStorage storage = FirebaseStorage.getInstance();
                     final StorageReference storageRef = storage.getReferenceFromUrl("gs://tguidea-86215.appspot.com/");
-                    DatabaseReference users = mRef.getReference("users");
+                    DatabaseReference users = mRef.getReference("tourists");
                     StorageReference childRef = storageRef.child("ProfileImages/"+users.push().getKey());
                     Bitmap bmp = null;
                     try {
@@ -169,7 +170,7 @@ public class EditProfile extends AppCompatActivity {
                             final FirebaseDatabase database = FirebaseDatabase.getInstance();
                             mAuth = FirebaseAuth.getInstance();
                             String uid = mAuth.getCurrentUser().getUid();
-                            Query query2 = database.getReference("users").orderByChild("id").equalTo(uid);
+                            Query query2 = database.getReference("tourists").orderByChild("id").equalTo(uid);
                             query2.addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
                                 @Override
                                 public void onDataChange(final DataSnapshot snapshot) {
@@ -178,7 +179,7 @@ public class EditProfile extends AppCompatActivity {
                                     String key = nodeDataSnapshot.getKey();
                                     String path = "/" + snapshot.getKey() + "/" + key;
                                     HashMap<String, Object> result = new HashMap<>();
-                                    result.put("profilePic", String.valueOf(downloadUrl));
+                                    result.put("photo", String.valueOf(downloadUrl));
                                     result.put("name",etxtFullName.getText().toString());
                                     result.put("phoneNumber",etxtPhone.getText().toString());
                                     result.put("email",etxtEmail.getText().toString());
@@ -203,7 +204,7 @@ public class EditProfile extends AppCompatActivity {
                             final FirebaseDatabase database = FirebaseDatabase.getInstance();
                             mAuth = FirebaseAuth.getInstance();
                             String uid = mAuth.getCurrentUser().getUid();
-                            Query query2 = database.getReference("users").orderByChild("id").equalTo(uid);
+                            Query query2 = database.getReference("tourists").orderByChild("id").equalTo(uid);
                             query2.addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
                                 @Override
                                 public void onDataChange(final DataSnapshot snapshot) {
@@ -234,7 +235,7 @@ public class EditProfile extends AppCompatActivity {
                     final FirebaseDatabase database = FirebaseDatabase.getInstance();
                     mAuth = FirebaseAuth.getInstance();
                     String uid = mAuth.getCurrentUser().getUid();
-                    Query query2 = database.getReference("users").orderByChild("id").equalTo(uid);
+                    Query query2 = database.getReference("tourists").orderByChild("id").equalTo(uid);
                     query2.addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
                         @Override
                         public void onDataChange(final DataSnapshot snapshot) {

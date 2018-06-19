@@ -42,6 +42,8 @@ public class AddPlan extends AppCompatActivity {
         edtTitle = (EditText)findViewById(R.id.etxtPlanTitle);
         edtDes  =(EditText) findViewById(R.id.etxtPlanDesc);
         edtLocation =(EditText) findViewById(R.id.etxtPlanLocation);
+        edtLocation.setText("Cairo");
+        edtLocation.setEnabled(false);
         submit = (Button) findViewById(R.id.btnAddProgram);
         ArrayList<String> placesIds = (ArrayList<String>) getIntent().getExtras().get("placesId");
 

@@ -37,7 +37,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="You can visit .... \nThere are 24-hours, walk-in Accident and emergency department at the following central hospitals: \n......\n......"
+            android:text="You can visit Al Kaser Alani \nThere are 24-hours, walk-in Accident and emergency department."
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"/>
 

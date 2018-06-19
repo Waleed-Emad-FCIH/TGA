@@ -32,44 +32,44 @@
                 />
 
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Programs"
-                android:id="@+id/txtPlansSuggested"
-                android:layout_below="@+id/recPlaces"
-                android:padding="8dp"
-                android:textColor="#fff"
-                android:background="@color/colorPrimaryDark"/>/>
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Programs"-->
+                <!--android:id="@+id/txtPlansSuggested"-->
+                <!--android:layout_below="@+id/recPlaces"-->
+                <!--android:padding="8dp"-->
+                <!--android:textColor="#fff"-->
+                <!--android:background="@color/colorPrimaryDark"/>/>-->
 
 
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/rePlansSuggested"
-                android:layout_below="@+id/txtPlansSuggested"
-                android:layout_margin="8dp"
+            <!--<android.support.v7.widget.RecyclerView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:id="@+id/rePlansSuggested"-->
+                <!--android:layout_below="@+id/txtPlansSuggested"-->
+                <!--android:layout_margin="8dp"-->
 
-                />
+                <!--/>-->
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Plans"
-                android:id="@+id/ttt"
-                android:layout_below="@+id/rePlansSuggested"
-                android:padding="8dp"
-                android:textColor="#fff"
-                android:background="@color/colorPrimaryDark"/>/>
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Plans"-->
+                <!--android:id="@+id/ttt"-->
+                <!--android:layout_below="@+id/rePlansSuggested"-->
+                <!--android:padding="8dp"-->
+                <!--android:textColor="#fff"-->
+                <!--android:background="@color/colorPrimaryDark"/>/>-->
 
 
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/ttt"
-                android:layout_margin="8dp"
+            <!--<android.support.v7.widget.RecyclerView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_below="@+id/ttt"-->
+                <!--android:layout_margin="8dp"-->
 
-                />
+                <!--/>-->
 
 
 

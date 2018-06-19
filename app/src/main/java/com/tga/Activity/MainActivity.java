@@ -9,9 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,18 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
-import com.google.firebase.database.Query;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 import com.tga.Controller.AgentController;
@@ -48,12 +36,15 @@ import com.tga.fragment.Home;
 import com.tga.fragment.Plans;
 import com.tga.fragment.Privacy;
 import com.tga.fragment.Profile;
-import com.tga.fragment.Settings;
+import com.tga.models.TouristPlan;
+import com.tga.util.BackgroundServiceForAttractivePlaces;
 
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Calendar;
+import java.util.Date;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -68,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private Handler mHandler;
     private static final String TAG_HOME = "TGA";
     private static final String TAG_FAV = "favourites";
-    private static final String TAG_SETTINGS = "settings";
+    private static final String TAG_MY_PLANS = "myplans";
     private static final String TAG_PRIVACY = "privacy";
     private static final String TAG_CONTACTUS = "contact us";
     private static final String TAG_ABOUTUS = "about us";
@@ -97,6 +88,10 @@ public class MainActivity extends AppCompatActivity {
         new AgentController("n7rAy53qdOULidrWt2KhKCrTu3n1", "agent@gmail.com", "1234567890", "Agent1", "phone",
                 "adrs", "photo", "regisNo", arr).saveToDB();*/
 
+        //Call back ground Service
+        startService(new Intent(this, BackgroundServiceForAttractivePlaces.class));
+
+
         drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
         navigationView = (NavigationView)findViewById(R.id.nav_view);
         myFirebaseRef = new Firebase("https://tguidea-86215.firebaseio.com/tourists/");
@@ -111,7 +106,34 @@ public class MainActivity extends AppCompatActivity {
         txtUserName = (TextView)navHeader.findViewById(R.id.txtName);
         loadNavHeader();
 
-//        new NotificationsController().execute(Long.valueOf(0));
+//        new NotificationsController().execute("Ahmed");
+        NotificationsController notificationsController = new NotificationsController();
+        notificationsController.checkPlan(new SimpleCallback<ArrayList<TouristPlan>>() {
+            @Override
+            public void callback(ArrayList<TouristPlan> data)  {
+
+
+                for (int i = 0 ; i<data.size();i++){
+                    if(!data.get(i).isNotified()){
+                        String string = data.get(i).getPlanDate();
+                        DateFormat df = new SimpleDateFormat("dd/MM/yy");
+                        try {
+                            Date d1 = df.parse(string);
+                            String timeStamp = new SimpleDateFormat("dd/MM/yy").format(Calendar.getInstance().getTime());
+                            if (df.format(d1).equals(timeStamp)){
+                                new NotificationsController().execute("You have a trip today to do","0");
+                                notificationsController.updateToDB(data.get(i).getId(),true,data.get(i).getPlanDate(),data.get(i).getPlanID());
+                                break;
+                            }
+                        }catch (Exception e){}
+                    }
+                }
+
+
+            }
+        });
+
+
         // initializing navigation menu
         setUpNavigationView();
 
@@ -292,18 +314,17 @@ public class MainActivity extends AppCompatActivity {
             case 1:
                 Favourites favourites = new Favourites();
                 return favourites;
+
             case 2:
-                Settings settings = new Settings();
-                return settings;
-            case 3:
                 Privacy privacy = new Privacy();
                 return privacy;
-            case 4:
+            case 3:
                 ContactUs contactUs =new ContactUs();
                 return contactUs;
-            case 5:
+            case 4:
                 AboutUs aboutUs = new AboutUs();
                 return aboutUs;
+
 
 
             default:
@@ -338,27 +359,31 @@ public class MainActivity extends AppCompatActivity {
                         navItemIndex = 1;
                         CURRENT_TAG = TAG_FAV;
                         break;
-                    case R.id.settings:
-                        navItemIndex = 2;
-                        CURRENT_TAG = TAG_SETTINGS;
-                        break;
                     case R.id.privacy:
-                        navItemIndex = 3;
+                        navItemIndex = 2;
                         CURRENT_TAG = TAG_PRIVACY;
                         break;
                     case R.id.contact:
-                        navItemIndex = 4;
+                        navItemIndex = 3;
                         CURRENT_TAG = TAG_CONTACTUS;
                         break;
                     case R.id.about:
-                        navItemIndex = 5;
+                        navItemIndex = 4;
                         CURRENT_TAG = TAG_ABOUTUS;
                         break;
                     case R.id.logout:
-                        navItemIndex = 6;
+                        navItemIndex = 5;
                         logout();
                         drawer.closeDrawers();
                         return true;
+                    case R.id.myPlans:
+                        navItemIndex = 6;
+                        Intent intent = new Intent(getApplicationContext(),ShowMyPlans.class);
+                        startActivity(intent);
+                        CURRENT_TAG = TAG_MY_PLANS;
+                        break;
+
+
 
                     default:
                         navItemIndex = 0;

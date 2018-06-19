@@ -52,7 +52,7 @@ public class History extends AppCompatActivity {
                     return;
                 } else {
                     tc[0] = data;
-                     tc[0].getHistoryPrograms(new SimpleCallback<ArrayList>() {
+                     tc[0].getHistoryPlans(new SimpleCallback<ArrayList>() {
                         @Override
                         public void callback(ArrayList data) {
                             ArrayList<String> array = data;
