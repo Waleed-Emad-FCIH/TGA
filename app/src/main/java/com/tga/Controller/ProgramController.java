@@ -14,13 +14,14 @@ import com.tga.models.DiscountModel;
 import com.tga.models.ProgramModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ProgramController implements DB_Interface{
 
     private ProgramModel programModel;
     private Discount discount;
     private static DatabaseReference dbRef;
-
+ArrayList<String> ProgramsOfAgent ;
     private ProgramController(ProgramModel pm){
         this.programModel = pm;
         this.setDiscount(pm.discountID);
@@ -69,7 +70,7 @@ public class ProgramController implements DB_Interface{
     public String getOwnerID(){
         return programModel.ownerID;
     }
-    // TODO: add price edit text for agent view and xml
+
     public double getPrice(){
         return this.programModel.price;
     }
@@ -87,15 +88,21 @@ public class ProgramController implements DB_Interface{
     }
 
     public ArrayList<String> getPlacesID() {
+        if (programModel.placesID == null)
+            programModel.placesID = new ArrayList<>();
         return programModel.placesID;
     }
 
     public void addPlace(String placeID) {
+        if (programModel.placesID == null)
+            programModel.placesID = new ArrayList<>();
         programModel.placesID.add(placeID);
     }
 
     public void delPlace(String placeID){
-        if (!programModel.placesID.isEmpty())
+        if (programModel.placesID == null)
+            programModel.placesID = new ArrayList<>();
+        else
             programModel.placesID.remove(placeID);
     }
 
@@ -138,30 +145,192 @@ public class ProgramController implements DB_Interface{
     }
 
     public void addReview(String review){
+        if (programModel.reviews == null)
+            programModel.reviews = new ArrayList<>();
         programModel.reviews.add(review);
     }
 
     public ArrayList<String> getReviews() {
+        if (programModel.reviews == null)
+            programModel.reviews = new ArrayList<>();
         return programModel.reviews;
     }
 
     public ArrayList<String> getRegisteredList(){
+        if (programModel.registeredTouristsID == null)
+            programModel.registeredTouristsID = new ArrayList<>();
         return programModel.registeredTouristsID;
     }
 
     public void registeTourist(String touristID){
+        if (programModel.registeredTouristsID == null)
+            programModel.registeredTouristsID = new ArrayList<>();
         programModel.registeredTouristsID.add(touristID);
     }
 
     public void unRegisteTourist(String touristID){
-        programModel.registeredTouristsID.remove(touristID);
+        if (programModel.registeredTouristsID == null)
+            programModel.registeredTouristsID = new ArrayList<>();
+        else
+            programModel.registeredTouristsID.remove(touristID);
     }
 
     public void saveToDB(){
         dbRef = FirebaseDatabase.getInstance().getReference("Programs");
         dbRef.child(this.getId()).setValue(this.programModel);
     }
+    //============================== imbo code =================
+    public ArrayList<String> ListProgramsOfAgent (String id)
+    {
+        dbRef = FirebaseDatabase.getInstance().getReference("Programs");
+        dbRef.addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
 
+            for(DataSnapshot ds:dataSnapshot.getChildren())
+            {
+                if (ds.child("ownerID").getValue().equals(id) )
+                {
+                   ProgramsOfAgent.add( ds.child("id").getValue().toString());
+                }
+                }
+
+
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    });
+    return ProgramsOfAgent;
+    }
+
+    //-----------------------------------------------------------
+
+    public ArrayList<String> getNames(ArrayList<String> Registered) {
+       DatabaseReference touristReference = FirebaseDatabase.getInstance().getReference("Programs");
+
+        Integer s = (Integer) Registered.size();
+        touristReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (int i = 0; i < Registered.size(); i++) {
+
+                    Registered.set(i, dataSnapshot.child(Registered.get(i)).child("name").getValue().toString());
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
+
+
+return Registered;
+
+
+
+
+    }
+//-------------------------------
+ArrayList<String> getTouristsRegistered(String id)
+{
+
+    ArrayList<String> Tourists= new ArrayList<>();
+    dbRef = FirebaseDatabase.getInstance().getReference("Programs");
+    dbRef.child(id).child("registeredTouristsID").addValueEventListener(new ValueEventListener() {
+
+    @Override
+    public void onDataChange(DataSnapshot dataSnapshot) {
+   for (DataSnapshot tourists:dataSnapshot.getChildren())
+   {
+        Tourists.add(tourists.getValue().toString());
+
+   }
+    }
+
+    @Override
+    public void onCancelled(DatabaseError databaseError) {
+
+    }
+});
+return  Tourists;
+}
+//------------------------------------------------------------------
+ArrayList<String> getProgramReviews(String id)
+    {
+
+        ArrayList<String> reviews= new ArrayList<>();
+        dbRef = FirebaseDatabase.getInstance().getReference("Programs");
+        dbRef.child(id).child("reviews").addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot tourists:dataSnapshot.getChildren())
+                {
+                    reviews.add(tourists.getValue().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return  reviews;
+    }
+
+    public ArrayList<ProgramModel> GetSomePrograms(ArrayList<String> ProgramsIdS)
+    {ArrayList<ProgramModel> Programs= new ArrayList<>();
+        dbRef = FirebaseDatabase.getInstance().getReference("Programs");
+
+        for (String programId :ProgramsIdS)
+        {
+            dbRef.child(programId).addValueEventListener(new ValueEventListener() {
+                ProgramModel programModel;
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                programModel.id=dataSnapshot.child("id").getValue().toString();
+                programModel.description=dataSnapshot.child("description").getValue().toString();
+                    programModel.endDate=dataSnapshot.child("endDate").getValue().toString();
+                    programModel.startDate=dataSnapshot.child("startDate").getValue().toString();
+                    programModel.title=dataSnapshot.child("title").getValue().toString();
+                    if (!dataSnapshot.child("price").getValue().equals(""))
+                    programModel.price=(double)dataSnapshot.child("price").getValue();
+                    programModel.discountID=dataSnapshot.child("discountID").getValue().toString();
+                    programModel.hotelName=dataSnapshot.child("hotelName").getValue().toString();
+                    programModel.rate=(int)dataSnapshot.child("rate").getValue();
+                    programModel.ownerID=dataSnapshot.child("ownerID").getValue().toString();
+                    programModel.hitRate=(int)dataSnapshot.child("hitRate").getValue();
+                    if(dataSnapshot.hasChild("reviews"))
+                    {
+                        programModel.reviews=  getProgramReviews(programId);
+
+                    }
+
+
+                    if(dataSnapshot.hasChild("registeredTouristsID"))
+                    {
+                      programModel.registeredTouristsID=  getTouristsRegistered(programId);
+
+                    }
+       Programs.add(programModel);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+return Programs;
+    }
+
+    //==========================================================
     @Override
     public void updateToDB() {
         saveToDB();
@@ -243,6 +412,7 @@ public class ProgramController implements DB_Interface{
     public void setDiscount(String endDate, double discountPercentage){
         this.discount = new Discount(endDate, discountPercentage);
         this.programModel.discountID = this.discount.getId();
+        this.discount.saveToDB();
     }
 
     private void setDiscount(String discountID){
@@ -254,8 +424,10 @@ public class ProgramController implements DB_Interface{
                     discount = data;
                 }
             }, discountID);
-        } else
+        } else {
             this.discount = null;
+            this.programModel.discountID = "";
+        }
     }
 
     public String getDiscountID() {
@@ -361,11 +533,11 @@ public class ProgramController implements DB_Interface{
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         dm[0] = data.getValue(DiscountModel.class);
-                        if (dm[0] == null)
-                            finishedCallback.callback(null);
-                        else
-                            finishedCallback.callback(new Discount(dm[0]));
                     }
+                    if (dm[0] == null)
+                        finishedCallback.callback(null);
+                    else
+                        finishedCallback.callback(new Discount(dm[0]));
                 }
 
                 @Override

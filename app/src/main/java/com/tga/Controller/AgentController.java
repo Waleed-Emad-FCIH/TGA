@@ -56,6 +56,7 @@ public class AgentController extends UserController implements DB_Interface{
 
     private AgentController(AgentModel model) {
        super(model.id, model.email, model.password, model.name, model.phoneNumber, model.address);
+        agentModel = model;
         agentModel.photo = model.photo;
         agentModel.registrationNumber = model.registrationNumber;
         agentModel.myProgramsID = model.myProgramsID;
@@ -82,14 +83,20 @@ public class AgentController extends UserController implements DB_Interface{
     }
 
     public ArrayList<String> getMyPrograms(){
+        if (agentModel.myProgramsID == null)
+            agentModel.myProgramsID = new ArrayList<>();
         return agentModel.myProgramsID;
     }
 
     public void addProgram(String progID){
-        agentModel.myProgramsID.add(progID);
+       if (agentModel.myProgramsID == null)
+           agentModel.myProgramsID = new ArrayList<>();
+       agentModel.myProgramsID.add(progID);
     }
 
     public void delProgram(String progID){
+        if (agentModel.myProgramsID == null)
+            agentModel.myProgramsID = new ArrayList<>();
         agentModel.myProgramsID.remove(progID);
     }
 

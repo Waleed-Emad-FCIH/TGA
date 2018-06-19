@@ -9,13 +9,16 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.tga.Controller.AgentController;
 import com.tga.Controller.ProgramController;
 import com.tga.Controller.SimpleCallback;
+import com.tga.Controller.SimpleSession;
 import com.tga.Controller.TouristController;
 import com.tga.R;
 import com.tga.adapter.DiscountsAdapter;
@@ -46,46 +49,47 @@ public class MyPrograms extends AppCompatActivity {
         arrayList = new ArrayList<>();
 
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        if (SimpleSession.isNull()){
+            Toast.makeText(getApplicationContext(), "Session Expired", Toast.LENGTH_LONG).show();
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(this, Login.class));
+            finish();
+        }
+        SimpleSession session = SimpleSession.getInstance();
 
-        TouristController.getByID(new SimpleCallback<TouristController>() {
+        if (session.getUserRole() == SimpleSession.TOURIST_ROLE){
+            prepareAdapterList(((TouristController) session.getUserObj()).getMyPrograms());
+        } else {
+            prepareAdapterList(((AgentController) session.getUserObj()).getMyPrograms());
+        }
+
+        fabAddProgram.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void callback(TouristController data) {
-                if (data == null){
-                    System.out.println("tc is null");
-                    onBackPressed();
-                    Toast.makeText(getApplicationContext(), "Tourist not found", Toast.LENGTH_LONG).show();
-                    return;
-                } else {
-                    ArrayList<String> array = data.getMyPrograms();
-                    for (int i = 0; i < array.size(); i++){
-                        ProgramController.getByID(new SimpleCallback<ProgramController>() {
-                            @Override
-                            public void callback(ProgramController pc) {
-                                if (pc != null){
-                                    arrayList.add(pc);
-                                }
-                            }
-                        }, array.get(i));
-                    }
-
-                    mAdapter = new RecycleAdapter_Home(getApplicationContext(),arrayList, "MyPrograms");
-
-                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-                    recyclerView.setLayoutManager(mLayoutManager);
-                    recyclerView.setItemAnimator(new DefaultItemAnimator());
-                    recyclerView.setAdapter(mAdapter);
-
-                    fabAddProgram.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent intent = new Intent(getApplicationContext(),AddProgram.class);
-                            startActivity(intent);
-                        }
-                    });
-                }
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),AddProgram.class);
+                startActivity(intent);
             }
-        }, userID);
+        });
 
+    }
+
+    private void prepareAdapterList(ArrayList<String> array) {
+        for (int i = 0; i < array.size(); i++){
+            ProgramController.getByID(new SimpleCallback<ProgramController>() {
+                @Override
+                public void callback(ProgramController pc) {
+                    if (pc != null){
+                        arrayList.add(pc);
+                    }
+                }
+            }, array.get(i));
+        }
+        mAdapter = new RecycleAdapter_Home(getApplicationContext(),arrayList, "MyPrograms");
+
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
     }
 
     @Override

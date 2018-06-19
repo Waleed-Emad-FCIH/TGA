@@ -260,10 +260,14 @@ public class TouristController extends UserController implements DB_Interface {
     }
 
     public ArrayList<String> getMyPlans() {
+        if (touristModel.myPlansID == null)
+            touristModel.myPlansID = new ArrayList<>();
         return touristModel.myPlansID;
     }
 
     public ArrayList<String> getMyPrograms() {
+        if (touristModel.myProgramsID == null)
+            touristModel.myProgramsID = new ArrayList<>();
         return touristModel.myProgramsID;
     }
 
@@ -356,6 +360,8 @@ public class TouristController extends UserController implements DB_Interface {
 
     public void addProgram(String programID)
     {
+        if (touristModel.myProgramsID == null)
+            touristModel.myProgramsID = new ArrayList<>();
         touristModel.myProgramsID.add(programID);
         updateToDB();
     }
@@ -395,7 +401,8 @@ public class TouristController extends UserController implements DB_Interface {
     }
 
     public void delProgram(String programID) {
-
+        if (touristModel.myProgramsID == null)
+            touristModel.myProgramsID = new ArrayList<>();
         touristModel.myProgramsID.remove(programID);
         updateToDB();
     }

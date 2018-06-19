@@ -11,16 +11,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.tga.Activity.Community;
 import com.tga.Activity.Community2;
 import com.tga.Activity.EditProfile;
 import com.tga.Activity.History;
 import com.tga.Activity.MyMessage;
+import com.tga.Activity.Reports;
 import com.tga.Controller.SimpleCallback;
 import com.tga.Controller.TouristController;
 import com.tga.R;
@@ -32,10 +35,11 @@ import java.util.List;
 
 
 public class Profile extends Fragment {
+    String s ;
 
     private TextView txtEditProfile,txtHistory;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    private TextView txtFullName,txtNationality,txtPhone,txtEmail,com,myMessages;
+    private TextView txtFullName,txtNationality,txtPhone,txtEmail,com,myMessages,showReports;
     private ImageView imgProfile;
     private String picProfile="";
 
@@ -60,11 +64,45 @@ public class Profile extends Fragment {
         txtEditProfile = (TextView)v.findViewById(R.id.txtEditProfile);
         txtHistory = (TextView)v.findViewById(R.id.txtHistory);
         myMessages = (TextView) v.findViewById(R.id.myMessagesBtn);
+        showReports=(TextView) v.findViewById(R.id.showReports);
+        showReports.setVisibility(v.INVISIBLE);
+        showReports.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+Intent Reports_intent= new Intent(getContext(),Reports.class);
+startActivity(Reports_intent);
+            }
+        });
+        FirebaseDatabase.getInstance().getReference().child("Agents").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild(FirebaseAuth.getInstance().getUid()))
+                {
+                    s="tourists";
+                    showReports.setVisibility(v.VISIBLE);
+
+                }
+                else
+                {
+                    s="Agents";
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         myMessages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(new Intent(getContext(),MyMessage.class));
+                intent.putExtra("key",s);
                 startActivity(intent);
+
+
             }
         });
 

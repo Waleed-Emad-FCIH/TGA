@@ -399,7 +399,7 @@
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Minimum No."
+                    android:text="Maximum No."
                     android:textSize="12dp"
                     android:textColor="@color/bb_inActiveBottomBarItemColor" />
 
