@@ -99,7 +99,7 @@ public class Financial extends AppCompatActivity {
                                 public void onDataChange(DataSnapshot dataSnapshot) {
 
                                     Registered.add(dataSnapshot.child(item.getValue().toString()).child("name").getValue().toString());
-                                
+
                                 }
 
                                 @Override

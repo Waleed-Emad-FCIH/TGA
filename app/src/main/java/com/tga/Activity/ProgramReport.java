@@ -39,7 +39,12 @@ public class ProgramReport extends AppCompatActivity {
         getReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (ProgramModel PM :Programs)
+                if(Programs.isEmpty())
+                    content.setText("You never added any program yet");
+                else{
+                    content.setText("Program Report ");
+
+                    for (ProgramModel PM :Programs)
                 {
                     if(PM.registeredTouristsID!=null) {
                         if(PM.discountID.equals("")) PM.discountID="No discount";
@@ -48,6 +53,7 @@ public class ProgramReport extends AppCompatActivity {
                                 +"\n benefit : " + PM.registeredTouristsID.size()*PM.price +"\n===============================");
 
                     }
+                }
                 }
 
             }
