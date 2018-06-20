@@ -81,21 +81,21 @@ public class PlanDetalis extends AppCompatActivity  {
                 }
             }
         } , userId);
-
-        if(!userId.equals(planCreatorID))
-        {
-         imgDelPlan.setVisibility(View.GONE);
-        }
         imgDelPlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 PlanController pc = new PlanController(planID , null , null , null , null
-                ,null , null);
+                        ,null , null);
                 pc.delFromDB();
                 Toast.makeText(getApplicationContext() , "Plan deleted " , Toast.LENGTH_LONG).show();
                 onBackPressed();
             }
         });
+        if(!userId.equals(planCreatorID))
+        {
+         imgDelPlan.setVisibility(View.GONE);
+        }
+
         choosePlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
