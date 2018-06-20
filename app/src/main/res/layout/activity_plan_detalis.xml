@@ -57,20 +57,29 @@
         android:layout_width="match_parent"
         android:layout_height="20pt"
         android:text="choose this plane"
-        android:visibility="visible"/>
+        android:background="@color/colorPrimaryDark"
+        android:textColor="#fff"
+        android:visibility="visible"
+        android:layout_margin="10dp"/>
 
     <Button
         android:id="@+id/removePlanbrn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="remove this plan"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="#fff"
+        android:layout_margin="10dp"/>
     <Button
         android:id="@+id/submitChoosingPlan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="submit"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="#fff"
+        android:layout_margin="10dp"/>
 
 
     <LinearLayout
@@ -122,7 +131,9 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/plan_places"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
 
     </android.support.v7.widget.RecyclerView>
 

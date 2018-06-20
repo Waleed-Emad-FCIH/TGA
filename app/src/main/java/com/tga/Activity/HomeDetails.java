@@ -26,7 +26,7 @@ import java.util.ArrayList;
 public class HomeDetails extends AppCompatActivity  {
 
     private TextView agent, title, desc, reviews, bookNow, favor;
-    private ImageView imgBack,imgSendMsg;
+    private ImageView imgBack,imgSendMsg, imgFav;
     private ImageView imgProgramEdit, imgProgramDel, imgAddDiscount;
     private LinearLayout llFavor;
     private String Agent_id;
@@ -59,6 +59,7 @@ public class HomeDetails extends AppCompatActivity  {
         imgProgramEdit = (ImageView)findViewById(R.id.imgProgramEdit);
         imgProgramDel = (ImageView)findViewById(R.id.imgProgramDelete);
         imgSendMsg = (ImageView)findViewById(R.id.imgSendMsg);
+        imgFav = (ImageView)findViewById(R.id.imgFav);
         llFavor = (LinearLayout) findViewById(R.id.llFavor);
         imgAddDiscount = (ImageView)findViewById(R.id.imgAddDiscount);
 
@@ -146,7 +147,7 @@ public class HomeDetails extends AppCompatActivity  {
                                 if (session.getUserRole() == SimpleSession.TOURIST_ROLE){
                                     TouristController tc = (TouristController) session.getUserObj();
                                     if (tc.getMyFavouritPrograms().contains(pc.getId())){
-                                        llFavor.setBackgroundResource(R.drawable.round);
+                                        imgFav.setImageResource(R.drawable.heart);
                                         favor.setText("Remove from Favourites");
                                     }
                                     llFavor.setOnClickListener(new View.OnClickListener() {
@@ -155,10 +156,10 @@ public class HomeDetails extends AppCompatActivity  {
                                             if (favor.getText().equals("Remove from Favourites")){
                                                 tc.unFavouriteProgram(pc.getId());
                                                 favor.setText("Add to Favourites");
-                                                llFavor.setBackgroundResource(R.color.cardview_light_background);
+                                                imgFav.setImageResource(R.drawable.ic_favorite_black_24dp);
                                             } else {
                                                 tc.favouriteProgram(pc.getId());
-                                                llFavor.setBackgroundResource(R.drawable.round);
+                                                imgFav.setImageResource(R.drawable.heart);
                                                 favor.setText("Remove from Favourites");
                                             }
                                         }
