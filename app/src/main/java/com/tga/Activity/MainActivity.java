@@ -296,13 +296,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadNavHeader() {
 
-        SimpleSession session = SimpleSession.getInstance();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                SimpleSession session = SimpleSession.getInstance();
                 txtUserName.setText(((UserController) session.getUserObj()).getName());
             }
-        }, 2000);
+        }, 5000);
     }
 
     private Fragment getHomeFragment() {
