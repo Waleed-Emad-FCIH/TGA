@@ -13,7 +13,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.tga.Controller.PostController;
 import com.tga.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class EditComment extends AppCompatActivity {
     private TextView txtDone,btndel;
@@ -36,7 +38,9 @@ public class EditComment extends AppCompatActivity {
                 postContent=getIntent().getStringExtra("postID");
                 if (!TextUtils.isEmpty(txtPostContent.getText().toString().trim()))
                     if (txtPostContent.getText().toString().trim().length() > 1) {
-                        PostController pc  = new PostController(null ,null , System.currentTimeMillis(),
+                        String timeStamp = new SimpleDateFormat("dd/MM/yy").format(Calendar.getInstance().getTime());
+
+                        PostController pc  = new PostController(null ,null , timeStamp,
                                 null , new ArrayList<String>() ,0,null );
                         PostController.Comment c = pc.new Comment(postID,txtPostContent.getText().toString()
                                 , System.currentTimeMillis() , user.getUid() ,postContent);

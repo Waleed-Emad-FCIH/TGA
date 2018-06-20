@@ -10,7 +10,8 @@ import java.util.Date;
 public class PostModel {
     public String id;
     public String content;
-    public long date;
+    public String date;
+    public String img;
     public String userId;
     public ArrayList<String> commentsID;
     public int likes;

@@ -23,7 +23,9 @@ import com.tga.R;
 import com.tga.adapter.PostAdapter;
 import com.tga.models.PostModel;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class Community2 extends AppCompatActivity {
 
@@ -43,12 +45,13 @@ public class Community2 extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2C3646")));
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_posts);
-        layoutPost = (LinearLayout) findViewById(R.id.layoutPost);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         user = FirebaseAuth.getInstance().getCurrentUser();
-        posts= new PostController(null,null, System.currentTimeMillis()
+        String timeStamp = new SimpleDateFormat("dd/MM/yy").format(Calendar.getInstance().getTime());
+
+        posts= new PostController(null,null, timeStamp
                 ,user.getUid(),null,0,null);
         posts.listAll(new SimpleCallback<ArrayList<PostModel>>() {
             @Override
