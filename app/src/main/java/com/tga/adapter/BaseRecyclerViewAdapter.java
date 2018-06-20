@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.tga.model.place;
+import com.tga.models.place;
 
 import java.util.ArrayList;
 import java.util.Collection;

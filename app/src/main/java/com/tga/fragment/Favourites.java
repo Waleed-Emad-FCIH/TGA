@@ -18,19 +18,12 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.tga.R;
-import com.tga.Response.RequestInterface;
 import com.tga.adapter.ThingsToDoAdpater;
-import com.tga.model.place;
+import com.tga.models.place;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 
 /**
  * A simple {@link Fragment} subclass.

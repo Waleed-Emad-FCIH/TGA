@@ -8,15 +8,15 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import com.tga.R;
 import com.tga.Response.PlaceResponse;
 import com.tga.Response.RequestInterface;
-import com.tga.adapter.PlacesAdapter;
 import com.tga.adapter.ThingsToDoLoad;
-import com.tga.model.place;
+import com.tga.models.place;
 import com.tga.util.EndlessRecyclerViewScrollListener;
 
 import java.util.ArrayList;
@@ -45,6 +45,8 @@ public class Places_Filter extends AppCompatActivity implements ThingsToDoLoad.I
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_places__filter);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Filtered");
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2C3646")));
         type = getIntent().getStringExtra("type");
         type="Hotels";
         getSupportActionBar().setTitle(type);
@@ -142,4 +144,21 @@ public class Places_Filter extends AppCompatActivity implements ThingsToDoLoad.I
     public void onItemClick(View view, int position) {
 
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == android.R.id.home) {
+            // finish the activity
+            onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
 }

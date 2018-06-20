@@ -38,19 +38,17 @@ import com.tga.Response.PlaceDetailsResponse;
 
 import com.tga.Response.RequestInterface;
 import com.tga.adapter.ReviewsAdapter;
-import com.tga.adapter.ThingsToDoAdpater;
-import com.tga.model.geometry;
-import com.tga.model.photos;
-import com.tga.model.place;
-import com.tga.model.placeDetailsModel;
-import com.tga.model.reviews;
+import com.tga.models.geometry;
+import com.tga.models.photos;
+import com.tga.models.place;
+import com.tga.models.placeDetailsModel;
+import com.tga.models.reviews;
 import com.tga.util.SliderLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -339,7 +337,7 @@ public class PlaceDetails extends AppCompatActivity implements BaseSliderView.On
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setNestedScrollingEnabled(false);
 
-        mAdapter = new ReviewsAdapter((ArrayList<com.tga.model.reviews>) reviews,getApplication());
+        mAdapter = new ReviewsAdapter((ArrayList<com.tga.models.reviews>) reviews,getApplication());
         recyclerView.setAdapter(mAdapter);
 
         imgMap.setOnClickListener(new View.OnClickListener() {

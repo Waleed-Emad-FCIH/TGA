@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.tga.R;
-import com.tga.model.Search;
+import com.tga.models.Search;
 
 import java.util.List;
 

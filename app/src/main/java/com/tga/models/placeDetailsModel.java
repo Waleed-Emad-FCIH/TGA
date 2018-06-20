@@ -1,4 +1,4 @@
-package com.tga.model;
+package com.tga.models;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ public class placeDetailsModel {
     private float rating;
     private List<photos> photos;
     private List<reviews> reviews;
-    private com.tga.model.geometry geometry;
+    private com.tga.models.geometry geometry;
     private opening_hours opening_hours;
     private String international_phone_number;
     private String website;
@@ -19,7 +19,7 @@ public class placeDetailsModel {
     public placeDetailsModel() {
     }
 
-    public placeDetailsModel(String name, String place_id, float rating, List<com.tga.model.photos> photos, List<com.tga.model.reviews> reviews, com.tga.model.geometry geometry, placeDetailsModel.opening_hours opening_hours, String international_phone_number, String website) {
+    public placeDetailsModel(String name, String place_id, float rating, List<com.tga.models.photos> photos, List<com.tga.models.reviews> reviews, com.tga.models.geometry geometry, placeDetailsModel.opening_hours opening_hours, String international_phone_number, String website) {
         this.name = name;
         this.place_id = place_id;
         this.rating = rating;
@@ -71,27 +71,27 @@ public class placeDetailsModel {
         this.rating = rating;
     }
 
-    public List<com.tga.model.photos> getPhotos() {
+    public List<com.tga.models.photos> getPhotos() {
         return photos;
     }
 
-    public void setPhotos(List<com.tga.model.photos> photos) {
+    public void setPhotos(List<com.tga.models.photos> photos) {
         this.photos = photos;
     }
 
-    public List<com.tga.model.reviews> getReviews() {
+    public List<com.tga.models.reviews> getReviews() {
         return reviews;
     }
 
-    public void setReviews(List<com.tga.model.reviews> reviews) {
+    public void setReviews(List<com.tga.models.reviews> reviews) {
         this.reviews = reviews;
     }
 
-    public com.tga.model.geometry getGeometry() {
+    public com.tga.models.geometry getGeometry() {
         return geometry;
     }
 
-    public void setGeometry(com.tga.model.geometry geometry) {
+    public void setGeometry(com.tga.models.geometry geometry) {
         this.geometry = geometry;
     }
 

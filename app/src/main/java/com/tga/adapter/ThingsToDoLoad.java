@@ -1,6 +1,5 @@
 package com.tga.adapter;
 
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -13,8 +12,8 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.tga.Activity.PlaceDetails;
 import com.tga.R;
-import com.tga.model.photos;
-import com.tga.model.place;
+import com.tga.models.photos;
+import com.tga.models.place;
 
 import java.util.List;
 

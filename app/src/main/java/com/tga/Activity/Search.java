@@ -6,8 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -27,7 +25,7 @@ import com.tga.R;
 import com.tga.Response.PlaceDetailsResponse;
 import com.tga.Response.RequestInterface;
 import com.tga.adapter.SearchAdapter;
-import com.tga.model.placeDetailsModel;
+import com.tga.models.placeDetailsModel;
 import java.util.ArrayList;
 import java.util.Arrays;
 import retrofit2.Call;
@@ -39,7 +37,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Search extends AppCompatActivity {
 
     private int image[]= {R.drawable.reservation,R.drawable.things_to_do,R.drawable.food,R.drawable.discounts,R.drawable.get_around,R.drawable.need_to_know};
-    private ArrayList<com.tga.model.Search> ArrayList;
+    private ArrayList<com.tga.models.Search> ArrayList;
     private RecyclerView recyclerView;
     private SearchAdapter mAdapter;
     private String id="";
@@ -104,7 +102,7 @@ public class Search extends AppCompatActivity {
 
 
         for (int i = 0; i < image.length; i++) {
-            com.tga.model.Search beanClassForRecyclerView_contacts = new com.tga.model.Search(image[i]);
+            com.tga.models.Search beanClassForRecyclerView_contacts = new com.tga.models.Search(image[i]);
 
             ArrayList.add(beanClassForRecyclerView_contacts);
         }
