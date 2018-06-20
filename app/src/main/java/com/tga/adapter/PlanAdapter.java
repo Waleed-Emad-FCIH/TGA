@@ -279,6 +279,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.MyViewHolder> 
                 Intent i = new Intent(context, PlanDetalis.class);
                 i.putExtra("placesIds" , plan.getPlacesID());
                 i.putExtra("planId" , plan.id);
+                i.putExtra("planCreatorId" , plan.id);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
             }
