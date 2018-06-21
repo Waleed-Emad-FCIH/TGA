@@ -22,6 +22,7 @@ import com.tga.Controller.SimpleCallback;
 import com.tga.Controller.SimpleSession;
 import com.tga.Controller.TouristController;
 import com.tga.R;
+import com.tga.adapter.PlacesAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,13 +32,13 @@ import java.util.Locale;
 public class AddProgram extends AppCompatActivity {
 
 
-    private ImageView imgAddPlaces;
     private EditText imgProgramStart,imgProgramEnd, txtTitle, txtDescription, txtHotelName;
     private EditText txtPrice, txtMinNo, txtMaxNo;
     private LinearLayout llPrice, llMinNo, llMaxNo;
     private int mYear,mMonth,mDay;
     private Button btnAddProgram;
     private String userID;
+    ArrayList<String> placesIds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,6 @@ public class AddProgram extends AppCompatActivity {
         getSupportActionBar().setTitle("Add Program");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2C3646")));
 
-        imgAddPlaces = (ImageView)findViewById(R.id.imgAddPlaces);
         imgProgramStart = (EditText)findViewById(R.id.imgProgramStart);
         imgProgramEnd =(EditText)findViewById(R.id.imgProgramEnd);
         btnAddProgram = (Button) findViewById(R.id.btnAddProgram);
@@ -60,6 +60,12 @@ public class AddProgram extends AppCompatActivity {
         llPrice = (LinearLayout) findViewById(R.id.llPrice);
         llMinNo = (LinearLayout) findViewById(R.id.llMinNo);
         llMaxNo = (LinearLayout) findViewById(R.id.llMaxNo);
+
+        try{
+            placesIds = (ArrayList<String>) getIntent().getExtras().get("placesId");
+        } catch (Exception e){
+            System.out.println("ERROR INTENT ADD_PROG");
+        }
 
         if (SimpleSession.isNull()){
             Toast.makeText(getApplicationContext(), "Session ended", Toast.LENGTH_LONG).show();
@@ -135,12 +141,12 @@ public class AddProgram extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                if (!checkText()) {
-                    final ProgramController pc = new ProgramController(txtTitle.getText().toString(), new ArrayList<String>(), txtDescription.getText().toString(),
+                if (!checkText() && placesIds != null) {
+                    final ProgramController pc = new ProgramController(txtTitle.getText().toString(), placesIds, txtDescription.getText().toString(),
                             imgProgramStart.getText().toString(), imgProgramEnd.getText().toString(),
                             txtHotelName.getText().toString(), userID);
                     if (session.getUserRole() == SimpleSession.AGENT_ROLE){
-                        if (checkAgentText()) {
+                        if (!checkAgentText()) {
                             try {
                                 pc.setPrice(Double.valueOf(txtPrice.getText().toString()));
                             } catch (Exception e) {
@@ -168,9 +174,13 @@ public class AddProgram extends AppCompatActivity {
                     }
 
                     Toast.makeText(getApplicationContext(), "Successfully added", Toast.LENGTH_SHORT).show();
-                    onBackPressed();
-                } else
-                    Toast.makeText(getApplicationContext(), "All fields are required", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(getApplicationContext(), MyPrograms.class));
+                } else {
+                    if (placesIds == null)
+                        Toast.makeText(getApplicationContext(), "Places not found", Toast.LENGTH_LONG).show();
+                    else
+                        Toast.makeText(getApplicationContext(), "All fields are required", Toast.LENGTH_LONG).show();
+                }
             }
         });
 

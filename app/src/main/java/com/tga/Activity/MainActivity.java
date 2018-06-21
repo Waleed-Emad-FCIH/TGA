@@ -236,6 +236,7 @@ public class MainActivity extends AppCompatActivity {
                     SimpleSession session = SimpleSession.getInstance();
                     session.setUserObj(tc);
                     session.setUserRole(SimpleSession.TOURIST_ROLE);
+                    txtUserName.setText(tc.getName());
                 }
             }
         }, uid);
@@ -246,6 +247,7 @@ public class MainActivity extends AppCompatActivity {
                     SimpleSession session = SimpleSession.getInstance();
                     session.setUserObj(ac);
                     session.setUserRole(SimpleSession.AGENT_ROLE);
+                    txtUserName.setText(ac.getName());
                 }
             }
         }, uid);
@@ -296,13 +298,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadNavHeader() {
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                SimpleSession session = SimpleSession.getInstance();
-                txtUserName.setText(((UserController) session.getUserObj()).getName());
-            }
-        }, 5000);
+        txtUserName.setText("Welcome");
     }
 
     private Fragment getHomeFragment() {

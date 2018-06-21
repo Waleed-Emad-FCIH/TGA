@@ -112,6 +112,12 @@ public class Plans extends AppCompatActivity implements DialogChooser.dialoug_in
         rtPlace =(RatingBar) findViewById(R.id.rtPlace);
         item_search =(CardView) findViewById(R.id.item_search);
 
+        String s = null;
+        try {
+            s = getIntent().getStringExtra("ACTIVITY");
+        } catch (Exception e){
+            System.out.println("ERROR INTENT EXTRA");
+        }
 
         ArrayList = new ArrayList<>();
         retrofit= new Retrofit.Builder()
@@ -147,12 +153,17 @@ public class Plans extends AppCompatActivity implements DialogChooser.dialoug_in
 
 
         submit = (Button) findViewById(R.id.submit);
+        String finalS = s;
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(mAdapter.checkedPlacesIds.size()>=3)
                 {
-                    Intent intent  = new Intent(getApplicationContext(), AddPlan.class);
+                    Intent intent;
+                    if (finalS == null)
+                        intent  = new Intent(getApplicationContext(), AddPlan.class);
+                    else
+                        intent  = new Intent(getApplicationContext(), AddProgram.class);
                     intent.putExtra("placesId", mAdapter.checkedPlacesIds);
                     startActivity(intent);
                 }

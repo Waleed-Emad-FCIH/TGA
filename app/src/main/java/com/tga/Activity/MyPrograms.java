@@ -34,7 +34,6 @@ public class MyPrograms extends AppCompatActivity {
     private ArrayList<ProgramController> arrayList;
     private FloatingActionButton fabAddProgram;
     private String userID;
-    private Semaphore semaphore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +65,9 @@ public class MyPrograms extends AppCompatActivity {
         fabAddProgram.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),AddProgram.class);
-                startActivity(intent);
+                Intent i = new Intent(getApplicationContext(), Plans.class);
+                i.putExtra("ACTIVITY", "ADD_PROG");
+                startActivity(i);
             }
         });
 

@@ -30,7 +30,7 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:padding="16dp"
-
+                android:visibility="gone"
                 >
 
 

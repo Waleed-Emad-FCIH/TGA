@@ -30,15 +30,21 @@ import java.util.List;
 
 public class PlacesAdapter  extends RecyclerView.Adapter<PlacesAdapter.MyViewHolder> {
     private static final int TYPE_ITEM = 1;
-    public   ArrayList<String> checkedPlacesIds = new ArrayList<>();
+    public   ArrayList<String> checkedPlacesIds;
     String cuurentPlaceItemId ;
     Context context;
     List<place> placeModels;
 
     public PlacesAdapter(Context mainActivityContacts, List<place> placeModels,ArrayList<String> checkedPlacesIds) {
-        this.placeModels = placeModels;
         this.context = mainActivityContacts;
-        this.checkedPlacesIds = checkedPlacesIds;
+        if (placeModels == null)
+            this.placeModels = new ArrayList<>();
+        else
+            this.placeModels = placeModels;
+        if (this.checkedPlacesIds == null)
+            this.checkedPlacesIds = new ArrayList<>();
+        else
+            this.checkedPlacesIds = checkedPlacesIds;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

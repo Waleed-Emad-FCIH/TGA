@@ -2,7 +2,10 @@ package com.tga.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +15,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.location.places.GeoDataClient;
+import com.google.android.gms.location.places.PlacePhotoMetadata;
+import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
+import com.google.android.gms.location.places.PlacePhotoMetadataResponse;
+import com.google.android.gms.location.places.PlacePhotoResponse;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.tga.Activity.DiscountDetails;
 import com.tga.Controller.AgentController;
 import com.tga.Controller.ProgramController;
@@ -28,7 +39,7 @@ public class DiscountsAdapter extends RecyclerView.Adapter<DiscountsAdapter.MyVi
 
     private Context context;
     private List<ProgramController> progControls;
-
+    GeoDataClient geoDataClient;
 
 
 
@@ -73,7 +84,66 @@ public class DiscountsAdapter extends RecyclerView.Adapter<DiscountsAdapter.MyVi
     public void onBindViewHolder(final DiscountsAdapter.MyViewHolder holder, final int position) {
 
         final ProgramController progControl = progControls.get(position);
-        //holder.imgDisc.setImageResource(progControl.getOfferImg()); //TODO: places photos
+        try {
+            final int[] x = {0};
+            Handler handler = new Handler();
+            final Runnable[] refreshPhoto = new Runnable[1];
+            refreshPhoto[0] = new Runnable() {
+                @Override
+                public void run() {
+                    geoDataClient = Places.getGeoDataClient(context, null);
+                    geoDataClient.getPlacePhotos(progControl.getPlacesID().get(x[0]++ % progControl.getPlacesID().size())).addOnCompleteListener(new OnCompleteListener<PlacePhotoMetadataResponse>() {
+                        @Override
+                        public void onComplete(@NonNull Task<PlacePhotoMetadataResponse> task) {
+                            // Get the list of photos.
+                            PlacePhotoMetadataResponse photos = task.getResult();
+                            // Get the PlacePhotoMetadataBuffer (metadata for all of the photos).
+                            PlacePhotoMetadataBuffer photoMetadataBuffer = photos.getPhotoMetadata();
+                            // Get the first photo in the list.
+                            try {
+
+                                PlacePhotoMetadata photoMetadata = photoMetadataBuffer.get(0);
+                                // Get the attribution text.
+                                CharSequence attribution = photoMetadata.getAttributions();
+                                // Get a full-size bitmap for the photo.
+                                try {
+                                    Task<PlacePhotoResponse> photoResponse = geoDataClient.getPhoto(photoMetadata);
+                                    photoResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoResponse>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<PlacePhotoResponse> task) {
+                                            try {
+                                                PlacePhotoResponse photo = task.getResult();
+                                                Bitmap bitmap = photo.getBitmap();
+                                                holder.imgDisc.setImageBitmap(bitmap);
+                                            }
+                                            catch (Exception e)
+                                            {
+                                                System.out.println("bitmap");
+                                            }
+                                            // Log.v("helllo??/>" , photoi[0].toString());
+                                        }
+
+                                    });
+                                } catch (Exception e) {
+                                    System.out.println("Task");
+                                } finally {
+                                    photoMetadataBuffer.release();
+                                }
+                            } catch (Exception e) {
+                                System.out.println("PhotoMetaData");
+                            }
+                        }
+                    });
+                    handler.postDelayed(refreshPhoto[0], 5000);
+                }
+            };
+            if (progControl.getPlacesID().size() > 0)
+                handler.post(refreshPhoto[0]);
+        }
+        catch (Exception e)
+        {
+
+        }
         AgentController.getByID(new SimpleCallback<AgentController>() {
             @Override
             public void callback(AgentController data) {
