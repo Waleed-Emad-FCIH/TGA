@@ -167,6 +167,12 @@
         <activity android:name=".Activity.MyMessage" />
         <activity android:name=".Activity.RequestAgent" />
         <activity android:name=".Activity.ShowMyPlans"></activity>
+        <activity android:name=".Activity.Reports"></activity>
+        <activity android:name=".Activity.ProgramReport"></activity>
+        <activity android:name=".Activity.Financial"></activity>
+
+
+
     </application>
 
 </manifest>
