@@ -1,6 +1,6 @@
 package com.tga.Response;
 
-import com.tga.model.place;
+import com.tga.models.place;
 
 /**
  * Created by Mada on 4/29/2018.

@@ -80,11 +80,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Activity.SearchResults"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".Activity.PlanDetalis"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
@@ -110,10 +105,6 @@
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activity.ReservationsFilter"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".Activity.Discounts"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
@@ -130,11 +121,7 @@
         <activity android:name=".Activity.AllPlaces" />
         <activity android:name=".Activity.EditProgram" />
         <activity android:name=".Activity.AddPlace" />
-        <activity android:name=".Activity.EditPlace" />
         <activity android:name=".Activity.AddPlan" />
-        <activity android:name=".Activity.EditPlan" />
-        <activity android:name=".Activity.Community" />
-        <activity android:name=".Activity.Comments" />
         <activity
             android:name=".Activity.DiscountDetails"
             android:configChanges="keyboardHidden|orientation"
@@ -142,17 +129,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activity.AddDiscounts" />
         <activity android:name=".Activity.EditDiscount" />
-        <activity
-            android:name=".Activity.ReservationsDetails"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activity.FoodType" />
-        <activity
-            android:name=".Activity.FoodDetails"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activity.EditProfile" />
         <activity android:name=".Activity.History" />
         <activity
@@ -174,6 +151,12 @@
         <activity android:name=".Activity.MyMessage" />
         <activity android:name=".Activity.RequestAgent" />
         <activity android:name=".Activity.ShowMyPlans"></activity>
+        <activity android:name=".Activity.Reports"></activity>
+        <activity android:name=".Activity.ProgramReport"></activity>
+        <activity android:name=".Activity.Financial"></activity>
+
+
+
     </application>
 
 </manifest>

@@ -12,23 +12,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.tga.Activity.AddPost2;
-import com.tga.Activity.Comments;
 import com.tga.Activity.EditComment;
-import com.tga.Activity.PostDetails;
 import com.tga.Controller.PostController;
 import com.tga.R;
 import com.tga.models.CommentModel;
-import com.tga.models.PostModel;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 public class commentAdapter  extends RecyclerView.Adapter<commentAdapter.MyViewHolder>{
     public List<CommentModel>commentList;
@@ -58,8 +54,9 @@ public class commentAdapter  extends RecyclerView.Adapter<commentAdapter.MyViewH
         holder.content.setText(comment.content);
         holder.postTime.setText(String.valueOf(comment.date));
         user = FirebaseAuth.getInstance().getCurrentUser();
+        String timeStamp = new SimpleDateFormat("dd/MM/yy").format(Calendar.getInstance().getTime());
 
-        final PostController pc  = new PostController(null , null , System.currentTimeMillis(),
+        final PostController pc  = new PostController(null , null , timeStamp,
                 null , new ArrayList<String>() ,0,null );
         final PostController.Comment c = pc.new Comment(comment.id, holder.content.getText().toString()
                 , System.currentTimeMillis() ,

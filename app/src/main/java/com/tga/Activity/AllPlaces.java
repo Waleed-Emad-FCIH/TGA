@@ -10,14 +10,13 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.tga.R;
 import com.tga.Response.PlaceResponse;
 import com.tga.Response.RequestInterface;
 import com.tga.adapter.ThingsToDoLoad;
-import com.tga.model.place;
+import com.tga.models.place;
 import com.tga.util.EndlessRecyclerViewScrollListener;
 
 import java.util.ArrayList;
@@ -43,7 +42,6 @@ private java.util.ArrayList<place> ArrayList;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_places);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("All Places");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2C3646")));

@@ -26,7 +26,6 @@ import com.tga.Activity.HomeDetails;
 import com.tga.Activity.ProgDetails;
 import com.tga.Controller.ProgramController;
 import com.tga.R;
-import com.tga.model.Offers;
 
 import java.util.List;
 

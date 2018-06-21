@@ -1,4 +1,4 @@
-package com.tga.model;
+package com.tga.models;
 
 import java.util.List;
 
@@ -67,11 +67,11 @@ public class place {
         this.rating = rating;
     }
 
-    public List<com.tga.model.photos> getPhotos() {
+    public List<com.tga.models.photos> getPhotos() {
         return photos;
     }
 
-    public void setPhotos(List<com.tga.model.photos> photos) {
+    public void setPhotos(List<com.tga.models.photos> photos) {
         this.photos = photos;
     }
 

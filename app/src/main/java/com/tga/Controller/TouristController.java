@@ -337,8 +337,10 @@ public class TouristController extends UserController implements DB_Interface {
                     planController.getById(new SimpleCallback<PlanModel>() {
                         @Override
                         public void callback(PlanModel pdata) {
-
-                        planModels.add(pdata);
+                        if(pdata.creatorId!= null)
+                        {
+                            planModels.add(pdata);
+                        }
                         if(finalI == touristModel.myPlansID.size()-1)
                         {
                             Chocallback.callback(planModels);

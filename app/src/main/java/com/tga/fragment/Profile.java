@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,11 +13,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
-import com.tga.Activity.Community;
 import com.tga.Activity.Community2;
 import com.tga.Activity.EditProfile;
 import com.tga.Activity.History;
@@ -28,10 +24,6 @@ import com.tga.Controller.SimpleCallback;
 import com.tga.Controller.TouristController;
 import com.tga.R;
 import com.tga.util.CircleTransform;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 
 public class Profile extends Fragment {

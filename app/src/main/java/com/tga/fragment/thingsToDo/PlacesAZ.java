@@ -1,7 +1,5 @@
 package com.tga.fragment.thingsToDo;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -16,12 +14,8 @@ import android.widget.Toast;
 import com.tga.R;
 import com.tga.Response.PlaceResponse;
 import com.tga.Response.RequestInterface;
-import com.tga.adapter.PlacesAdapter;
 import com.tga.adapter.ThingsToDoAdpater;
-import com.tga.adapter.ThingsToDoLoad;
-import com.tga.model.PlaceModel;
-import com.tga.model.place;
-import com.tga.util.EndlessRecyclerViewScrollListener;
+import com.tga.models.place;
 import com.tga.util.EndlessScrollListener;
 
 import java.util.ArrayList;

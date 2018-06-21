@@ -73,6 +73,10 @@ public class CustomAdapter extends BaseAdapter {
 
         if(chatMessage.getMessageUser().equals(SenderName))
         {
+            ln.setBackgroundColor(Color.parseColor("#2C3646"));
+            messageTxt.setTextColor(Color.WHITE);
+            messageTime.setTextColor(Color.WHITE);
+
             mDatabaseRefernce.child(SenderName).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -88,7 +92,8 @@ public class CustomAdapter extends BaseAdapter {
 
 
         }
-        else{
+        else if(chatMessage.getMessageUser().equals(ReceiverName))
+        {
             ln.setBackgroundColor(Color.alpha(R.drawable.rounded));
             messageTxt.setTextColor(Color.BLACK);
             messageTime.setTextColor(Color.BLACK);

@@ -1,4 +1,4 @@
-package com.tga.model;
+package com.tga.models;
 
 /**
  * Created by Mada on 2/8/2018.

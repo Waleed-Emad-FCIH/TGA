@@ -307,22 +307,25 @@
                     />
 
             </LinearLayout>
-<LinearLayout
+<RelativeLayout
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
 
     <TextView
         android:id="@+id/showReports"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/round"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+
         android:padding="8dp"
-android:layout_marginLeft="150dp"
         android:text="Show Reports"
         android:textColor="#fff"
 
         />
-</LinearLayout>
+</RelativeLayout>
         </LinearLayout>
     </ScrollView>
 

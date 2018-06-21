@@ -1,11 +1,14 @@
 package com.tga.Activity;
 
 import android.app.ProgressDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,6 +31,8 @@ import com.tga.models.ChatMessage;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -57,6 +62,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("Chating ...");
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2C3646")));
+
             setContentView(R.layout.activity_chat);
             user_id = getIntent().getStringExtra("user_id");
 
@@ -175,7 +184,9 @@ Toast.makeText(getApplicationContext(),"Message Sent successfully",Toast.LENGTH_
                                     c.setMessageText(myitem.child("message_text").getValue().toString());
                                     c.setMessageTime(myitem.child("message_time").getValue().toString());
                                     c.setMessageUser(myitem.child("message_sender").getValue().toString());
+
                                     ChatMessages.add(c);
+
                                 }
                             }
 
@@ -192,14 +203,35 @@ Toast.makeText(getApplicationContext(),"Message Sent successfully",Toast.LENGTH_
 
                 }
             });
+
+            Collections.sort(ChatMessages, new Comparator<ChatMessage>() {
+                public int compare(ChatMessage o1, ChatMessage  o2) {
+                    if (o1.getMessageTime() == null || o2.getMessageTime() == null)
+                        return 0;
+                    return o1.getMessageTime().compareTo(o2.getMessageTime());
+                }
+            });
+
             return ChatMessages;
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+
+            int id = item.getItemId();
+
+            //noinspection SimplifiableIfStatement
+            if (id == android.R.id.home) {
+                // finish the activity
+                onBackPressed();
+                return true;
+            }
+
+            return super.onOptionsItemSelected(item);
+        }
         }
 
 
 
-
-
-
-    }
 
 

@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,7 +32,9 @@ import com.tga.adapter.commentAdapter;
 import com.tga.models.CommentModel;
 import com.tga.models.PostModel;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class PostDetails extends AppCompatActivity {
     private PostController posts,obj;
@@ -109,7 +112,9 @@ public class PostDetails extends AppCompatActivity {
                 String value = getIntent().getStringExtra("ID");
                 if (!TextUtils.isEmpty(txtWritePost.getText().toString().trim()))
                     if (txtWritePost.getText().toString().trim().length() > 1) {
-                        PostController pc  = new PostController(value , null , System.currentTimeMillis(),
+                        String timeStamp = new SimpleDateFormat("dd/MM/yy").format(Calendar.getInstance().getTime());
+
+                        PostController pc  = new PostController(value , null , timeStamp,
                                 null , new ArrayList<String>() ,0,null );
                         PostController.Comment c = pc.new Comment(null,txtWritePost.getText().toString()
                                 , System.currentTimeMillis() ,
@@ -122,4 +127,20 @@ public class PostDetails extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == android.R.id.home) {
+            // finish the activity
+            onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }
