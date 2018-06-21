@@ -1,8 +1,12 @@
 package com.tga.Activity;
 
 import android.app.DatePickerDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -27,6 +31,9 @@ public class EditDiscount extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_discount);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Edit Discount");
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2C3646")));
 
         title = (EditText) findViewById(R.id.etxtDiscountTitle);
         desc = (EditText) findViewById(R.id.etxtDiscountDesc);
@@ -38,12 +45,17 @@ public class EditDiscount extends AppCompatActivity {
         ProgramController.getByID(new SimpleCallback<ProgramController>() {
             @Override
             public void callback(final ProgramController pc) {
-                title.setText(pc.getTitle());
-                title.setEnabled(false);
-                desc.setText(pc.getDescription());
-                desc.setEnabled(false);
-                percentage.setText(String.valueOf(pc.getDiscountPercentage() * 100));
-                endDate.setText(pc.getDiscountEndDate());
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        title.setText(pc.getTitle());
+                        title.setEnabled(false);
+                        desc.setText(pc.getDescription());
+                        desc.setEnabled(false);
+                        percentage.setText(String.valueOf(pc.getDiscountPercentage() * 100));
+                        endDate.setText(pc.getDiscountEndDate());
+                    }
+                }, 1000);
 
                 endDate.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -76,12 +88,13 @@ public class EditDiscount extends AppCompatActivity {
                 update.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (checkText() && Integer.parseInt(percentage.getText().toString()) >= 1
+                        if (!checkText() && Integer.parseInt(percentage.getText().toString()) >= 1
                                 && Integer.parseInt(percentage.getText().toString()) < 100) {
                             pc.updateDiscount(endDate.getText().toString(),
                                     Double.parseDouble(percentage.getText().toString()) / 100);
                             pc.updateToDB();
                             Toast.makeText(getApplicationContext(), "Discount updated", Toast.LENGTH_SHORT).show();
+                            onBackPressed();
                         }
                         else
                             Toast.makeText(getApplicationContext(), "Fill all fields", Toast.LENGTH_LONG).show();
@@ -93,5 +106,21 @@ public class EditDiscount extends AppCompatActivity {
 
     private boolean checkText(){
         return endDate.getText().toString().isEmpty() || percentage.getText().toString().isEmpty();
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == android.R.id.home) {
+            // finish the activity
+            onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

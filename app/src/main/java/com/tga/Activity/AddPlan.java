@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -28,7 +29,7 @@ public class AddPlan extends AppCompatActivity {
     private EditText edtTitle  , imgPlanEnd;
     private EditText edtDes;
 
-    private EditText edtLocation;
+
     private Button submit ;
 
     @Override
@@ -40,10 +41,7 @@ public class AddPlan extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2C3646")));
 
         edtTitle = (EditText)findViewById(R.id.etxtPlanTitle);
-        edtDes  =(EditText) findViewById(R.id.etxtPlanDesc);
-        edtLocation =(EditText) findViewById(R.id.etxtPlanLocation);
-        edtLocation.setText("Cairo");
-        edtLocation.setEnabled(false);
+        edtDes = (EditText) findViewById(R.id.etxtPlanDesc);
         submit = (Button) findViewById(R.id.btnAddProgram);
         ArrayList<String> placesIds = (ArrayList<String>) getIntent().getExtras().get("placesId");
 
@@ -53,9 +51,9 @@ public class AddPlan extends AppCompatActivity {
             public void onClick(View view) {
                 String title = edtTitle.getText().toString();
                 String des = edtDes.getText().toString();
-                String loc = edtLocation.getText().toString();
+
                 Log.v("des" , title);
-                PlanController pc = new PlanController(null , placesIds ,"0" ,"0",  loc , des, title);
+                PlanController pc = new PlanController(null , placesIds ,"0" ,"0",  "Cairo" , des, title);
                 pc.saveToDB();
                 Intent intent =  intent  = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
@@ -63,5 +61,20 @@ public class AddPlan extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == android.R.id.home) {
+            // finish the activity
+            onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

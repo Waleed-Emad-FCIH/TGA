@@ -194,6 +194,32 @@ public  ArrayList<PlanModel> planModels =new ArrayList<>();
 
         return Plans;
     }
+    public void getById(SimpleCallback<PlanModel> callback , String id)
+    {
+        DatabaseReference dRef = FirebaseDatabase.getInstance().getReference().child("plans").child(id);
+
+        dRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                PlanModel planModel;
+
+                planModel =(dataSnapshot.getValue(PlanModel.class));
+                try {
+                    Log.v("sssss" , planModel.description);
+                }
+                catch (Exception e)
+                {
+
+                }
+
+                callback.callback(planModel);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
 
     //=============================================================
 

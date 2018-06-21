@@ -26,8 +26,8 @@ import java.util.ArrayList;
 public class HomeDetails extends AppCompatActivity  {
 
     private TextView agent, title, desc, reviews, bookNow, favor;
-    private ImageView imgBack,imgSendMsg;
-    private ImageView imgProgramEdit, imgProgramDel;
+    private ImageView imgBack,imgSendMsg, imgFav;
+    private ImageView imgProgramEdit, imgProgramDel, imgAddDiscount;
     private LinearLayout llFavor;
     private String Agent_id;
 
@@ -59,7 +59,9 @@ public class HomeDetails extends AppCompatActivity  {
         imgProgramEdit = (ImageView)findViewById(R.id.imgProgramEdit);
         imgProgramDel = (ImageView)findViewById(R.id.imgProgramDelete);
         imgSendMsg = (ImageView)findViewById(R.id.imgSendMsg);
+        imgFav = (ImageView)findViewById(R.id.imgFav);
         llFavor = (LinearLayout) findViewById(R.id.llFavor);
+        imgAddDiscount = (ImageView)findViewById(R.id.imgAddDiscount);
 
         imgProgramEdit.setVisibility(View.GONE);
         imgProgramDel.setVisibility(View.GONE);
@@ -67,6 +69,7 @@ public class HomeDetails extends AppCompatActivity  {
         
         if(session.getUserRole() != SimpleSession.TOURIST_ROLE){
             imgSendMsg.setVisibility(View.GONE);
+            llFavor.setVisibility(View.GONE);
         }
 
         //TODO: photos of places
@@ -123,27 +126,28 @@ public class HomeDetails extends AppCompatActivity  {
                                     }
                                 });
 
-                                bookNow.setVisibility(View.VISIBLE); //I visible it after page load
-                                if (pc.getRegisteredList().contains(userID)) {
-                                    bookNow.setText("Cancel Book");
-                                }
-                                bookNow.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        if (bookNow.getText().equals("BOOK NOW")){
-                                            pc.registeTourist(userID);
-                                            bookNow.setText("Cancel Book");
-                                        } else {
-                                            pc.unRegisteTourist(userID);
-                                            bookNow.setText("BOOK NOW");
+                                if (session.getUserRole() == SimpleSession.AGENT_ROLE &&
+                                        ((AgentController)session.getUserObj()).getId().equals(pc.getOwnerID())){
+                                    imgAddDiscount.setVisibility(View.VISIBLE);
+
+                                    imgAddDiscount.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            Intent i;
+                                            if (pc.getDiscountID().isEmpty())
+                                                i = new Intent(view.getContext(), AddDiscounts.class);
+                                            else
+                                                i = new Intent(view.getContext(), EditDiscount.class);
+                                            i.putExtra("PROG_ID", prog_id);
+                                            startActivity(i);
                                         }
-                                    }
-                                });
+                                    });
+                                }
 
                                 if (session.getUserRole() == SimpleSession.TOURIST_ROLE){
                                     TouristController tc = (TouristController) session.getUserObj();
                                     if (tc.getMyFavouritPrograms().contains(pc.getId())){
-                                        llFavor.setBackgroundResource(R.drawable.round);
+                                        imgFav.setImageResource(R.drawable.heart);
                                         favor.setText("Remove from Favourites");
                                     }
                                     llFavor.setOnClickListener(new View.OnClickListener() {
@@ -152,16 +156,31 @@ public class HomeDetails extends AppCompatActivity  {
                                             if (favor.getText().equals("Remove from Favourites")){
                                                 tc.unFavouriteProgram(pc.getId());
                                                 favor.setText("Add to Favourites");
-                                                llFavor.setBackgroundResource(R.color.cardview_light_background);
+                                                imgFav.setImageResource(R.drawable.ic_favorite_black_24dp);
                                             } else {
                                                 tc.favouriteProgram(pc.getId());
-                                                llFavor.setBackgroundResource(R.drawable.round);
+                                                imgFav.setImageResource(R.drawable.heart);
                                                 favor.setText("Remove from Favourites");
                                             }
                                         }
                                     });
-                                } else {
-                                    llFavor.setVisibility(View.GONE);
+
+                                    bookNow.setVisibility(View.VISIBLE); //only visible it after page load
+                                    if (pc.getRegisteredList().contains(userID)) {
+                                        bookNow.setText("Cancel Book");
+                                    }
+                                    bookNow.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            if (bookNow.getText().equals("BOOK NOW")){
+                                                pc.registeTourist(userID);
+                                                bookNow.setText("Cancel Book");
+                                            } else {
+                                                pc.unRegisteTourist(userID);
+                                                bookNow.setText("BOOK NOW");
+                                            }
+                                        }
+                                    });
                                 }
 
                             } else {

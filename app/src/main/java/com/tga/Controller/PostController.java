@@ -35,9 +35,10 @@ public class PostController extends AppCompatActivity implements DB_Interface{
     private Button btnPost;
     private LinearLayout layoutPost;
     private DatabaseReference dbRef;
-    private PostModel postModel; 
-    
-    public PostController(String id, String content, long date, String userId,
+    private PostModel postModel;
+
+
+    public PostController(String id, String content, String date, String userId,
                           ArrayList<String> commentsID, int likes,ArrayList<String> likesID){
         this.postModel = new PostModel();
         postModel.id = id;
@@ -47,6 +48,20 @@ public class PostController extends AppCompatActivity implements DB_Interface{
         postModel.commentsID = commentsID;
         postModel.likes=likes;
         postModel.likesID=likesID;
+    }
+    
+    public PostController(String id, String content, String date, String userId,
+                          ArrayList<String> commentsID, int likes,ArrayList<String> likesID,String
+                          img){
+        this.postModel = new PostModel();
+        postModel.id = id;
+        postModel.content = content;
+        postModel.date = date;
+        postModel.userId = userId;
+        postModel.commentsID = commentsID;
+        postModel.likes=likes;
+        postModel.likesID=likesID;
+        postModel.img=img;
     }
 
     @Override
@@ -85,7 +100,7 @@ public class PostController extends AppCompatActivity implements DB_Interface{
         dRef.child(getId()).child("content").setValue(postModel.content);
     }
 
-    public long getDate() {
+    public String getDate() {
 
         return postModel.date;
     }
@@ -126,7 +141,7 @@ public class PostController extends AppCompatActivity implements DB_Interface{
         dRef.child(getId()).child("content").setValue(postModel.content);
     }
 
-    public ArrayList<PostModel> listAll() {
+    public ArrayList<PostModel> listAll(SimpleCallback<ArrayList<PostModel>> callback) {
         FirebaseDatabase fd = FirebaseDatabase.getInstance();
         final DatabaseReference tRef = fd.getReference("posts");
         final ArrayList<PostModel> posts = new ArrayList<>();
@@ -134,9 +149,11 @@ public class PostController extends AppCompatActivity implements DB_Interface{
         tRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                posts.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     PostModel post = snapshot.getValue(PostModel.class);
                     posts.add(post);
+                    callback.callback(posts);
                 }
             }
 

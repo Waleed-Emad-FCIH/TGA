@@ -71,7 +71,7 @@ if(s.equals("Agents"))
           for(DataSnapshot myitem:dataSnapshot.getChildren()) {
               AgentModel agentModel = new AgentModel();
               agentModel.setName(myitem.child("name").getValue().toString());
-              agentModel.setCompany(myitem.child("email").getValue().toString());
+              //agentModel.setCompany(myitem.child("company").getValue().toString());
               agentModel.setId(myitem.child("id").getValue().toString());
               agents.add(agentModel);
           }

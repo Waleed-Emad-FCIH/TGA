@@ -18,8 +18,8 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.tga.Activity.PlaceDetails;
 import com.tga.R;
-import com.tga.model.photos;
-import com.tga.model.place;
+import com.tga.models.photos;
+import com.tga.models.place;
 
 import java.util.ArrayList;
 import java.util.List;

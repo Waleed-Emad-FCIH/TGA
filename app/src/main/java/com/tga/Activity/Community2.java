@@ -11,14 +11,21 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.tga.Controller.PostController;
+import com.tga.Controller.SimpleCallback;
 import com.tga.R;
 import com.tga.adapter.PostAdapter;
+import com.tga.models.PostModel;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 public class Community2 extends AppCompatActivity {
 
@@ -38,15 +45,23 @@ public class Community2 extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2C3646")));
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_posts);
-        layoutPost = (LinearLayout) findViewById(R.id.layoutPost);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         user = FirebaseAuth.getInstance().getCurrentUser();
-        posts= new PostController(null,null, System.currentTimeMillis()
+        String timeStamp = new SimpleDateFormat("dd/MM/yy").format(Calendar.getInstance().getTime());
+
+        posts= new PostController(null,null, timeStamp
                 ,user.getUid(),null,0,null);
-        pAdapter = new PostAdapter(getApplicationContext(),posts.listAll());
-        recyclerView.setAdapter(pAdapter);
+        posts.listAll(new SimpleCallback<ArrayList<PostModel>>() {
+            @Override
+            public void callback(ArrayList<PostModel> data) {
+                pAdapter = new PostAdapter(getApplicationContext(),data);
+                recyclerView.setAdapter(pAdapter);
+
+            }
+        });
+
         fab =(FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,5 +70,20 @@ public class Community2 extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == android.R.id.home) {
+            // finish the activity
+            onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

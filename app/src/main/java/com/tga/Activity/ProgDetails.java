@@ -3,6 +3,7 @@ package com.tga.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,15 +17,15 @@ import com.google.firebase.database.ValueEventListener;
 import com.tga.Controller.AgentController;
 import com.tga.Controller.ProgramController;
 import com.tga.Controller.SimpleCallback;
+import com.tga.Controller.SimpleSession;
 import com.tga.Controller.TouristController;
 import com.tga.R;
 
 import java.util.ArrayList;
 
 public class ProgDetails extends AppCompatActivity {
-    DatabaseReference mDatabase;
     private TextView title, desc;
-    private ImageView imgBack, imgProgramEdit, imgProgramDel;
+    private ImageView imgBack, imgProgramEdit, imgProgramDel, imgAddDiscount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,13 +33,20 @@ public class ProgDetails extends AppCompatActivity {
         setContentView(R.layout.activity_prog_details);
         Intent intent = getIntent();
 
+        if (SimpleSession.isNull()){
+            Toast.makeText(getApplicationContext(), "Oops.. Session Expired", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(this, Login.class));
+        }
+
         String prog_id = intent.getStringExtra("PROG_ID");
+        SimpleSession session = SimpleSession.getInstance();
 
         title = (TextView) findViewById(R.id.txtTitle);
         desc = (TextView) findViewById(R.id.progDesc);
         imgBack = (ImageView)findViewById(R.id.imgBack);
         imgProgramEdit = (ImageView)findViewById(R.id.imgProgramEdit);
         imgProgramDel = (ImageView)findViewById(R.id.imgProgramDelete);
+        imgAddDiscount = (ImageView)findViewById(R.id.imgAddDiscount);
 
         //TODO: photos of places
         ProgramController.getByID(new SimpleCallback<ProgramController>() {
@@ -85,11 +93,45 @@ public class ProgDetails extends AppCompatActivity {
                             onBackPressed();
                         }
                     });
+
+                    if (session.getUserRole() == SimpleSession.AGENT_ROLE &&
+                            ((AgentController)session.getUserObj()).getId().equals(pc.getOwnerID())){
+                        imgAddDiscount.setVisibility(View.VISIBLE);
+                    }
+
+                    imgAddDiscount.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent i;
+                            if (pc.getDiscountID().isEmpty())
+                                i = new Intent(view.getContext(), AddDiscounts.class);
+                            else
+                                i = new Intent(view.getContext(), EditDiscount.class);
+                            i.putExtra("PROG_ID", prog_id);
+                            startActivity(i);
+                        }
+                    });
                 } else {
-                    Toast.makeText(getApplicationContext(), "ProgDetails : Program has been deleted", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Program has been deleted", Toast.LENGTH_LONG).show();
                    // onBackPressed();
                 }
             }
         }, prog_id);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == android.R.id.home) {
+            // finish the activity
+            onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }

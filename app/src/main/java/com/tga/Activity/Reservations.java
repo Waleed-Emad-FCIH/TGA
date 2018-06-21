@@ -1,6 +1,5 @@
 package com.tga.Activity;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
@@ -10,19 +9,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.tga.R;
 import com.tga.Response.PlaceResponse;
 import com.tga.Response.RequestInterface;
-import com.tga.adapter.FoodAndDrinksAdapter;
-import com.tga.adapter.ReservationsAdapter;
 import com.tga.adapter.ThingsToDoAdpater;
-import com.tga.model.HotelMdoel;
-import com.tga.model.PlaceModel;
-import com.tga.model.place;
+import com.tga.models.place;
 import com.tga.util.EndlessScrollListener;
 
 import java.util.ArrayList;

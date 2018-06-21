@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.tga.Controller.PlanController;
 import com.tga.Controller.SimpleCallback;
 import com.tga.Controller.TouristController;
 import com.tga.R;
@@ -37,7 +38,7 @@ import ernestoyaquello.com.verticalstepperform.interfaces.VerticalStepperForm;
 
 public class PlanDetalis extends AppCompatActivity  {
 
-    private ImageView imgBack,imgEditPlan;
+    private ImageView imgBack,imgEditPlan , imgDelPlan;
     private RecyclerView planPlaces ;
     private PlanPlacesAdabter planPlacesAdabter ;
     private RecyclerView.LayoutManager layoutManager;
@@ -53,9 +54,11 @@ public class PlanDetalis extends AppCompatActivity  {
         choosePlan = (Button)findViewById(R.id.choosePlan);
         removePlan = (Button) findViewById(R.id.removePlanbrn);
         submitChoosingPlan = (Button) findViewById(R.id.submitChoosingPlan);
+        imgDelPlan = (ImageView) findViewById(R.id.imgDeletePlan);
         ArrayList<String> placesId = new ArrayList<>();
         placesId  = (ArrayList<String>) getIntent().getExtras().get("placesIds");
         String planID = (String) getIntent().getExtras().get("planId");
+        String planCreatorID = (String) getIntent().getExtras().get("planCreatorId");
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         TouristController tc  = new TouristController( userId, null ,
                 null , null , null , null );
@@ -78,7 +81,20 @@ public class PlanDetalis extends AppCompatActivity  {
                 }
             }
         } , userId);
-
+        imgDelPlan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PlanController pc = new PlanController(planID , null , null , null , null
+                        ,null , null);
+                pc.delFromDB();
+                Toast.makeText(getApplicationContext() , "Plan deleted " , Toast.LENGTH_LONG).show();
+                onBackPressed();
+            }
+        });
+        if(!userId.equals(planCreatorID))
+        {
+         imgDelPlan.setVisibility(View.GONE);
+        }
 
         choosePlan.setOnClickListener(new View.OnClickListener() {
             @Override

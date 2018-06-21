@@ -1,7 +1,6 @@
 package com.tga.Response;
 
-import com.tga.Activity.PlaceDetails;
-import com.tga.model.placeDetailsModel;
+import com.tga.models.placeDetailsModel;
 
 /**
  * Created by Mada on 5/5/2018.

@@ -1,7 +1,7 @@
-package com.tga.model;
+package com.tga.models;
 
 /**
- * Created by Mada on 4/29/2018.
+ * Created by Mada on 4/29/2018. hi
  */
 
 public class photos {

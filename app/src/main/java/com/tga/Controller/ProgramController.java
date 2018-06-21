@@ -70,7 +70,7 @@ ArrayList<String> ProgramsOfAgent ;
     public String getOwnerID(){
         return programModel.ownerID;
     }
-    // TODO: add price edit text for agent view and xml
+
     public double getPrice(){
         return this.programModel.price;
     }
@@ -88,15 +88,21 @@ ArrayList<String> ProgramsOfAgent ;
     }
 
     public ArrayList<String> getPlacesID() {
+        if (programModel.placesID == null)
+            programModel.placesID = new ArrayList<>();
         return programModel.placesID;
     }
 
     public void addPlace(String placeID) {
+        if (programModel.placesID == null)
+            programModel.placesID = new ArrayList<>();
         programModel.placesID.add(placeID);
     }
 
     public void delPlace(String placeID){
-        if (!programModel.placesID.isEmpty())
+        if (programModel.placesID == null)
+            programModel.placesID = new ArrayList<>();
+        else
             programModel.placesID.remove(placeID);
     }
 
@@ -139,23 +145,34 @@ ArrayList<String> ProgramsOfAgent ;
     }
 
     public void addReview(String review){
+        if (programModel.reviews == null)
+            programModel.reviews = new ArrayList<>();
         programModel.reviews.add(review);
     }
 
     public ArrayList<String> getReviews() {
+        if (programModel.reviews == null)
+            programModel.reviews = new ArrayList<>();
         return programModel.reviews;
     }
 
     public ArrayList<String> getRegisteredList(){
+        if (programModel.registeredTouristsID == null)
+            programModel.registeredTouristsID = new ArrayList<>();
         return programModel.registeredTouristsID;
     }
 
     public void registeTourist(String touristID){
+        if (programModel.registeredTouristsID == null)
+            programModel.registeredTouristsID = new ArrayList<>();
         programModel.registeredTouristsID.add(touristID);
     }
 
     public void unRegisteTourist(String touristID){
-        programModel.registeredTouristsID.remove(touristID);
+        if (programModel.registeredTouristsID == null)
+            programModel.registeredTouristsID = new ArrayList<>();
+        else
+            programModel.registeredTouristsID.remove(touristID);
     }
 
     public void saveToDB(){
@@ -395,6 +412,7 @@ return Programs;
     public void setDiscount(String endDate, double discountPercentage){
         this.discount = new Discount(endDate, discountPercentage);
         this.programModel.discountID = this.discount.getId();
+        this.discount.saveToDB();
     }
 
     private void setDiscount(String discountID){
@@ -406,8 +424,10 @@ return Programs;
                     discount = data;
                 }
             }, discountID);
-        } else
+        } else {
             this.discount = null;
+            this.programModel.discountID = "";
+        }
     }
 
     public String getDiscountID() {
@@ -513,11 +533,11 @@ return Programs;
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         dm[0] = data.getValue(DiscountModel.class);
-                        if (dm[0] == null)
-                            finishedCallback.callback(null);
-                        else
-                            finishedCallback.callback(new Discount(dm[0]));
                     }
+                    if (dm[0] == null)
+                        finishedCallback.callback(null);
+                    else
+                        finishedCallback.callback(new Discount(dm[0]));
                 }
 
                 @Override

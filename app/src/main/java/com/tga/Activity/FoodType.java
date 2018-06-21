@@ -9,16 +9,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.tga.R;
 import com.tga.Response.PlaceResponse;
 import com.tga.Response.RequestInterface;
 import com.tga.adapter.ThingsToDoAdpater;
-import com.tga.adapter.ThingsToDoLoad;
-import com.tga.model.place;
-import com.tga.util.EndlessRecyclerViewScrollListener;
+import com.tga.models.place;
 import com.tga.util.EndlessScrollListener;
 
 import java.util.ArrayList;
